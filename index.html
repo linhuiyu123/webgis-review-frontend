@@ -2295,6 +2295,26 @@ layer.alpha = 0.6;                <span class="tok-c">// 设这层透明度</spa
     </div>
     <h4>生命周期与 Hook</h4>
     <p>组件从创建到销毁经历特定阶段，有生命周期钩子函数。<strong>Hook</strong>（React 16.8 新增）让<strong>函数组件</strong>也能用 state 等特性：<code class="inline">useState</code>（内部状态）、<code class="inline">useRef</code>（可变 ref）、<code class="inline">useEffect</code>（副作用）。</p>
+
+    <div class="idemo" id="demoHook">
+      <div class="it">🧪 useEffect 生命周期演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>看 <code class="inline">useEffect</code> 里的副作用代码（和它的清理函数）分别在<strong>挂载、更新、卸载</strong>时什么时候运行。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="btn" id="hkMount">挂载组件</button><button class="btn" id="hkUpdate">更新 state</button><button class="btn" id="hkUnmount">卸载组件</button><button class="btn ghost" id="hkClear">清空日志</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果（运行日志）</span>
+        <div class="out console" id="hkOut" style="min-height:70px">先点“挂载组件”…</div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>useEffect(() => {
+  console.log('副作用：如发请求/订阅');
+  return () => console.log('清理：取消订阅');  <span class="tok-c">// 卸载或重跑前执行</span>
+}, [count]);  <span class="tok-c">// 依赖变了才重跑</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① 挂载：先渲染 → 跑 effect。② 更新（依赖变）：先跑上次的<b>清理</b> → 再跑新 effect。③ 卸载：只跑<b>清理</b>。④ effect 用来做<b>副作用</b>（请求、定时器、订阅），别把所有逻辑都塞进去。</div>
+      </div>
+    </div>
     <pre><code><span class="tok-k">import</span> { useState } <span class="tok-k">from</span> <span class="tok-s">'react'</span>;
 <span class="tok-k">function</span> <span class="tok-f">Counter</span>() {
   <span class="tok-k">const</span> [count, setCount] = <span class="tok-f">useState</span>(<span class="tok-n">0</span>);  <span class="tok-c">// 声明 state</span>
@@ -2396,6 +2416,28 @@ df.iloc[0:3, 0:2]                    <span class="tok-c"># 前3行(0,1,2)、前2
       <tr><td>元组 tuple</td><td><code class="inline">('r','g')</code></td><td>有序</td><td>只读</td><td>元素不可修改</td></tr>
       <tr><td>集合 set</td><td><code class="inline">{1,2,3}</code></td><td>无序</td><td>读写</td><td>不重复，交并集</td></tr>
       <tr><td>字典 dict</td><td><code class="inline">{'a':1}</code></td><td>无序</td><td>读写</td><td>键唯一不可变、值可变</td></tr></table>
+
+    <div class="idemo" id="demoPy">
+      <div class="it">🧪 Python 四种数据结构对比演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>list/tuple/set/dict 最容易混。选一种，对它做三种操作，看支持不支持、结果是什么。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-pt="list">list 列表</button><button class="chip" data-pt="tuple">tuple 元组</button><button class="chip" data-pt="set">set 集合</button><button class="chip" data-pt="dict">dict 字典</button></div>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)" id="pyInit"></span></div>
+        <div class="opbar"><button class="btn" data-po="dup">加重复元素</button><button class="btn" data-po="index">按下标[0]取</button><button class="btn" data-po="edit">改第一个元素</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="out console" id="pyOut" style="min-height:46px">选类型 + 点操作…</div>
+      </div>
+      <div class="sec"><span class="sl sl-code">速记</span>
+        <pre><code>list  [..]  有序·可变·可重复·下标访问
+tuple (..)  有序·只读·下标访问
+set   {..}  无序·可变·自动去重·无下标
+dict  {k:v} 无序·可变·用"键"访问</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>tuple 只读</b>，不能改/加/删。② <b>set 自动去重、无序、不能下标访问</b>。③ <b>dict 用键访问</b>（不是下标），键唯一不可变。④ 只有 list 既有序又可变又能下标。</div>
+      </div>
+    </div>
     <p>函数用 <code class="inline">def</code> 定义，可返回多值（元组接收）；类用 <code class="inline">class</code>，构造函数 <code class="inline">__init__(self,...)</code>，self 类似 C++ 的 this；继承用括号写父类名、<code class="inline">super().__init__()</code> 调父类构造。模块=一个 .py，包=目录（含 <code class="inline">__init__.py</code>）。</p>
 
     <h3>3. Numpy 与 Pandas</h3>
@@ -2965,6 +3007,31 @@ Ygeo = 30.00  + row * (-0.01)</code></pre>
       <li><strong>重投影</strong>：<code class="inline">reproject</code>（src/dst 的 transform 与 crs）。</li>
       <li><strong>重采样</strong>：<code class="inline">read(out_shape=..., resampling=...)</code>，方法 nearest/bilinear/cubic/average/mode 等。</li>
     </ul>
+
+    <div class="idemo" id="demoResamp">
+      <div class="it">🧪 重采样演示：nearest vs bilinear（把 2×2 放大到 6×6）</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>把低分辨率栅格放大时，怎么补出新像元的值。<strong>nearest</strong>=直接抄最近格子(块状)，<strong>bilinear</strong>=按距离插值(平滑)。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-rs="nearest">nearest 最近邻</button><button class="chip" data-rs="bilinear">bilinear 双线性</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <div><div style="font-size:12px;color:var(--muted);margin-bottom:3px">原始 2×2</div><div id="rsSrc" style="line-height:0"></div></div>
+          <div style="font-size:20px;color:var(--brand)">→</div>
+          <div><div style="font-size:12px;color:var(--muted);margin-bottom:3px">放大 6×6</div><div id="rsOut" style="line-height:0"></div></div>
+        </div>
+        <p style="font-size:12.5px;color:var(--muted);margin-top:6px" id="rsNote"></p>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>from rasterio.enums import Resampling
+data = ds.read(1, out_shape=(6, 6),
+               resampling=Resampling.<span id="rsCode">nearest</span>)</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>分类数据</b>（土地利用、行政区）用 <b>nearest / mode</b>——保持原有类别值、不能算出“中间值”。② <b>连续数据</b>（高程、温度）用 <b>bilinear / cubic / average</b>——更平滑。</div>
+      </div>
+    </div>
+
     <h4>栅格裁剪与矢栅转换</h4>
     <pre><code><span class="tok-k">from</span> rasterio.mask <span class="tok-k">import</span> mask
 out_img, out_tf = <span class="tok-f">mask</span>(dataset, shapes, crop=<span class="tok-k">True</span>,
@@ -4481,6 +4548,47 @@ const TERMS=[
   render();
 })();
 
+/* ch9 Hook 生命周期 */
+(function(){
+  if(!$('hkMount'))return;const out=$('hkOut');let mounted=false,n=0;
+  const log=s=>{if(out.textContent==='先点“挂载组件”…'||out.textContent==='')out.textContent='';out.textContent+=s+'\n';};
+  $('hkMount').onclick=()=>{if(mounted){log('（已挂载，先卸载再挂载）');return;}mounted=true;n=0;log('▶ 挂载：① 组件渲染 → ② 运行 effect（如发请求）');};
+  $('hkUpdate').onclick=()=>{if(!mounted){log('（还没挂载）');return;}n++;log('▶ 更新('+n+')：① 重渲染 → ② 先跑上次的「清理」→ ③ 再跑新 effect');};
+  $('hkUnmount').onclick=()=>{if(!mounted){log('（还没挂载）');return;}mounted=false;log('▶ 卸载：只运行「清理」函数（取消订阅/清定时器）');};
+  $('hkClear').onclick=()=>{out.textContent='先点“挂载组件”…';mounted=false;n=0;};
+})();
+/* ch10 Python 数据结构 */
+(function(){
+  if(!$('pyOut'))return;let t='list';
+  const init={list:"a = ['r', 'g', 'b']",tuple:"a = ('r', 'g', 'b')",set:"a = {'r', 'g', 'b'}",dict:"a = {'a':1, 'b':2}"};
+  const R={
+    list:{dup:"a.append('r') → ['r','g','b','r']  ✓ 允许重复",index:"a[0] → 'r'  ✓ 支持下标",edit:"a[0]='x' → ['x','g','b']  ✓ 可变"},
+    tuple:{dup:"✘ 元组不可添加（只读）",index:"a[0] → 'r'  ✓ 支持下标",edit:"✘ TypeError：元组只读，不能改"},
+    set:{dup:"a.add('r') → {'r','g','b'}  自动去重，没变化",index:"✘ 集合无序，不支持下标访问",edit:"✘ 无序、不支持按下标修改"},
+    dict:{dup:"a['a']=9 → {'a':9,'b':2}  键唯一，覆盖旧值",index:"✘ 字典用「键」访问：a['a'] → 1，不用下标",edit:"a['a']=5 → {'a':5,'b':2}  ✓ 值可变"}
+  };
+  function setT(x){t=x;$('pyInit').textContent=init[t];$('pyOut').textContent='点下面的操作试试…';}
+  document.querySelectorAll('#demoPy [data-pt]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoPy [data-pt]').forEach(x=>x.classList.remove('on'));b.classList.add('on');setT(b.dataset.pt);});
+  document.querySelectorAll('#demoPy [data-po]').forEach(b=>b.onclick=()=>{$('pyOut').textContent=R[t][b.dataset.po];});
+  setT('list');
+})();
+/* ch14 重采样 nearest vs bilinear */
+(function(){
+  if(!$('rsSrc'))return;const src=[[10,50],[25,60]];let method='nearest';
+  function heat(v){const t=Math.max(0,Math.min(1,v/60));const r=Math.round(214-t*200),g=Math.round(232-t*70),b=Math.round(150-t*30);return 'rgb('+r+','+g+','+b+')';}
+  function cell(v,sz){return '<span style="display:inline-block;width:'+sz+'px;height:'+sz+'px;background:'+heat(v)+';border:1px solid #fff"></span>';}
+  function grid(m,sz){let h='';m.forEach(row=>{row.forEach(v=>h+=cell(v,sz));h+='<br>';});return h;}
+  function bilinear(i,j){const y=(i+0.5)/6*2-0.5,x=(j+0.5)/6*2-0.5;const y0=Math.max(0,Math.min(1,Math.floor(y))),x0=Math.max(0,Math.min(1,Math.floor(x)));const y1=Math.min(1,y0+1),x1=Math.min(1,x0+1);const fy=Math.max(0,Math.min(1,y-y0)),fx=Math.max(0,Math.min(1,x-x0));
+    return src[y0][x0]*(1-fx)*(1-fy)+src[y0][x1]*fx*(1-fy)+src[y1][x0]*(1-fx)*fy+src[y1][x1]*fx*fy;}
+  function render(){
+    $('rsSrc').innerHTML=grid(src,30);$('rsCode').textContent=method;
+    const out=[];for(let i=0;i<6;i++){const row=[];for(let j=0;j<6;j++){row.push(method==='nearest'?src[Math.floor(i/6*2)][Math.floor(j/6*2)]:bilinear(i,j));}out.push(row);}
+    $('rsOut').innerHTML=grid(out,18);
+    $('rsNote').textContent=method==='nearest'?'nearest：每个新格子直接抄最近的原格子 → 结果是块状/马赛克，保留原值。':'bilinear：按到四个原格子的距离加权平均 → 结果平滑渐变，会算出“中间值”。';
+  }
+  document.querySelectorAll('#demoResamp [data-rs]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoResamp [data-rs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');method=b.dataset.rs;render();});
+  render();
+})();
 /* ch1 C/S vs B/S */
 (function(){
   if(!$('csbsStage'))return;
