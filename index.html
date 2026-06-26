@@ -2079,6 +2079,31 @@ viewer.imageryLayers.<span class="tok-f">addImageryProvider</span>(
 );</code></pre>
     <p>常用 Provider：<code class="inline">WebMapServiceImageryProvider</code>(WMS)、<code class="inline">WebMapTileServiceImageryProvider</code>(天地图 WMTS)、<code class="inline">OpenStreetMapImageryProvider</code>、<code class="inline">UrlTemplateImageryProvider</code>(高德)、<code class="inline">IonImageryProvider</code>。常用方法：<code class="inline">add/addImageryProvider/remove/get/raise/lower</code>。</p>
 
+    <div class="idemo" id="demoImg">
+      <div class="it">🧪 影像图层栈演示：顺序与透明度</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>一张地图常由好几层影像叠出来。理解<strong>谁在上、谁的透明度多少</strong>决定最终看到什么——“先添加的不一定可见”。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">选中图层：</span>
+          <button class="chip on" data-ly="0">卫星影像</button><button class="chip" data-ly="1">路网</button><button class="chip" data-ly="2">边界</button></div>
+        <div class="opbar"><button class="btn" id="imgUp">↑ 上移(raise)</button><button class="btn" id="imgDown">↓ 下移(lower)</button>
+          <span style="font-size:12px;color:var(--muted)">透明度</span><input type="range" id="imgA" min="0" max="100" value="100" style="flex:1;min-width:90px;accent-color:var(--brand)"><span id="imgAv" style="font-family:monospace;color:var(--brand)">1.0</span></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+          <div style="position:relative;width:150px;height:110px;border:1px solid var(--line);border-radius:6px;overflow:hidden;flex-shrink:0" id="imgMap"></div>
+          <div style="flex:1;min-width:150px"><div style="font-size:12px;color:var(--muted);margin-bottom:3px">叠放顺序（上→下）</div><div id="imgOrder" style="font-size:13px"></div></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>viewer.imageryLayers.<span class="tok-f">raise</span>(layer);   <span class="tok-c">// 这层往上移一层</span>
+viewer.imageryLayers.<span class="tok-f">lower</span>(layer);   <span class="tok-c">// 往下移一层</span>
+layer.alpha = 0.6;                <span class="tok-c">// 设这层透明度</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① 图层是<b>有序</b>的，靠上的盖住靠下的；<b>先添加的图层在最底下</b>，所以“先添加 ≠ 最终可见”。② 把上层 <code class="inline">alpha</code> 调低，下层才透出来。③ 用 <code class="inline">raise/lower</code> 调顺序。</div>
+      </div>
+    </div>
+
     <h3>2. 地形数据</h3>
     <div class="card note"><span class="lbl">影像 vs 地形</span>影像是“外衣”（可穿多件），地形是“骨架”（只有一副）。把实例化的 terrainProvider 赋给 <code class="inline">viewer.terrainProvider</code>。</div>
     <p>5 种 TerrainProvider：<code class="inline">EllipsoidTerrainProvider</code>（默认，光滑椭球、高程 0、不请求数据）、<code class="inline">CesiumTerrainProvider</code>（<strong>最常用</strong>，高精度全球地形、支持光照水面）、ArcGISTiledElevationTerrainProvider、GoogleEarthEnterpriseTerrainProvider 等。</p>
@@ -2166,6 +2191,36 @@ viewer.imageryLayers.<span class="tok-f">addImageryProvider</span>(
   <span class="tok-c">// 必须用 setCount 更新，不能写 count = count+1</span>
 }</code></pre>
 
+    <div class="idemo" id="demoReact">
+      <div class="it">🧪 props 与 state 演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>分清两种数据：<strong>props</strong> 是父组件传给子组件的、<strong>子组件只读不能改</strong>；<strong>state</strong> 是组件自己的、<strong>可变</strong>，一改界面自动重渲染。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">父组件设置 props.name：</span>
+          <input type="text" id="rcProps" value="小明" style="width:90px;background:#fff;color:#1e2a38;border:1px solid #b9c6d6;border-radius:6px;padding:4px 7px"></div>
+        <div class="opbar"><button class="btn" id="rcInc">子组件：setCount(+1)</button><button class="btn" id="rcBad" style="background:#dc2626">子组件：直接改 props.name</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果（子组件渲染）</span>
+        <div class="stage">
+          <div style="border:1px dashed #b9c6d6;border-radius:6px;padding:10px;font-size:14px">
+            👶 子组件 &lt;Child name=<span id="rcShowProps" style="color:#2563eb">"小明"</span> /&gt;<br>
+            收到的 props.name：<b id="rcP" style="color:#2563eb">小明</b>（只读）<br>
+            自己的 state count：<b id="rcS" style="color:#0d9488">0</b>（可变）
+          </div>
+          <p style="font-size:12.5px;margin-top:6px" id="rcNote"></p>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code><span class="tok-c">// 父组件把 name 当 props 传下去</span>
+&lt;Child name={parentName} /&gt;
+<span class="tok-c">// 子组件：props 只读，state 用 setter 改</span>
+const [count, setCount] = useState(0);
+props.name = "x";   <span class="tok-c">// ❌ 报错：props 不可变</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>props 不可变</b>，子组件只能读、不能改（要改得让父组件改了再传下来）。② <b>state 必须用 setState/setter 改</b>，不能 <code class="inline">count=count+1</code> 直接赋值，否则界面不更新。③ 数据流是<b>单向</b>的：父 → 子。</div>
+      </div>
+    </div>
+
     <h3>3. UI 框架</h3>
     <p>UI 框架为开发 UI 提供基础设施（布局、组件、事件响应）。代表：<strong>Bootstrap</strong>、<strong>Material-UI</strong>(React)、<strong>Element Plus</strong>(Vue3)、<strong>Ant Design</strong>(阿里、React、企业级中后台)。Antd 可按需引入组件，提供丰富 API。</p>
   </section>
@@ -2234,6 +2289,33 @@ df.iloc[0:3, 0:2]                    <span class="tok-c"># 前3行(0,1,2)、前2
 
     <h3>3. Numpy 与 Pandas</h3>
     <p><strong>Numpy</strong>：高效高维数组/矩阵运算（C 底层），主体 <code class="inline">np.array</code>，要求元素类型相同。<strong>Pandas</strong>：基于 Numpy，分析结构化数据。</p>
+
+    <div class="idemo" id="demoNp">
+      <div class="it">🧪 NumPy 向量化 vs Python 列表循环</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>同样对一组数 +1 或 ×2，Python 列表要<strong>手写循环</strong>，NumPy 数组<strong>一行</strong>就整组算完。这也是栅格(逐像元运算)用 NumPy 的原因。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">对 [1, 3, 5, 7] 做：</span>
+          <button class="chip on" data-np="add">+1</button><button class="chip" data-np="mul">×2</button><button class="chip" data-np="gt">&gt;4 ?</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage"><div style="font-size:13px"><b>结果：</b><span id="npRes" style="font-family:monospace;color:#0d9488"></span></div></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <div class="grid2">
+          <pre><code><span class="tok-c"># Python 列表：要手写循环</span>
+out = []
+for x in arr:
+    out.append(<span id="npPy">x + 1</span>)</code></pre>
+          <pre><code><span class="tok-c"># NumPy 数组：一行搞定(向量化)</span>
+import numpy as np
+a = np.array([1,3,5,7])
+out = <span id="npNp">a + 1</span></code></pre>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① NumPy 对整个数组<b>逐元素</b>运算（向量化），写法简洁、底层 C 实现<b>快得多</b>。② 比较运算 <code class="inline">a&gt;4</code> 返回一个<b>布尔数组</b>，常用来做掩膜/筛选。③ 栅格就是二维 NumPy 数组，地图代数=数组运算。</div>
+      </div>
+    </div>
     <div class="card def"><span class="lbl">Series 与 DataFrame</span>
       <strong>Series</strong> = “有索引的数组”（字典的键 + 数组的值结合）。<strong>DataFrame</strong> = 多个相同索引的 Series 合并成的二维表（类似 Excel/数据库表）。DataFrame 的每一行、每一列都是一个 Series。可用 <code class="inline">set_index</code> 指定索引列。</div>
 
@@ -4196,6 +4278,48 @@ const TERMS=[
   render();
 })();
 
+/* ch8 影像图层栈 */
+(function(){
+  if(!$('imgMap'))return;
+  const L=[{n:'卫星影像',c:'#2e7d4f'},{n:'路网',c:'#c2740a'},{n:'边界',c:'#7c3aed'}];
+  L.forEach(x=>x.a=1);let order=[0,1,2];let sel=0;
+  function render(){
+    let h='';order.forEach((idx,k)=>{const z=k+1;h+='<div style="position:absolute;inset:0;background:'+L[idx].c+';opacity:'+L[idx].a+';z-index:'+z+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;text-shadow:0 1px 2px #0008">'+L[idx].n+'</div>';});
+    $('imgMap').innerHTML=h;
+    let ol='';for(let k=order.length-1;k>=0;k--){const idx=order[k];ol+='<div style="padding:2px 6px;border-left:3px solid '+L[idx].c+';margin:2px 0;'+(idx===sel?'background:#eef6f3;font-weight:700':'')+'">'+L[idx].n+'　α='+L[idx].a.toFixed(2)+(k===order.length-1?'　(最上层)':'')+'</div>';}
+    $('imgOrder').innerHTML=ol;
+  }
+  function pos(idx){return order.indexOf(idx);}
+  document.querySelectorAll('#demoImg [data-ly]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoImg [data-ly]').forEach(x=>x.classList.remove('on'));b.classList.add('on');sel=+b.dataset.ly;$('imgA').value=Math.round(L[sel].a*100);$('imgAv').textContent=L[sel].a.toFixed(1);render();});
+  $('imgUp').onclick=()=>{const p=pos(sel);if(p<order.length-1){order.splice(p,1);order.splice(p+1,0,sel);render();}};
+  $('imgDown').onclick=()=>{const p=pos(sel);if(p>0){order.splice(p,1);order.splice(p-1,0,sel);render();}};
+  $('imgA').oninput=function(){L[sel].a=+this.value/100;$('imgAv').textContent=L[sel].a.toFixed(2);render();};
+  render();
+})();
+/* ch9 props/state */
+(function(){
+  if(!$('rcInc'))return;let count=0;
+  function name(){return $('rcProps').value||'(空)';}
+  function render(){$('rcShowProps').textContent='"'+name()+'"';$('rcP').textContent=name();$('rcS').textContent=count;}
+  $('rcProps').addEventListener('input',()=>{$('rcNote').innerHTML='<span style="color:#15803d">父组件改了 props → 自动传给子组件并重渲染。</span>';render();});
+  $('rcInc').onclick=()=>{count++;$('rcNote').innerHTML='<span style="color:#15803d">setCount 改了 state → 子组件自动重渲染，count 变成 '+count+'。</span>';render();};
+  $('rcBad').onclick=()=>{$('rcNote').innerHTML='<span style="color:#dc2626">⚠ 子组件想直接改 props.name 会报错！props 是只读的，要让父组件去改。</span>';};
+  render();
+})();
+/* ch10 NumPy 向量化 */
+(function(){
+  if(!$('npRes'))return;const arr=[1,3,5,7];
+  function calc(op){
+    let r,py,np;
+    if(op==='add'){r=arr.map(x=>x+1);py='x + 1';np='a + 1';}
+    else if(op==='mul'){r=arr.map(x=>x*2);py='x * 2';np='a * 2';}
+    else{r=arr.map(x=>x>4);py='x > 4';np='a > 4';}
+    $('npRes').textContent='['+r.join(', ')+']'+(op==='gt'?'  ← 布尔数组(掩膜)':'');
+    $('npPy').textContent=py;$('npNp').textContent=np;
+  }
+  document.querySelectorAll('#demoNp [data-np]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoNp [data-np]').forEach(x=>x.classList.remove('on'));b.classList.add('on');calc(b.dataset.np);});
+  calc('add');
+})();
 /* ch3 事件绑定三方式 */
 (function(){
   if(!$('bindA'))return;const out=$('bindOut');const log=s=>{out.textContent+=s+'\n';};
