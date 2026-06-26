@@ -261,6 +261,7 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:26px 0}
   <div class="navlink" data-view="ch13"><span class="ix">13</span>矢量空间分析</div>
   <div class="navlink" data-view="ch14"><span class="ix">14</span>栅格空间分析</div>
   <div class="navgroup">应试篇</div>
+  <div class="navlink" data-view="homework"><span class="ix">HW</span>作业考点</div>
   <div class="navlink" data-view="exam"><span class="ix">▤</span>历年题精解</div>
   <div class="navlink" data-view="quiz"><span class="ix">✎</span>练习题库</div>
 </nav>
@@ -3269,6 +3270,247 @@ out_img, out_tf = <span class="tok-f">mask</span>(dataset, shapes, crop=<span cl
       <strong>分区统计</strong>：Rasterstats 的 <code class="inline">zonal_stats(vector, raster, stats=...)</code> 在矢量范围内统计栅格。</div>
   </section>
 
+  <!-- ============ HOMEWORK FOCUS ============ -->
+  <section class="view" id="view-homework">
+    <div class="chapter-tag">应试篇 · 作业知识点</div>
+    <h2 class="title">作业考察点复习重点</h2>
+    <p style="color:var(--muted)">根据「作业知识点」文件夹中可读取的作业说明、课堂资料、课后作业与参考答案整理。复习时把这一页当成“代码完型填空 + 综合题”的重点清单。</p>
+
+    <div class="card exam" id="homeworkFocus"><span class="lbl">总判断</span>
+      作业不是零散练习，而是一条完整项目线：<strong>HTML/CSS/JS 天气面板 → GeoServer 发布服务 → Cesium 加载服务与实体 → React 集成 Cesium → FastAPI/GeoPandas/Rasterio 提供空间分析后端</strong>。考试若考代码完型或综合设计，最可能从这些作业流程中抽 API 名、参数名、数据流和易错点。
+    </div>
+
+    <h3>一、按作业归纳的高频考察点</h3>
+    <table>
+      <tr><th>来源</th><th>作业在考什么</th><th>复习时必须会</th><th>典型易错点</th></tr>
+      <tr>
+        <td><strong>作业1</strong><br>HTML/CSS 天气面板</td>
+        <td>用 HTML 搭出静态天气工具，用 CSS 美化并固定在网页右上角。</td>
+        <td><code class="inline">title</code>、<code class="inline">select/option</code>、<code class="inline">button</code>、<code class="inline">img</code>；类选择器和 ID 选择器；<code class="inline">position:fixed</code>、<code class="inline">top/right</code>、<code class="inline">hover/active</code>。</td>
+        <td>把 <code class="inline">option</code> 写在 <code class="inline">select</code> 外；忘记给关键元素加 <code class="inline">id/class</code>；固定定位和普通文档流混淆。</td>
+      </tr>
+      <tr>
+        <td><strong>作业2</strong><br>JS 交互天气工具</td>
+        <td>在作业1基础上加 JS：显示/隐藏、拖拽、城市与经纬度联动、Axios 请求天气 API、用返回结果更新组件。</td>
+        <td><code class="inline">onclick</code>、<code class="inline">onchange</code>、<code class="inline">onmousedown/onmousemove/onmouseup</code>；<code class="inline">e.clientX/clientY</code>；<code class="inline">offsetLeft/offsetTop</code>；<code class="inline">innerHTML/textContent</code>；<code class="inline">axios.get(...).then(...).catch(...)</code>。</td>
+        <td>拖拽时没有记录初始鼠标位置；把异步请求当同步返回；只输出 <code class="inline">res</code> 不会取 <code class="inline">res.data</code>。</td>
+      </tr>
+      <tr>
+        <td><strong>作业3 / 05</strong><br>GeoServer + Cesium WMS</td>
+        <td>部署 GeoServer，注册 Shapefile/GeoTIFF，发布图层和图层组，配置样式；在 Cesium 中加载 GeoServer WMS。</td>
+        <td>workspace → store → layer → layer group → style → layer preview；Shapefile 字符集；GeoTIFF 数据源；SLD 样式；<code class="inline">WebMapServiceImageryProvider</code>；<code class="inline">viewer.imageryLayers.addImageryProvider()</code>；GeoServer CORS。</td>
+        <td>把 GeoServer 当成前端库；忘记 WMS 返回图片；前端跨域报错时不知道要处理 CORS。</td>
+      </tr>
+      <tr>
+        <td><strong>作业5</strong><br>Cesium 地图书签</td>
+        <td>保存和恢复相机视角，实现书签创建、查询、删除。</td>
+        <td><code class="inline">new Cesium.Viewer()</code>；<code class="inline">viewer.camera</code>；<code class="inline">flyTo/setView/lookAt</code>；相机位置与 <code class="inline">heading/pitch/roll</code>；DOM 列表与数组/对象存储。</td>
+        <td>只保存经纬度不保存朝向；把 <code class="inline">heading/pitch/roll</code> 当 CSS 旋转；删除 DOM 项但没同步删除数据。</td>
+      </tr>
+      <tr>
+        <td><strong>作业6</strong><br>实体、3D Tiles、点样式</td>
+        <td>加载 3D Tiles，读取 cityList JSON，把城市加载为点 Entity，并和天气面板联动高亮；进阶版要求点样式面板。</td>
+        <td><code class="inline">Cesium3DTileset</code>、<code class="inline">viewer.scene.primitives.add()</code>、<code class="inline">viewer.zoomTo/flyTo()</code>；<code class="inline">fetch/axios</code> 读 JSON；<code class="inline">viewer.entities.add()</code>；<code class="inline">PointGraphics</code> 的 <code class="inline">pixelSize/color/outlineWidth/outlineColor</code>；CSS 色值与 <code class="inline">Cesium.Color</code> 转换。</td>
+        <td>把普通 JSON 当 GeoJSON 直接加载；不知道 <code class="inline">entities.values</code> 可遍历；高亮后不恢复默认样式。</td>
+      </tr>
+      <tr>
+        <td><strong>作业7</strong><br>影像、地形、淹没分析</td>
+        <td>做底图切换面板，加载地形，开启光照/水面效果，做开始/停止/重来式淹没分析。</td>
+        <td><code class="inline">ImageryProvider</code> 子类；<code class="inline">ImageryLayer</code> 顺序与透明度；<code class="inline">viewer.terrainProvider</code>；<code class="inline">CesiumTerrainProvider</code>；<code class="inline">polygon.extrudedHeight</code>；<code class="inline">setInterval/clearInterval</code> 或 <code class="inline">CallbackProperty</code>。</td>
+        <td>影像图层可以多层叠加，地形通常只有一套；底图切换不是改 URL 字符串就结束，还要管理图层对象。</td>
+      </tr>
+      <tr>
+        <td><strong>作业8</strong><br>React + Cesium 综合项目</td>
+        <td>把实时天气、底图切换、书签、模型、点样式等功能集成到 React/Cesium 项目。</td>
+        <td>React 组件、<code class="inline">state/props</code>、<code class="inline">useEffect</code>；Antd 控件；封装 <code class="inline">requests</code> 请求函数；Axios 安装与调用；Cesium Viewer 的生命周期管理。</td>
+        <td>每次渲染都重新创建 Viewer；直接改 state；请求逻辑散落在组件里；忘记清理事件和定时器。</td>
+      </tr>
+      <tr>
+        <td><strong>Ex10</strong><br>Pandas 表格处理</td>
+        <td>构造学生成绩 DataFrame，算平均分并排序；读 Excel/CSV，筛选浙江省城市，连接人口数据并导出，按类型分组统计。</td>
+        <td><code class="inline">pd.DataFrame</code>、<code class="inline">Series</code>、<code class="inline">index/columns</code>；<code class="inline">mean(axis=1)</code>；<code class="inline">sort_values</code>；<code class="inline">read_excel/read_csv</code>；<code class="inline">merge</code>；<code class="inline">to_excel</code>；<code class="inline">groupby().mean()</code>。</td>
+        <td><code class="inline">axis=1</code> 与 <code class="inline">axis=0</code> 混淆；连接键选错；导出时忘记人口列名。</td>
+      </tr>
+      <tr>
+        <td><strong>Ex11</strong><br>FastAPI 用户管理 API</td>
+        <td>实现用户 CRUD、登录、参数校验、状态码、CSV/JSON 文件存储，并用 Apifox/Postman 测试。</td>
+        <td><code class="inline">FastAPI</code>、<code class="inline">APIRouter</code>、<code class="inline">BaseModel</code>、<code class="inline">Field</code>、<code class="inline">field_validator</code>、<code class="inline">Query/Path/Body/Depends</code>；<code class="inline">HTTPException</code>；201/401/404/422/500；模块化分层。</td>
+        <td>路径参数和查询参数混淆；没有校验密码规则；更新接口不允许部分更新；错误状态码乱用。</td>
+      </tr>
+      <tr>
+        <td><strong>Ex12</strong><br>GeoPandas 几何属性与 CRS</td>
+        <td>读取县级行政区，筛选浙江省县级市，复制 GeoDataFrame，计算面积和中心点，输出 GeoJSON；制作人口密度图；进阶封装成 FastAPI 路由并给 Cesium 加载。</td>
+        <td><code class="inline">gpd.read_file('zip://...')</code>；<code class="inline">loc</code> 条件筛选；<code class="inline">copy()</code>；<code class="inline">to_crs('EPSG:32651'/'EPSG:4509')</code>；<code class="inline">area/centroid</code>；<code class="inline">to_file</code>；人口密度 = 人口 / 面积 × 1e6；<code class="inline">CORSMiddleware</code>。</td>
+        <td>用 EPSG:4326 直接算面积；<code class="inline">df1=df2</code> 当复制；Cesium 端展示前忘记转回 EPSG:4326。</td>
+      </tr>
+      <tr>
+        <td><strong>Ex13</strong><br>矢量空间分析与 GNNWR</td>
+        <td>用 1600m 缓冲区统计房价样本周边小学/中学数量，归一化得到教育指标；进阶做 GNNWR 空间回归与交互工具。</td>
+        <td><code class="inline">buffer(1600)</code>；<code class="inline">sjoin(predicate='intersects', how='left')</code>；<code class="inline">groupby().agg()</code>；<code class="inline">fillna(0)</code>；<code class="inline">merge/join</code>；Min-Max 归一化；空间列必须是投影坐标系下的纯数值 x/y。</td>
+        <td>缓冲区距离单位取决于 CRS；用经纬度 lon/lat 当 GNNWR 空间坐标；把多边形 geometry 直接当模型输入。</td>
+      </tr>
+      <tr>
+        <td><strong>Ex14</strong><br>Rasterio / NDVI / 栅格裁剪</td>
+        <td>读取 TM 多波段影像，按 TM3/TM4 计算 NDVI，写出 GeoTIFF，用西湖矢量裁剪，重分类并栅格转矢量，做分区统计。</td>
+        <td><code class="inline">rasterio.open</code>；<code class="inline">dataset.read(3/4)</code>；<code class="inline">astype(float)</code>；NDVI=(NIR-RED)/(NIR+RED)；写出时保留 <code class="inline">crs/transform</code>；<code class="inline">rasterio.mask.mask(dataset,[geom],crop=True)</code>；<code class="inline">features.shapes</code>；<code class="inline">zonal_stats</code>。</td>
+        <td><code class="inline">astype</code> 有返回值；裁剪几何必须与栅格 CRS 一致；写新栅格漏 <code class="inline">transform/crs</code> 会失去地理参照。</td>
+      </tr>
+    </table>
+
+    <h3>二、优先级最高的复习清单</h3>
+    <div class="grid2">
+      <div class="card note"><span class="lbl">代码完型优先背 API</span>
+        <ul>
+          <li>前端：<code class="inline">querySelector/getElementById</code>、事件绑定、<code class="inline">axios.get</code>、<code class="inline">res.data</code>、<code class="inline">innerHTML/textContent</code>。</li>
+          <li>Cesium：<code class="inline">Viewer</code>、<code class="inline">WebMapServiceImageryProvider</code>、<code class="inline">GeoJsonDataSource.load</code>、<code class="inline">entities.add</code>、<code class="inline">scene.primitives.add</code>、<code class="inline">ScreenSpaceEventHandler</code>。</li>
+          <li>后端：<code class="inline">BaseModel</code>、<code class="inline">Field</code>、<code class="inline">Query/Path/Body/Depends</code>、<code class="inline">HTTPException</code>。</li>
+        </ul>
+      </div>
+      <div class="card note"><span class="lbl">空间分析优先问 CRS</span>
+        <ul>
+          <li>面积、长度、缓冲区、GNNWR 空间坐标：必须使用投影坐标系，单位才是米。</li>
+          <li>Cesium 展示 GeoJSON：通常要转回 EPSG:4326，经纬度才能正确显示。</li>
+          <li>栅格写出和裁剪：必须保留 <code class="inline">crs</code> 与 <code class="inline">transform</code>，矢量裁剪前要 <code class="inline">to_crs(dataset.crs)</code>。</li>
+        </ul>
+      </div>
+    </div>
+
+    <h3>三、作业专项考题</h3>
+    <div id="homeworkQuestions">
+      <div class="card">
+        <strong>1. 填空：HTML/CSS 天气面板</strong><br>
+        天气面板固定在网页右上角，应优先使用 <code class="inline">position: ____</code>，并配合 <code class="inline">top</code> 与 <code class="inline">right</code> 设置距离；城市下拉框中的每个城市应写在 <code class="inline">&lt;____&gt;</code> 标签中。<br>
+        <div class="examtip">答案：<code class="inline">fixed</code>；<code class="inline">option</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>2. 简答：JS 拖拽天气面板的基本流程。</strong><br>
+        <div class="examtip">参考答案：鼠标按下时记录初始鼠标坐标和面板位置；鼠标移动时计算偏移量并更新面板 <code class="inline">left/top</code>；鼠标松开时取消拖拽状态。关键事件是 <code class="inline">mousedown</code>、<code class="inline">mousemove</code>、<code class="inline">mouseup</code>，常用坐标是 <code class="inline">event.clientX/clientY</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>3. 代码填空：Axios 获取天气数据。</strong>
+        <pre><code>axios.get(url, { params: { lat, lon, appid } })
+  .then(function(res){
+    console.log(____);
+  })
+  .catch(function(err){ console.log(err); });</code></pre>
+        <div class="examtip">答案：<code class="inline">res.data</code>。作业要求查看接口返回体格式，真正的数据通常在 <code class="inline">data</code> 字段里。</div>
+      </div>
+
+      <div class="card">
+        <strong>4. 简答：GeoServer 发布 WMS 图层的基本流程。</strong><br>
+        <div class="examtip">参考答案：创建工作区；注册数据存储（Shapefile 或 GeoTIFF）；发布图层并计算边框；设置或导入 SLD 样式；必要时建立图层组；在图层预览中用 OpenLayers 预览；前端用 WMS 地址加载。</div>
+      </div>
+
+      <div class="card">
+        <strong>5. 代码填空：Cesium 加载 GeoServer WMS。</strong>
+        <pre><code>const provider = new Cesium.____({
+  url: "http://localhost:8080/geoserver/wms",
+  layers: "workspace:layer"
+});
+viewer.imageryLayers.____(provider);</code></pre>
+        <div class="examtip">答案：<code class="inline">WebMapServiceImageryProvider</code>；<code class="inline">addImageryProvider</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>6. 简答：地图书签至少应该保存哪些相机信息？</strong><br>
+        <div class="examtip">参考答案：至少保存相机位置或目标范围，并保存朝向参数，如 <code class="inline">heading</code>、<code class="inline">pitch</code>、<code class="inline">roll</code>。恢复时使用 <code class="inline">flyTo</code> 或 <code class="inline">setView</code> 切换视角。</div>
+      </div>
+
+      <div class="card">
+        <strong>7. 判断：cityList.json 可以直接用 <code class="inline">Cesium.GeoJsonDataSource.load()</code> 加载。</strong><br>
+        <div class="examtip">答案：错。作业6明确给的是普通 JSON，不是 GeoJSON。应先 <code class="inline">fetch/axios</code> 读取，再遍历城市中心点，用 <code class="inline">viewer.entities.add()</code> 添加点 Entity。</div>
+      </div>
+
+      <div class="card">
+        <strong>8. 代码填空：根据点样式面板更新 Cesium 点实体。</strong>
+        <pre><code>entity.point = new Cesium.____({
+  pixelSize: radius,
+  color: Cesium.Color.fromCssColorString(color),
+  outlineWidth: outlineWidth
+});</code></pre>
+        <div class="examtip">答案：<code class="inline">PointGraphics</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>9. 简答：底图切换与地形加载有什么区别？</strong><br>
+        <div class="examtip">参考答案：底图是影像图层，可以有多层，用 <code class="inline">viewer.imageryLayers</code> 管理，可 add/remove/raise/lower；地形是高程骨架，通常赋给 <code class="inline">viewer.terrainProvider</code>，不是多层透明叠加。</div>
+      </div>
+
+      <div class="card">
+        <strong>10. 代码填空：Pandas 连接浙江城市与人口表并导出。</strong>
+        <pre><code>city = pd.read_excel("市.xlsx")
+pop = pd.read_csv("浙江省人口数据.csv")
+zj = city.loc[city["省名称"] == "浙江省"]
+res = pd.____(zj, pop, on="市代码", how="left")
+res.to_excel("zhejiang_pop.xlsx", index=False)</code></pre>
+        <div class="examtip">答案：<code class="inline">merge</code>。若连接键列名不同，用 <code class="inline">left_on/right_on</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>11. 简答：Ex11 用户管理 API 至少包含哪些端点？</strong><br>
+        <div class="examtip">参考答案：<code class="inline">POST /users</code> 创建用户；<code class="inline">GET /users/{username}</code> 获取单个用户；<code class="inline">GET /users</code> 获取用户列表，支持 offset/limit/min_age/max_age；<code class="inline">PUT /users/{username}</code> 更新；<code class="inline">DELETE /users/{username}</code> 删除；<code class="inline">POST /login</code> 登录。</div>
+      </div>
+
+      <div class="card">
+        <strong>12. 代码填空：FastAPI 查询参数校验。</strong>
+        <pre><code>@router.get("/users")
+def get_users(
+  offset: int = Query(0, ge=0),
+  limit: int = Query(50, le=____)
+): ...</code></pre>
+        <div class="examtip">答案：<code class="inline">100</code>。Ex11 要求分页参数 <code class="inline">offset≥0</code>，<code class="inline">limit≤100</code>。</div>
+      </div>
+
+      <div class="card">
+        <strong>13. 代码填空：GeoPandas 计算浙江省县级市面积。</strong>
+        <pre><code>county = gpd.read_file("zip://data/县.zip")
+zj = county.loc[(county["省"]=="浙江省") &amp; (county["类型"]=="县级市")]
+zj2 = zj.____()
+zj2["area"] = zj2.____("EPSG:32651").area</code></pre>
+        <div class="examtip">答案：<code class="inline">copy</code>；<code class="inline">to_crs</code>。面积不能直接在 EPSG:4326 经纬度下算。</div>
+      </div>
+
+      <div class="card">
+        <strong>14. 简答：人口密度图为什么要先转投影坐标系？</strong><br>
+        <div class="examtip">参考答案：人口密度 = 人口 / 面积，面积单位应是平方米或平方千米。经纬度坐标单位是度，直接用 <code class="inline">area</code> 会得到没有实际意义的“平方度”。因此要先转投影坐标系，再按需要乘 <code class="inline">1e6</code> 转为人/平方千米。</div>
+      </div>
+
+      <div class="card">
+        <strong>15. 代码填空：统计房价样本 1600m 内学校数量。</strong>
+        <pre><code>hp_proj = hp.to_crs("EPSG:32650")
+poi_proj = poi.to_crs(hp_proj.crs)
+hp_buf = hp_proj.copy()
+hp_buf["geometry"] = hp_buf.buffer(____)
+joined = hp_buf.____(poi_proj, predicate="intersects", how="left")</code></pre>
+        <div class="examtip">答案：<code class="inline">1600</code>；<code class="inline">sjoin</code>。缓冲区距离单位取决于投影 CRS。</div>
+      </div>
+
+      <div class="card">
+        <strong>16. 简答：GNNWR 作业中空间坐标列为什么不能直接用 geometry？</strong><br>
+        <div class="examtip">参考答案：模型输入需要纯数值特征，geometry 是几何对象，不能直接参与欧式距离和神经网络计算。应在投影坐标系下提取 <code class="inline">geometry.x</code>、<code class="inline">geometry.y</code>，如果是面对象则先取 <code class="inline">centroid</code> 再提取坐标。</div>
+      </div>
+
+      <div class="card">
+        <strong>17. 代码填空：Rasterio 计算 NDVI。</strong>
+        <pre><code>with rasterio.open("hangzhouTM_2010_sample.tif") as ds:
+    red = ds.read(____).astype(float)
+    nir = ds.read(____).astype(float)
+    ndvi = (nir - red) / (nir + red)</code></pre>
+        <div class="examtip">答案：<code class="inline">3</code>；<code class="inline">4</code>。TM3 是红光，TM4 是近红外。</div>
+      </div>
+
+      <div class="card">
+        <strong>18. 代码填空：用西湖矢量裁剪 NDVI 栅格。</strong>
+        <pre><code>with rasterio.open("ndvi.tif") as ds:
+    xihu = gpd.read_file("xihu.shp").____(ds.crs).geometry.union_all()
+    out_img, out_tf = mask(ds, [xihu], crop=____, filled=True, nodata=np.nan)</code></pre>
+        <div class="examtip">答案：<code class="inline">to_crs</code>；<code class="inline">True</code>。裁剪矢量必须和栅格 CRS 一致，<code class="inline">crop=True</code> 才会缩小到裁剪范围。</div>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ EXAM ============ -->
   <section class="view" id="view-exam">
     <div class="chapter-tag">应试篇 · 历年题精解</div>
@@ -4154,6 +4396,7 @@ const META = {
   ch12:["12 几何对象与GeoPandas","Shapely、GeoSeries/GeoDataFrame、CRS、可视化"],
   ch13:["13 矢量空间分析","量算/缓冲、聚合分解、拓扑、叠加、空间连接"],
   ch14:["14 栅格空间分析","栅格特征、GDAL/Rasterio、读写、地图代数、转换"],
+  homework:["作业考点","作业1-8 与 Ex10-14 的作业考察重点、易错点和专项题"],
   exam:["历年题精解",""],
   quiz:["练习题库",""]
 };
