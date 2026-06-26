@@ -74,6 +74,10 @@ table{border-collapse:collapse;width:100%;margin:12px 0;font-size:13.5px}
 th,td{border:1px solid var(--line);padding:7px 10px;text-align:left;vertical-align:top}
 th{background:var(--panel2);color:var(--text)}
 tr:nth-child(even) td{background:rgba(15,40,80,.03)}
+.card.tip table{table-layout:fixed}
+.card.tip th,.card.tip td{overflow-wrap:anywhere;word-break:break-word}
+.card.tip code.inline{white-space:normal}
+@media(max-width:760px){.card.tip table{font-size:12.5px}.card.tip th,.card.tip td{padding:6px 7px}}
 /* svg diagram —— 深色图板，浅色页面上像一张图/代码块 */
 .diagram{background:#11202f;border:1px solid #1f3650;border-radius:12px;padding:16px;margin:14px 0;text-align:center}
 .diagram svg{max-width:100%;height:auto}
@@ -945,6 +949,18 @@ B/S：客户端只要浏览器，升级只改服务器一处，天然跨平台</
       <tr><td>中间</td><td>HTTP 首部（多行，空行结束）</td><td>HTTP 首部（空行结束）</td></tr>
       <tr><td>末尾</td><td>可选数据块（常用于 POST）</td><td>可选数据块（响应数据）</td></tr></table>
 
+    <div class="card tip" id="explainCh1Request"><span class="lbl">小白读法：先把 HTTP 当成“点餐流程”</span>
+      <p><strong>浏览器不是直接打开服务器硬盘上的文件，也不是直接查数据库。</strong>它做的事更像点餐：你告诉服务员“我要哪道菜、有什么要求”，服务员把请求交给后厨，后厨做完再把结果端回来。这里的“服务员”就是 Web 服务器，“后厨”可能是 GIS 服务器和空间数据库。</p>
+      <table>
+        <tr><th>点餐类比</th><th>HTTP / WebGIS 中对应什么</th><th>你应该观察什么</th></tr>
+        <tr><td>菜单编号</td><td>URL 路径，如 <code class="inline">/layers/roads</code></td><td>路径说明“要哪个资源”</td></tr>
+        <tr><td>点餐方式</td><td>GET / POST / PUT / DELETE</td><td>方法说明“查、增、改、删”</td></tr>
+        <tr><td>备注要求</td><td>Query 参数或请求体</td><td>参数说明“筛选条件或提交内容”</td></tr>
+        <tr><td>后厨出餐结果</td><td>响应体：HTML、JSON、图片、瓦片</td><td>浏览器最终拿到的是响应，不是数据库本身</td></tr>
+      </table>
+      <div class="examtip">读下面 HTTP 演示时，不要只点“下一步”。每一步都问自己：这一步是谁在对谁说话？发出去的是请求还是响应？如果是 WebGIS，它有没有继续向 GIS 服务器或空间数据库转发？</div>
+    </div>
+
     <div class="idemo" id="demoHttp">
       <div class="it">🧪 HTTP 请求-响应流程演示（点“下一步”走一遍）</div>
       <div class="sec"><span class="sl sl-goal">学习目标</span><p>看懂一次请求怎么从浏览器走到服务器再回来：<strong>建立连接 → 发请求 → 服务器处理 → 返回响应 → 浏览器渲染</strong>。WebGIS 里 Web 服务器还会再找 GIS 服务器和空间数据库。</p></div>
@@ -1127,6 +1143,17 @@ DELETE /features/2       <span class="tok-c"># 删除id=2</span></code></pre>
     <h3>1. 网页的三层组成</h3>
     <div class="card def"><span class="lbl">结构 / 表现 / 行为</span>
       <strong>HTML（结构）</strong>= 骨架；<strong>CSS（表现）</strong>= 皮肤；<strong>JavaScript（行为）</strong>= 动作。三者由 W3C 标准规范。</div>
+
+    <div class="card tip" id="explainCh2Flow"><span class="lbl">小白读法：先分清“写了什么、长什么样、会不会动”</span>
+      <p>刚开始学前端最容易把 HTML、CSS、JavaScript 混在一起。你可以先用一句话判断：<strong>HTML 管页面上有什么，CSS 管这些东西长什么样，JavaScript 管用户操作后发生什么。</strong>任何网页都可以按这个顺序拆开看。</p>
+      <table>
+        <tr><th>如果你想问...</th><th>通常找谁</th><th>最小例子</th><th>常见误区</th></tr>
+        <tr><td>页面里有没有标题、按钮、表格？</td><td>HTML</td><td><code class="inline">&lt;button&gt;提交&lt;/button&gt;</code></td><td>HTML 标签不是“函数”，它主要描述结构和语义</td></tr>
+        <tr><td>标题多大、按钮什么颜色、盒子怎么排列？</td><td>CSS</td><td><code class="inline">button { color:red; }</code></td><td>选择器只是“选中元素”，不是创建元素</td></tr>
+        <tr><td>点击按钮后计数、弹窗、请求数据？</td><td>JavaScript</td><td><code class="inline">btn.addEventListener('click', fn)</code></td><td>JS 改的是 DOM，DOM 再影响页面显示</td></tr>
+      </table>
+      <div class="examtip">读本章时按这个顺序复盘：先看 HTML 结构，再看 CSS 选择器选中了谁，最后看 JS 是否通过 DOM 找到元素并绑定事件。这样表单、盒模型、float、position 就不会混成一团。</div>
+    </div>
 
     <h3>2. HTML 基础</h3>
     <p>HTML 是<strong>标记语言</strong>（非编程语言）。标签多成对（双标签 <code class="inline">&lt;body&gt;&lt;/body&gt;</code>），少数为单标签（如 <code class="inline">&lt;br /&gt;</code>）。完整标签称<strong>元素</strong>，属性写在开始标签内，形如 <code class="inline">属性名="值"</code>。</p>
@@ -1393,6 +1420,19 @@ console.log("2 结束");
       </div>
     </div>
 
+    <div class="card tip" id="explainCh3Async"><span class="lbl">小白读法：JS 的难点不是“语法”，而是“谁先执行”</span>
+      <p>学 JavaScript 时，如果只背 <code class="inline">let</code>、<code class="inline">function</code>、<code class="inline">for</code>，你会觉得都懂；一遇到点击事件、定时器、Ajax、Promise，就会开始乱。原因是：这些代码不是简单按“写在上面就先执行”的顺序走，而是分成<strong>同步任务、微任务、宏任务、事件回调</strong>。</p>
+      <table>
+        <tr><th>代码类型</th><th>什么时候执行</th><th>你可以怎么判断</th></tr>
+        <tr><td>普通语句</td><td>立刻执行</td><td><code class="inline">console.log('A')</code> 会马上输出</td></tr>
+        <tr><td>事件处理函数</td><td>用户触发事件后执行</td><td>没有点击按钮，函数就不会跑</td></tr>
+        <tr><td><code class="inline">Promise.then</code></td><td>同步代码结束后，优先进入微任务</td><td>通常比 <code class="inline">setTimeout(...,0)</code> 更早执行</td></tr>
+        <tr><td><code class="inline">setTimeout</code></td><td>到时间后进入宏任务队列</td><td>时间到了也要等主线程空闲</td></tr>
+        <tr><td>Ajax / fetch / Axios</td><td>网络返回后触发回调或 Promise</td><td>不会卡住页面等服务器</td></tr>
+      </table>
+      <div class="examtip">看 Event Loop 演示时，先自己预测输出顺序，再点运行。预测错了就回到这张表：普通同步先跑，Promise 微任务其次，setTimeout 宏任务再跑，点击事件要等用户真的点击。</div>
+    </div>
+
     <h3>1. JS 概述</h3>
     <div class="card def"><span class="lbl">基本特性</span>
       运行在<strong>客户端</strong>的<strong>脚本语言</strong>；<strong>解释型</strong>（无需编译）；语法类似 C/Java；<strong>动态</strong>语言（类型可变）；<strong>基于原型</strong>的面向对象。完整实现 = <strong>ECMAScript + DOM + BOM</strong>。</div>
@@ -1620,6 +1660,16 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
       </div>
     </div>
 
+    <div class="card tip" id="explainCh4Services"><span class="lbl">小白读法：先问“我要图片、数据，还是瓦片？”</span>
+      <p>不要先背 WMS/WFS/TMS 的英文全称，先看前端到底需要什么结果：如果只是把地图显示出来，前端要的是服务器已经画好的图片，用 <strong>WMS</strong>；如果要点选、编辑、筛选要素，前端必须拿到坐标和属性，用 <strong>WFS</strong>；如果地图很大、要连续缩放平移，就要按 <code class="inline">z/x/y</code> 切好的瓦片，用 <strong>TMS/WMTS</strong>。</p>
+      <table><tr><th>你想做什么</th><th>优先想到</th><th>返回的东西</th><th>最容易错的点</th></tr>
+        <tr><td>只看一张专题地图</td><td>WMS</td><td>PNG/JPEG 图片</td><td>它不是矢量数据，不能直接编辑每个要素</td></tr>
+        <tr><td>查属性、改道路、筛选建筑</td><td>WFS / WFS-T</td><td>Feature 要素数据</td><td>Transaction 才对应增删改</td></tr>
+        <tr><td>像在线地图一样快速拖拽缩放</td><td>TMS / WMTS</td><td>小瓦片图片</td><td>z 每加 1，总瓦片数通常变 4 倍</td></tr>
+      </table>
+      <div class="examtip">读 GeoServer 发布流程时记住：GeoServer 是服务端，用来把 Shapefile/PostGIS 等数据发布成服务；OpenLayers/Cesium 是浏览器里的前端库，用 URL 去调用这些服务。先看本章的 WFS 事务演示，再看 TMS 瓦片金字塔，服务差异会更清楚。</div>
+    </div>
+
     <h3>1. OGC 与开放 Web 服务</h3>
     <div class="card def"><span class="lbl">OGC</span>开放地理空间信息联盟（Open Geospatial Consortium，1994），制定地理信息开放标准（OGC 标准），规范接口定义、编码方式等。</div>
     <p><strong>开放 Web 服务（Open Web Service）特点：</strong>明确定义请求格式、处理方法、响应格式，并有公开文档规范。</p>
@@ -1788,6 +1838,17 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
       </div>
     </div>
 
+    <div class="card tip" id="explainCh5Framework"><span class="lbl">小白读法：选地图框架不是选“最强”，而是选“最合适”</span>
+      <p>四个框架常被混在一起背，但它们解决的问题不一样。做二维展示，优先想 Leaflet；要更完整的 OGC 服务、复杂二维图层，想 OpenLayers；要 WebGL 矢量瓦片和好看的二维视觉，想 Mapbox GL；只要题目出现三维地球、倾斜摄影、BIM、数字孪生，优先想 Cesium。</p>
+      <table><tr><th>题目关键词</th><th>更像哪个框架</th><th>理由</th></tr>
+        <tr><td>轻量、移动端、二维点线面展示</td><td>Leaflet</td><td>简单、插件多、上手快</td></tr>
+        <tr><td>WMS/WFS/OGC、企业 GIS、二维专业地图</td><td>OpenLayers</td><td>OGC 协议支持强</td></tr>
+        <tr><td>矢量瓦片、WebGL、视觉效果</td><td>Mapbox GL</td><td>面向高性能二维渲染</td></tr>
+        <tr><td>三维地球、3D Tiles、地形、相机</td><td>Cesium</td><td>本课三维 WebGIS 主线</td></tr>
+      </table>
+      <div class="examtip">考试答“为什么不用自己写地图”时，不要只说省事；要说框架封装了瓦片加载、坐标转换、图层叠加、鼠标交互和渲染优化。互动演示里的“地图框架选择器”就是这张表的可操作版本。</div>
+    </div>
+
     <h3>1. 前端地图技术分类</h3>
     <ul>
       <li><strong>基于 LBS 的地图 API</strong>：谷歌/高德/百度 API，用地图服务商的数据与服务（toC）。</li>
@@ -1879,6 +1940,16 @@ Cesium.Cartographic.<span class="tok-f">fromCartesian</span>(cartesian);</code><
           <div class="cap">同一点的三种坐标，按需互转</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh6CesiumMental"><span class="lbl">小白读法：Cesium 先分清“人看、机器算、屏幕画”</span>
+      <p>Cesium 的坐标一开始会显得乱，是因为同一个地点在不同环节要换说法：人类说经纬度，Cesium 内部用地心三维 <code class="inline">Cartesian3</code> 计算，最后鼠标点击拿到的是屏幕像素 <code class="inline">Cartesian2</code>。读代码时先判断“这个变量正在服务哪个环节”，就不会把经纬度、笛卡尔坐标、屏幕坐标混成一团。</p>
+      <table><tr><th>看到的类/函数</th><th>它在说什么</th><th>单位/特点</th><th>常见错误</th></tr>
+        <tr><td><code class="inline">Cartographic</code></td><td>经度、纬度、高度</td><td>默认弧度</td><td>把角度直接当弧度传进去</td></tr>
+        <tr><td><code class="inline">Cartesian3.fromDegrees</code></td><td>经纬度转地心三维</td><td>输入角度，输出米制 XYZ</td><td>误以为它是投影坐标系</td></tr>
+        <tr><td><code class="inline">ScreenSpaceEventHandler</code></td><td>处理鼠标屏幕事件</td><td>像素坐标</td><td>拿屏幕 x/y 当地理坐标用</td></tr>
+      </table>
+      <div class="examtip">相机题也按这个思路读：先确定位置 destination，再看 orientation 的 heading/pitch/roll。heading 管左右朝向，pitch 管抬头低头，roll 管侧倾。先拖本章“地球三维坐标轴”演示，再背转换函数。</div>
     </div>
 
     <h3>1. Cesium 特性与数据格式</h3>
@@ -2054,6 +2125,16 @@ viewer.entities.<span class="tok-f">add</span>({ position:..., point:{ pixelSize
       </div>
     </div>
 
+    <div class="card tip" id="explainCh7Entities"><span class="lbl">小白读法：Entity 是“我想画什么”，Primitive 是“怎么高性能地画”</span>
+      <p>如果题目让你写一个点、线、面、盒子或标签，默认先想 <strong>Entity</strong>，因为它最接近业务表达：位置是什么、图形属性是什么。只有当题目强调海量数据、底层渲染、自定义着色器、3D Tiles 时，才转向 <strong>Primitive</strong>。这样读题，比死记“高级/低级”更稳。</p>
+      <table><tr><th>读到的需求</th><th>优先答案</th><th>判断原因</th></tr>
+        <tr><td>加一个点、线、面、label、box</td><td><code class="inline">viewer.entities.add()</code></td><td>少量对象、业务属性清楚</td></tr>
+        <tr><td>加载 GeoJSON/KML/CZML</td><td><code class="inline">DataSource</code></td><td>数据源会转成 EntityCollection</td></tr>
+        <tr><td>海量静态模型、3D Tiles、性能优化</td><td><code class="inline">scene.primitives.add()</code></td><td>更接近 GPU，能批量合并</td></tr>
+      </table>
+      <div class="examtip">GeoJSON 的坐标顺序是 <strong>[经度, 纬度]</strong>，Polygon 外环要首尾闭合。Cesium 不能直接加载 Shapefile，必须转 GeoJSON/KML/CZML，或用 GeoServer 发布成服务后再加载。先玩 GeoJSON 构造器，再看 Entity 类型画廊。</div>
+    </div>
+
     <h3>1. 矢量数据与 Shapefile</h3>
     <div class="card def"><span class="lbl">Shapefile 组成</span>
       <strong>必须文件：</strong><code class="inline">.shp</code>（几何）、<code class="inline">.shx</code>（几何索引）、<code class="inline">.dbf</code>（属性）。<strong>可选：</strong><code class="inline">.prj</code>（坐标参考系，WKT 描述）、.sbn/.sbx 等。</div>
@@ -2209,6 +2290,17 @@ viewer.imageryLayers.<span class="tok-f">addImageryProvider</span>(
       </div>
     </div>
 
+    <div class="card tip" id="explainCh8Layers"><span class="lbl">小白读法：影像是多层贴图，地形是一副骨架</span>
+      <p>这一章最容易混的是 Provider、Layer、Collection、TerrainProvider。先抓住一句话：<strong>Provider 负责数据从哪来，Layer 负责这一层怎么显示，Collection 负责把很多层按顺序叠起来；TerrainProvider 负责地表高低起伏，而且只能有一套。</strong></p>
+      <table><tr><th>对象</th><th>类比</th><th>能不能多个</th><th>常见操作</th></tr>
+        <tr><td><code class="inline">ImageryProvider</code></td><td>数据来源</td><td>可以有很多</td><td>WMS、WMTS、OSM、URL 模板</td></tr>
+        <tr><td><code class="inline">ImageryLayer</code></td><td>一张透明胶片</td><td>可以叠很多</td><td>调 alpha、brightness、顺序</td></tr>
+        <tr><td><code class="inline">viewer.imageryLayers</code></td><td>图层夹</td><td>一个集合装多层</td><td>add、remove、raise、lower</td></tr>
+        <tr><td><code class="inline">viewer.terrainProvider</code></td><td>地表骨架</td><td>通常一套</td><td>换成真实高程地形</td></tr>
+      </table>
+      <div class="examtip">看不见图层时先查两件事：它是不是被上面的图层盖住了？alpha 是不是太低？影像图层栈演示能直接看到“上移/下移/透明度”如何改变最终结果。</div>
+    </div>
+
     <h3>1. 影像数据服务</h3>
     <p>三个核心类：<code class="inline">ImageryProvider</code>（影像数据源，抽象类，14 种子类）、<code class="inline">ImageryLayer</code>（影像图层，含 provider + 亮度/透明度/对比度/饱和度）、<code class="inline">ImageryLayerCollection</code>（图层容器，即 <code class="inline">viewer.imageryLayers</code>，可加载多个影像图层）。</p>
     <pre><code><span class="tok-c">// 加载 GeoServer WMS</span>
@@ -2322,6 +2414,17 @@ layer.alpha = 0.6;                <span class="tok-c">// 设这层透明度</spa
           <div class="cap">点击 → 改 state → diff → 只更新变化处</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh9ReactFlow"><span class="lbl">小白读法：React 不是“新的 HTML”，而是“数据驱动界面”</span>
+      <p>React 的核心不是 JSX 长得像 HTML，而是你不再直接命令 DOM “把这里改成什么”，而是维护 state，让界面由 state 计算出来。点击按钮时，事件处理函数调用 setter 改 state，React 重新执行组件函数，生成新的虚拟 DOM，再只更新真实 DOM 里变化的地方。</p>
+      <table><tr><th>概念</th><th>小白可以这样理解</th><th>读代码时看哪里</th></tr>
+        <tr><td>JSX</td><td>在 JS 里写界面模板</td><td><code class="inline">return (...) </code> 里写出的结构</td></tr>
+        <tr><td>state</td><td>组件自己会变的数据</td><td><code class="inline">useState</code> 和 setter</td></tr>
+        <tr><td>props</td><td>父组件传下来的只读数据</td><td>组件函数参数或标签属性</td></tr>
+        <tr><td>useEffect</td><td>渲染之外的副作用</td><td>请求、订阅、定时器、清理函数</td></tr>
+      </table>
+      <div class="examtip">遇到 React 选择题，先排除两个典型错误：直接修改 state、子组件修改 props。useEffect 的清理函数不是“只在卸载时”才可能运行；依赖变化导致 effect 重跑前，也会先清理上一次 effect。</div>
     </div>
 
     <h3>1. 前端框架概述</h3>
@@ -2451,6 +2554,17 @@ df.iloc[0:3, 0:2]                    <span class="tok-c"># 前3行(0,1,2)、前2
           <div class="cap">DataFrame=二维表；iloc 按序号(不含尾)、loc 按名称(含两端)</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh10DataFrame"><span class="lbl">小白读法：Pandas 题先把表想成“行索引 + 列名 + 单元格”</span>
+      <p>DataFrame 不是神秘对象，它就是带行索引和列名的二维表。读代码时先问三件事：这一步在选行、选列，还是在把两张表拼起来？选行列时区分 <code class="inline">loc</code> 按名字、<code class="inline">iloc</code> 按位置；拼表时区分 <code class="inline">merge</code> 按字段匹配、<code class="inline">groupby</code> 按组聚合。</p>
+      <table><tr><th>代码形态</th><th>先翻译成人话</th><th>易错点</th></tr>
+        <tr><td><code class="inline">df.loc['a':'c', ['name']]</code></td><td>按行名 a 到 c、列名 name 取</td><td>loc 切片通常含右端</td></tr>
+        <tr><td><code class="inline">df.iloc[0:3, 0:2]</code></td><td>取第 0、1、2 行和第 0、1 列</td><td>iloc 不含右端</td></tr>
+        <tr><td><code class="inline">merge(..., how='left')</code></td><td>按键匹配，保留左表全部行</td><td>匹配不到的位置是 NaN</td></tr>
+        <tr><td><code class="inline">groupby('city').mean()</code></td><td>先按 city 分组，再对每组求均值</td><td>groupby 本身还不是最终表</td></tr>
+      </table>
+      <div class="examtip">Pandas 与 GeoPandas 是前后关系：先会 DataFrame 的选行、选列、连接、分组，再理解 GeoDataFrame 只是多了一列 geometry 和 CRS。互动演示实验室里的 loc/iloc、表连接、groupby 都建议按顺序点一遍。</div>
     </div>
 
     <h3>1. WebGIS 后端与工具库</h3>
@@ -2603,6 +2717,17 @@ app = <span class="tok-f">FastAPI</span>()
           <div class="cap">请求 → 路由 → 校验 → 业务 → 返回 JSON</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh11ApiFlow"><span class="lbl">小白读法：后端题按“入口、参数、校验、返回”四步读</span>
+      <p>FastAPI 的代码题不要一上来背装饰器，先把一次请求拆成四步：URL 和 HTTP 方法决定入口；路径参数、查询参数、请求体决定数据从哪来；Pydantic 决定数据是否合法；返回值最终会变成 JSON 给前端。RESTful 则是在规定“URL 该怎么命名，动作该放在哪里”。</p>
+      <table><tr><th>代码/概念</th><th>它解决的问题</th><th>判断技巧</th></tr>
+        <tr><td><code class="inline">@app.get('/items/{id}')</code></td><td>路由入口</td><td>花括号里的是路径参数</td></tr>
+        <tr><td><code class="inline">limit: int = 10</code></td><td>查询参数</td><td>有默认值通常可选</td></tr>
+        <tr><td><code class="inline">item: Item</code></td><td>请求体模型</td><td>Pydantic 会按类型校验</td></tr>
+        <tr><td><code class="inline">return {'ok': True}</code></td><td>响应内容</td><td>自动序列化为 JSON</td></tr>
+      </table>
+      <div class="examtip">RESTful 的最短判断法：URL 用名词复数，动作交给 GET/POST/PUT/DELETE。错误写法常把动作塞进 URL，如 <code class="inline">/getUser</code>、<code class="inline">/deleteOrder</code>。先用 Pydantic 演示看 422 校验，再用 RESTful 演示练 URL 设计。</div>
     </div>
 
     <h3>1. 后端三层架构</h3>
@@ -2789,6 +2914,16 @@ gpd.<span class="tok-f">read_postgis</span>(sql, db_conn, geom_col=<span class="
     <pre><code>gdf.crs = pyproj.CRS.<span class="tok-f">from_user_input</span>(<span class="tok-s">'EPSG:4326'</span>)  <span class="tok-c"># 定义坐标系</span>
 gdf = gdf.<span class="tok-f">to_crs</span>(crs=<span class="tok-s">'EPSG:3857'</span>)               <span class="tok-c"># 重投影</span></code></pre>
 
+    <div class="card tip" id="explainCh12Crs"><span class="lbl">小白读法：CRS 不是装饰信息，是“坐标数字的单位说明书”</span>
+      <p>同样写成 <code class="inline">120, 30</code>，如果 CRS 是 <code class="inline">EPSG:4326</code>，它表示经纬度；如果 CRS 是 <code class="inline">EPSG:3857</code>，数字单位就应该是米。只看坐标数字、不看 CRS，就像只看到“30”却不知道是 30 度、30 米还是 30 元。</p>
+      <table><tr><th>操作</th><th>它真正做了什么</th><th>坐标数值会变吗</th><th>什么时候用</th></tr>
+        <tr><td><code class="inline">set_crs('EPSG:4326')</code></td><td>给数据贴上“它本来就是 4326”的标签</td><td>不变</td><td>数据没有 CRS，但你确定它原本是什么</td></tr>
+        <tr><td><code class="inline">to_crs('EPSG:3857')</code></td><td>把坐标从一个 CRS 换算到另一个 CRS</td><td>会变</td><td>投影、配准、算距离面积前</td></tr>
+        <tr><td><code class="inline">geometry.area</code></td><td>按当前坐标单位算面积</td><td>不负责纠错</td><td>必须确认当前单位适合面积计算</td></tr>
+      </table>
+      <div class="examtip">看到面积、长度、buffer 距离，第一反应要问：当前 CRS 的单位是不是米？如果还是 EPSG:4326，经纬度单位是度，直接算面积/距离通常就是错的。看 set_crs/to_crs 演示时重点观察“坐标数值有没有变化”。</div>
+    </div>
+
     <div class="idemo" id="demoCrs">
       <div class="it">🧪 set_crs 与 to_crs 差异演示（最容易踩的坑）</div>
       <div class="sec"><span class="sl sl-goal">学习目标</span><p>分清两个长得像、作用完全不同的方法：<strong>set_crs</strong> 只是“贴标签”声明坐标系、<strong>坐标数值不变</strong>；<strong>to_crs</strong> 是“真换算”、<strong>坐标值会变</strong>。</p></div>
@@ -2862,6 +2997,17 @@ A.<span class="tok-f">intersects</span>(B)  <span class="tok-c"># A 与 B 有交
           <div class="cap">蓝=A 橙=B：相离 / 相邻 / 部分重叠(overlaps) / 内含(within)</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh13Vector"><span class="lbl">小白读法：矢量空间分析先判断“生成新几何、判断关系，还是拼表”</span>
+      <p>矢量分析的函数很多，先按目的分组会清楚很多：<strong>buffer/overlay/clip</strong> 通常会生成新的几何；<strong>within/intersects/touches/overlaps</strong> 是判断两个几何的关系；<strong>sjoin</strong> 是把空间关系当作连接条件，把两张表拼起来。读代码前先判断它属于哪一类。</p>
+      <table><tr><th>目的</th><th>常见函数</th><th>读题关键词</th><th>输出重点</th></tr>
+        <tr><td>扩出影响范围</td><td><code class="inline">buffer(distance)</code></td><td>周边、服务范围、一定距离内</td><td>新面，距离单位看 CRS</td></tr>
+        <tr><td>按空间关系筛选</td><td><code class="inline">within / intersects</code></td><td>在内部、相交、接触</td><td>True/False 或筛选后的行</td></tr>
+        <tr><td>叠加两图层</td><td><code class="inline">overlay(how='intersection')</code></td><td>交集、并集、差集</td><td>新几何 + 双方属性</td></tr>
+        <tr><td>空间连接</td><td><code class="inline">sjoin(..., predicate=...)</code></td><td>点落在哪个面内</td><td>保留哪边记录看 how</td></tr>
+      </table>
+      <div class="examtip">within 和 contains 方向相反：A.within(B) 等价于 B.contains(A)。overlaps 要求同维度且部分重叠，不能把“完全包含”也叫 overlaps。DE-9IM 演示适合用来纠正这些边界概念。</div>
     </div>
 
     <h3>1. 空间分析概述</h3>
@@ -3011,6 +3157,17 @@ high = (A &gt; 1000)              <span class="tok-c"># 地图代数：逐像元
           <div class="cap">栅格 = 像元矩阵 + 地理参照(transform & crs)</div>
         </div>
       </div>
+    </div>
+
+    <div class="card tip" id="explainCh14Raster"><span class="lbl">小白读法：栅格不是图片那么简单，而是“数组 + 地理参照”</span>
+      <p>栅格读进 Python 后很像一个 Numpy 二维数组，但只有数组还不够。数组告诉你每个像元的值，<code class="inline">transform</code> 告诉你行列号怎么换成地图坐标，<code class="inline">crs</code> 告诉你这些坐标属于哪个坐标系。少了 transform 或 crs，栅格就只剩一张“没有地理位置的数字表”。</p>
+      <table><tr><th>看到的属性/操作</th><th>小白解释</th><th>为什么重要</th></tr>
+        <tr><td><code class="inline">read(1)</code></td><td>读取第 1 个波段为二维数组</td><td>地图代数就是对数组逐像元运算</td></tr>
+        <tr><td><code class="inline">transform</code></td><td>行列号到地理坐标的换算规则</td><td>决定每个像元在哪、每格多大</td></tr>
+        <tr><td><code class="inline">crs</code></td><td>坐标参考系</td><td>决定坐标单位和能否配准</td></tr>
+        <tr><td><code class="inline">resampling</code></td><td>重采样时怎么补新像元值</td><td>nearest 块状，bilinear 更平滑</td></tr>
+      </table>
+      <div class="examtip">写栅格时必须带上 driver、width、height、count、dtype、crs、transform。题目问“为什么输出后无法叠加”，优先检查 crs 和 transform 是否丢失。仿射变换演示和重采样演示分别对应“在哪”和“像元值怎么变”。</div>
     </div>
 
     <h3>1. 栅格数据概述</h3>
