@@ -178,6 +178,9 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
   background:var(--panel);color:var(--muted);cursor:pointer}
 .chip.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
 .scorebox{margin-left:auto;font-size:13px;color:var(--muted)}
+.filterbar .btn{padding:5px 12px}
+.quiz-zone{margin-top:8px}
+.quiz-hint{color:var(--muted);font-size:13.5px;margin:6px 0 10px}
 /* overview cards */
 .ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:18px 0}
 .ovcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:15px 16px;cursor:pointer;transition:.18s}
@@ -3375,8 +3378,22 @@ out_img, out_tf = <span class="tok-f">mask</span>(dataset, shapes, crop=<span cl
       </div>
     </div>
 
-    <h3>三、作业专项考题</h3>
-    <div id="homeworkQuestions">
+    <h3>三、作业专项互动题库</h3>
+    <p class="quiz-hint">按作业链路拆成前端、GeoServer、Cesium、React、Python 数据处理、FastAPI 和空间分析几类。选择/判断/填空题提交后即时判分，简答题可直接展开参考答案。</p>
+    <div class="filterbar" id="homeworkQuizFilter">
+      <span class="chip on" data-f="all">全部</span>
+      <span class="chip" data-f="hw-front">前端天气组件</span>
+      <span class="chip" data-f="hw-geoserver">GeoServer</span>
+      <span class="chip" data-f="hw-cesium">Cesium</span>
+      <span class="chip" data-f="hw-react">React 集成</span>
+      <span class="chip" data-f="hw-python">Pandas/GeoPandas/Rasterio</span>
+      <span class="chip" data-f="hw-backend">FastAPI</span>
+      <span class="chip" data-f="hw-analysis">综合分析</span>
+      <span class="scorebox" id="homeworkQuizStats"></span>
+      <button class="btn ghost js-reset" type="button" data-reset-zone="#view-homework">重做本页</button>
+    </div>
+    <div id="homeworkQuestions" class="quiz-zone"></div>
+    <div id="homeworkQuestionsLegacy" style="display:none">
       <div class="card">
         <strong>1. 填空：HTML/CSS 天气面板</strong><br>
         天气面板固定在网页右上角，应优先使用 <code class="inline">position: ____</code>，并配合 <code class="inline">top</code> 与 <code class="inline">right</code> 设置距离；城市下拉框中的每个城市应写在 <code class="inline">&lt;____&gt;</code> 标签中。<br>
@@ -3515,6 +3532,20 @@ joined = hp_buf.____(poi_proj, predicate="intersects", how="left")</code></pre>
   <section class="view" id="view-exam">
     <div class="chapter-tag">应试篇 · 历年题精解</div>
     <h2 class="title">历年题精解（含考点定位）</h2>
+    <p class="quiz-hint">把历年题从“看答案”改成“先做题再看解析”。题目按选择/判断、填空、代码完型、简答/论述、综合设计组织，尽量贴近原卷考法。</p>
+    <div class="filterbar" id="examQuizFilter">
+      <span class="chip on" data-f="all">全部</span>
+      <span class="chip" data-f="exam-choice">选择/判断</span>
+      <span class="chip" data-f="exam-fill">填空</span>
+      <span class="chip" data-f="exam-code">代码完型/改错</span>
+      <span class="chip" data-f="exam-short">简答/论述</span>
+      <span class="chip" data-f="exam-comp">综合设计</span>
+      <span class="scorebox" id="examQuizStats"></span>
+      <button class="btn ghost js-reset" type="button" data-reset-zone="#view-exam">重做本页</button>
+    </div>
+    <div id="examQuestions" class="quiz-zone"></div>
+
+    <div id="examLegacy" style="display:none">
     <div class="card exam"><span class="lbl">试卷结构（最新版）</span>单选 10×1(10) + 填空 20空×1(20) + 简答 5×4(20，<strong>每题至少 4 个得分点</strong>) + <strong>代码完型填空 30空×1(30)</strong> + 论述 2×10(20) = 100 分。<br>变化：原“编程题”改为<strong>代码完型填空</strong>（程序填空的变体——给一段代码挖空，每空从选项里<strong>选正确代码</strong>，形式像英语完型）；原“大题”改为<strong>论述题</strong>。下方真题按旧卷整理，题型映射：编程→完型、大题→论述。</div>
 
     <h3>一、选择题（10 题 10 分）</h3>
@@ -3558,6 +3589,7 @@ joined = hp_buf.____(poi_proj, predicate="intersects", how="left")</code></pre>
     <h3>五、论述题（2 题 20 分）<span class="badge">原“大题”改版</span></h3>
     <div class="card"><strong>1. 人工智能和 VR 在未来 WebGIS 的作用</strong><br>AI：时空大数据挖掘、智能空间分析、GIS 智能体/大模型（如伏羲万象）、自然语言交互、遥感深度学习；VR/三维：数字孪生、沉浸式可视化、二维→三维→虚拟现实趋势。结合云原生、实时 GIS、智慧城市等发展方向展开。<span class="badge">第1章</span></div>
     <div class="card"><strong>2. 设计充电桩显示软件（三个功能要求）</strong><br>按系统设计套路答：① 总体架构（前端 Cesium/React + 后端 FastAPI + GeoServer/PostGIS）；② 三个功能例如——充电桩三维分布可视化（Entity/Billboard 打点）、检索与筛选（按状态/功率，sjoin 空间查询）、导航/最近充电桩分析（缓冲区/最近邻/路径）；③ 前后端交互、界面友好、空间分析能力。参考大程评分要求作答。<span class="badge">综合</span></div>
+    </div>
   </section>
 
   <!-- ============ QUIZ ============ -->
@@ -4408,7 +4440,7 @@ function show(view){
   if(el) el.classList.add('active');
   links.forEach(l=>l.classList.toggle('active',l.dataset.view===view));
   document.getElementById('crumb').textContent=META[view]?META[view][0]:view;
-  document.getElementById('quizProg').textContent = view==='quiz'?quizScoreText():'';
+  refreshQuizProgress();
   window.scrollTo({top:0});
   document.getElementById('sidebar').classList.remove('open');
 }
@@ -4422,11 +4454,256 @@ Object.keys(META).filter(k=>k.startsWith('ch')).forEach(k=>{
   d.innerHTML=`<div class="n">${META[k][0].split(' ')[0]}</div><div class="t">${META[k][0].replace(/^\d+\s/,'')}</div><div class="d">${META[k][1]}</div>`;
   d.onclick=()=>show(k);ovg.appendChild(d);
 });
+/* ---------- 作业/历年题互动题库数据 ---------- */
+function attr(s){return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;');}
+function blank(accept){return `<input class="fill-in" data-accept="${attr(accept)}" autocomplete="off">`;}
+function sel(answer, choices){
+  return `<select class="cloze-sel" data-answer="${attr(answer)}"><option value="">▾</option>${choices.map(c=>`<option value="${attr(c[0])}">${c[0]} ${c[1]}</option>`).join('')}</select>`;
+}
+const HOMEWORK_QUIZ=[
+  {type:'fill',cat:'hw-front',label:'填空·作业1',text:'天气面板固定在网页右上角，城市下拉框每个城市写在哪个标签里？',
+    body:`position: ${blank('fixed')}；城市项标签：&lt;${blank('option')}&gt;。`,explain:'固定在视口上用 fixed；select 内的每个候选项必须是 option。'},
+  {type:'choice',cat:'hw-front',label:'选择·作业1',text:'下列哪个结构最符合“城市下拉框”的 HTML 写法？',answer:'B',
+    options:[['A','&lt;select&gt;&lt;li&gt;杭州&lt;/li&gt;&lt;/select&gt;'],['B','&lt;select&gt;&lt;option&gt;杭州&lt;/option&gt;&lt;/select&gt;'],['C','&lt;option&gt;&lt;select&gt;杭州&lt;/select&gt;&lt;/option&gt;'],['D','&lt;button&gt;&lt;option&gt;杭州&lt;/option&gt;&lt;/button&gt;']],explain:'select 是容器，option 是选项。li 属于 ul/ol 列表。'},
+  {type:'choice',cat:'hw-front',label:'选择·作业1',text:'按钮“鼠标移入变色、按下变深”主要对应哪两个 CSS 伪类？',answer:'C',
+    options:[['A',':first-child 和 :last-child'],['B',':before 和 :after'],['C',':hover 和 :active'],['D',':checked 和 :disabled']],explain:':hover 表示悬停，:active 表示鼠标按下激活。'},
+  {type:'choice',cat:'hw-front',label:'选择·作业2',text:'实现天气面板拖拽时，最关键的一组鼠标事件是？',answer:'A',
+    options:[['A','mousedown、mousemove、mouseup'],['B','mouseover、mouseout、dblclick'],['C','keydown、keyup、submit'],['D','load、resize、scroll']],explain:'按下开始拖拽，移动计算偏移，松开结束拖拽。'},
+  {type:'show',cat:'hw-front',label:'简答·作业2',text:'简述 JS 拖拽天气面板的基本流程。',
+    explain:'鼠标按下时记录初始鼠标坐标和面板位置；鼠标移动时计算 clientX/clientY 的偏移量，更新面板 left/top；鼠标松开时取消拖拽状态，避免继续跟随鼠标。'},
+  {type:'fill',cat:'hw-front',label:'填空·作业2',text:'Axios 成功回调里，真正的接口返回体通常在哪个字段？',
+    body:`axios.get(url).then(function(res){ console.log(${blank('res.data|data')}); });`,explain:'Axios 的响应对象包含 status、headers、data 等字段，天气数据主体在 res.data。'},
+  {type:'choice',cat:'hw-front',label:'选择·作业2',text:'把天气接口返回的温度显示到页面中，最常见的 DOM 更新方式是？',answer:'D',
+    options:[['A','document.writeHead(...)'],['B','localStorage.setItem(...)'],['C','console.log(...)'],['D','element.textContent 或 element.innerHTML']],explain:'console 只输出到控制台；页面文字要改 DOM 节点内容。'},
+  {type:'choice',cat:'hw-front',label:'判断·作业2',text:'“Axios 请求写在函数里，函数 return 的值一定就是接口数据。”这句话对吗？',answer:'B',
+    options:[['A','对，因为 then 会立刻执行'],['B','错，网络请求是异步的，应该在 then/await 后处理数据'],['C','对，只要 URL 正确'],['D','错，因为 Axios 只能发 POST']],explain:'天气请求是异步操作，不能把它当成立刻同步返回的普通函数。'},
+  {type:'choice',cat:'hw-geoserver',label:'选择·作业3',text:'GeoServer 发布矢量/栅格服务的正确主流程是？',answer:'A',
+    options:[['A','工作区 → 数据存储 → 图层 → 样式/图层组 → 预览'],['B','图层 → 工作区 → 浏览器缓存 → React 组件'],['C','HTML → CSS → JS → Shapefile'],['D','Cesium Viewer → Entity → Pydantic → WMS']],explain:'GeoServer 是服务端发布工具，先组织工作区和数据源，再发布图层。'},
+  {type:'choice',cat:'hw-geoserver',label:'判断·作业3',text:'WMS 返回的是已经渲染好的地图图片，而不是可直接编辑的矢量要素。',answer:'A',
+    options:[['A','对'],['B','错']],explain:'WMS 面向“看图”；要素级查询/编辑更接近 WFS。'},
+  {type:'fill',cat:'hw-geoserver',label:'填空·作业3',text:'GeoServer 中组织项目、注册数据源、发布图层对应的三个词。',
+    body:`${blank('workspace|工作区')} → ${blank('store|data store|数据存储')} → ${blank('layer|图层')}`,explain:'工作区隔离项目命名空间；store 连接 Shapefile/GeoTIFF 等数据；layer 才是可服务发布的图层。'},
+  {type:'choice',cat:'hw-geoserver',label:'选择·作业3',text:'SLD 在 GeoServer 作业中的主要作用是什么？',answer:'C',
+    options:[['A','保存用户登录密码'],['B','把 JS 编译成 HTML'],['C','描述地图图层的符号化样式'],['D','把 Cesium 相机位置存入数据库']],explain:'SLD 是 Styled Layer Descriptor，用于定义颜色、线宽、填充、分级等图层样式。'},
+  {type:'show',cat:'hw-geoserver',label:'简答·作业05',text:'Cesium 加载 GeoServer WMS 跨域报错时，应该从哪几方面排查？',
+    explain:'先确认 WMS URL、workspace:layer、服务端是否运行；再检查浏览器控制台 CORS 报错。若是跨域，应在 GeoServer/Tomcat 或代理层配置允许前端源访问，而不是只在前端改变量名。'},
+  {type:'cloze',cat:'hw-cesium',label:'完型·作业05',text:'补全 Cesium 加载 GeoServer WMS 的核心代码。',
+    body:`<pre><code>const provider = new Cesium.${sel('B',[['A','GeoJsonDataSource'],['B','WebMapServiceImageryProvider'],['C','CesiumTerrainProvider']])}({
+  url: "http://localhost:8080/geoserver/wms",
+  layers: "gis:layer"
+});
+viewer.imageryLayers.${sel('A',[['A','addImageryProvider'],['B','add'],['C','load']])}(provider);</code></pre>`,explain:'WMS 是影像服务，用 WebMapServiceImageryProvider，再添加到 imageryLayers。'},
+  {type:'fill',cat:'hw-cesium',label:'填空·作业5',text:'地图书签恢复视角时常用的两个相机方法。',
+    body:`viewer.camera.${blank('flyTo')}(...) 或 viewer.camera.${blank('setView')}(...);`,explain:'flyTo 有动画飞行效果；setView 直接设置相机视角。'},
+  {type:'choice',cat:'hw-cesium',label:'选择·作业5',text:'地图书签如果只保存经纬度，不保存 heading/pitch/roll，最可能丢失什么？',answer:'D',
+    options:[['A','图层 URL'],['B','用户密码'],['C','GeoServer 工作区'],['D','相机朝向和俯仰角']],explain:'书签本质是相机状态；位置和朝向都要保存。'},
+  {type:'choice',cat:'hw-cesium',label:'判断·作业6',text:'cityList.json 是普通 JSON 时，可以直接用 Cesium.GeoJsonDataSource.load() 加载。',answer:'B',
+    options:[['A','对'],['B','错']],explain:'GeoJsonDataSource.load 要求 GeoJSON 结构。普通城市列表应先 fetch/axios 读取，再遍历添加 Entity。'},
+  {type:'choice',cat:'hw-cesium',label:'选择·作业6',text:'把城市中心点添加到 Cesium 场景中，最适合初学作业使用的是？',answer:'B',
+    options:[['A','viewer.clock.add(...)'],['B','viewer.entities.add(...)'],['C','document.body.append(...)'],['D','pd.DataFrame(...)']],explain:'Entity 是 Cesium 高级可视化对象，适合点、线、面、标签等数据驱动绘制。'},
+  {type:'fill',cat:'hw-cesium',label:'填空·作业6进阶',text:'点样式面板中，点大小对应 PointGraphics 的哪个属性？颜色从 CSS 色值转 Cesium 颜色用哪个方法？',
+    body:`点大小：${blank('pixelSize')}；颜色转换：Cesium.Color.${blank('fromCssColorString')}("#ff0000")`,explain:'pixelSize 控制屏幕像素大小；fromCssColorString 可把 #RRGGBB、red 等 CSS 色值转成 Cesium.Color。'},
+  {type:'choice',cat:'hw-cesium',label:'选择·作业6',text:'加载 3D Tiles 数据通常用哪个类，并加入哪个集合？',answer:'A',
+    options:[['A','Cesium3DTileset，viewer.scene.primitives'],['B','GeoJsonDataSource，viewer.imageryLayers'],['C','PointGraphics，viewer.terrainProvider'],['D','FastAPI，APIRouter']],explain:'3D Tiles 属于 Primitive 层，通常 scene.primitives.add(tileset)。'},
+  {type:'show',cat:'hw-cesium',label:'简答·作业6',text:'城市点被选中高亮后，为什么还要记录并恢复默认样式？',
+    explain:'如果不恢复，多个点会一直停留在高亮状态，用户无法判断当前选中对象。稳妥做法是保存默认 pixelSize/color/outline，再在切换城市时先恢复旧点、再高亮新点。'},
+  {type:'choice',cat:'hw-cesium',label:'选择·作业7',text:'底图切换和地形加载的核心区别是？',answer:'C',
+    options:[['A','底图必须是 3D Tiles，地形必须是 HTML'],['B','二者都只能加载一层'],['C','底图属于 imageryLayers，可多层管理；地形通常赋给 terrainProvider'],['D','底图只能本地加载，地形只能网络加载']],explain:'影像图层可 add/remove/排序/透明度；地形是高程表面。'},
+  {type:'fill',cat:'hw-cesium',label:'填空·作业7',text:'淹没分析常通过逐步改变多边形的哪个高度属性表现水位上升？',
+    body:`polygon.${blank('extrudedHeight')} = waterHeight;`,explain:'extrudedHeight 控制面向上拉伸高度，配合定时器可模拟水位上涨。'},
+  {type:'choice',cat:'hw-cesium',label:'选择·作业7进阶',text:'鼠标点击 Cesium 场景查询位置或实体时，常用的事件处理器是？',answer:'D',
+    options:[['A','AxiosErrorHandler'],['B','GeoServerStore'],['C','PandasHandler'],['D','Cesium.ScreenSpaceEventHandler']],explain:'Cesium 鼠标交互常用 ScreenSpaceEventHandler，并用 setInputAction 绑定 LEFT_CLICK 等事件。'},
+  {type:'fill',cat:'hw-cesium',label:'填空·作业7',text:'给 Cesium 设置地形服务通常修改 viewer 的哪个属性？',
+    body:`viewer.${blank('terrainProvider')} = new Cesium.CesiumTerrainProvider(...);`,explain:'terrainProvider 是 Cesium 地形数据入口。'},
+  {type:'choice',cat:'hw-react',label:'选择·作业8',text:'React 中创建 Cesium Viewer 最容易出错的是哪种写法？',answer:'A',
+    options:[['A','在组件函数体每次渲染时直接 new Cesium.Viewer(...)'],['B','在 useEffect 中初始化，并在清理函数中 destroy'],['C','用 ref 保存容器 DOM'],['D','把请求逻辑封装到 requests 文件夹']],explain:'函数体会随渲染反复执行，可能创建多个 Viewer。Viewer 这类外部对象应放在 useEffect 生命周期里。'},
+  {type:'choice',cat:'hw-react',label:'判断·作业8',text:'React state 可以像普通变量一样直接赋值修改，只要最后页面能显示即可。',answer:'B',
+    options:[['A','对'],['B','错']],explain:'state 必须通过 setState 或 useState 的 setter 修改，否则 React 不知道要重新渲染。'},
+  {type:'show',cat:'hw-react',label:'简答·作业8',text:'为什么要把天气请求封装到 requests 文件夹或独立函数里？',
+    explain:'封装后组件只关心“调用函数拿数据”，URL、参数、错误处理和 axios 细节集中维护。这样代码更清晰，也方便换接口、复用请求和单独排查网络错误。'},
+  {type:'choice',cat:'hw-react',label:'选择·作业8',text:'作业8 使用 Antd 控件时，最可能用于“底图切换”的控件是？',answer:'C',
+    options:[['A','Typography.Paragraph'],['B','Spin 只显示加载动画'],['C','Select、Radio、Segmented 等选项控件'],['D','Form.Item 只能上传 Shapefile']],explain:'底图切换是选项集合，适合 Select/Radio/Segmented。'},
+  {type:'show',cat:'hw-react',label:'简答·作业8',text:'React + Cesium 页面卸载时为什么要清理事件、定时器或 Viewer？',
+    explain:'不清理会造成重复监听、内存占用、定时器继续运行、Viewer 上下文残留等问题。useEffect 返回的 cleanup 函数适合做 removeInputAction、clearInterval、viewer.destroy()。'},
+  {type:'fill',cat:'hw-python',label:'填空·Ex10',text:'学生成绩 DataFrame 中，按行计算每个学生平均分应使用哪个 axis？',
+    body:`df["平均分"] = df[["语文","数学","英语"]].mean(axis=${blank('1')})`,explain:'axis=1 表示横向按列算一行的平均；axis=0 表示按列向下算。'},
+  {type:'choice',cat:'hw-python',label:'选择·Ex10',text:'把浙江城市表和人口表按市代码连接，最合适的 Pandas 函数是？',answer:'B',
+    options:[['A','pd.sjoin'],['B','pd.merge'],['C','pd.to_crs'],['D','pd.buffer']],explain:'普通表格连接用 merge；sjoin 是 GeoPandas 空间连接。'},
+  {type:'choice',cat:'hw-python',label:'选择·Ex10',text:'按城市类型统计人口均值，最核心的 Pandas 操作是？',answer:'D',
+    options:[['A','astype(float)'],['B','read_file'],['C','flyTo'],['D','groupby(...).mean()']],explain:'按类别分组统计均值就是 groupby 后接 mean。'},
+  {type:'fill',cat:'hw-python',label:'填空·Ex12',text:'GeoPandas 直接读取压缩包中的 Shapefile，路径前缀通常怎么写？',
+    body:`gpd.read_file("${blank('zip://')}data/县.zip")`,explain:'GeoPandas/Fiona 支持 zip:// 前缀读取压缩包内矢量数据。'},
+  {type:'choice',cat:'hw-python',label:'判断·Ex12',text:'可以直接在 EPSG:4326 经纬度坐标系下用 area 计算真实平方米面积。',answer:'B',
+    options:[['A','对'],['B','错']],explain:'EPSG:4326 单位是度，面积是“平方度”，没有真实平方米意义。应先 to_crs 到投影坐标系。'},
+  {type:'choice',cat:'hw-python',label:'选择·Ex12',text:'为什么筛选后常写 zj2 = zj.copy()？',answer:'A',
+    options:[['A','避免视图/副本混淆，后续新增列更安全'],['B','把经纬度转成米'],['C','自动发布 WMS'],['D','自动生成 FastAPI 路由']],explain:'copy 明确生成独立 GeoDataFrame，减少链式赋值警告和误改原数据。'},
+  {type:'fill',cat:'hw-python',label:'填空·Ex13',text:'统计房价样本 1600m 内学校数量的两个关键 GeoPandas 操作。',
+    body:`hp_buf["geometry"] = hp_proj.buffer(${blank('1600')}); joined = gpd.${blank('sjoin')}(hp_buf, school, predicate="intersects", how="left")`,explain:'缓冲距离单位由投影 CRS 决定；空间连接统计缓冲区和学校点的相交关系。'},
+  {type:'choice',cat:'hw-analysis',label:'选择·Ex13',text:'GNNWR 作业中，空间坐标输入最合理的是？',answer:'C',
+    options:[['A','geometry 对象本身'],['B','经纬度字符串 "120,30"'],['C','投影坐标系下的数值 x/y 列'],['D','GeoServer 图层名']],explain:'模型要数值特征；距离计算也应使用投影坐标的米单位。'},
+  {type:'fill',cat:'hw-python',label:'填空·Ex14',text:'Landsat TM 计算 NDVI 时，红光和近红外分别是哪个波段？',
+    body:`red = ds.read(${blank('3')}); nir = ds.read(${blank('4')}); ndvi = (nir - red) / (nir + red)`,explain:'TM3 是红光，TM4 是近红外。计算前通常 astype(float)。'},
+  {type:'fill',cat:'hw-python',label:'填空·Ex14',text:'用西湖矢量裁剪 NDVI 栅格前，要先把矢量转成什么 CRS？',
+    body:`xihu = xihu.${blank('to_crs')}(ds.crs); out, tf = mask(ds, xihu.geometry, crop=${blank('True|true')})`,explain:'裁剪几何必须和栅格 CRS 一致；crop=True 会把输出范围缩小到裁剪区域。'},
+  {type:'choice',cat:'hw-python',label:'选择·Ex14',text:'栅格转矢量提取分类区域常用 rasterio 的哪个工具？',answer:'A',
+    options:[['A','rasterio.features.shapes'],['B','viewer.entities.add'],['C','pd.merge'],['D','APIRouter']],explain:'features.shapes 可把栅格同值区域转换为矢量几何。'},
+  {type:'show',cat:'hw-backend',label:'简答·Ex11',text:'Ex11 用户管理 API 至少应包含哪些端点？',
+    explain:'POST /users 创建用户；GET /users/{username} 查询单个用户；GET /users 获取列表并支持 offset/limit/min_age/max_age；PUT /users/{username} 更新；DELETE /users/{username} 删除；POST /login 登录。'},
+  {type:'fill',cat:'hw-backend',label:'填空·Ex11',text:'分页参数要求 offset≥0、limit≤100，补全 Query 校验。',
+    body:`offset: int = Query(0, ge=${blank('0')}), limit: int = Query(50, le=${blank('100')})`,explain:'ge 表示大于等于，le 表示小于等于。'},
+  {type:'choice',cat:'hw-backend',label:'选择·Ex11',text:'FastAPI 中定义请求体数据结构和字段校验，最常用的是？',answer:'B',
+    options:[['A','Cesium.Entity'],['B','Pydantic BaseModel + Field/validator'],['C','GeoServer SLD'],['D','Rasterio transform']],explain:'FastAPI 依赖 Pydantic 做请求体模型、类型检查和校验。'},
+  {type:'choice',cat:'hw-backend',label:'选择·Ex11',text:'登录失败最合适的 HTTP 状态码通常是？',answer:'C',
+    options:[['A','201 Created'],['B','404 Not Found'],['C','401 Unauthorized'],['D','500 Internal Server Error']],explain:'账号或密码错误属于认证失败，常用 401。'},
+  {type:'fill',cat:'hw-backend',label:'填空·Ex12进阶',text:'FastAPI 允许前端 Cesium 跨域访问接口，常加入哪个中间件？',
+    body:`app.add_middleware(${blank('CORSMiddleware')}, allow_origins=["*"])`,explain:'前后端端口不同会触发浏览器同源策略，后端需要配置 CORS。'},
+  {type:'show',cat:'hw-analysis',label:'综合·作业链路',text:'把作业1到作业8串起来，完整项目链路是什么？',
+    explain:'先用 HTML/CSS 做天气面板静态结构；再用 JS/Axios 做交互和天气请求；GeoServer 发布矢量/栅格/WMS；Cesium 加载 WMS、地形、3D Tiles 和 Entity；最后用 React 组织组件、状态和请求，把天气、图层、书签、样式面板整合成项目。'},
+  {type:'choice',cat:'hw-analysis',label:'选择·综合易错',text:'下面哪个判断最符合空间分析作业的“第一原则”？',answer:'A',
+    options:[['A','只要涉及面积、距离、缓冲区，先检查 CRS 单位'],['B','所有数据都保持 EPSG:4326 才能算面积'],['C','Cesium 能直接展示任何投影 GeoJSON'],['D','GNNWR 可以直接吃 polygon 几何对象']],explain:'空间分析先问 CRS；计算用投影坐标，展示常转回经纬度。'},
+  {type:'choice',cat:'hw-geoserver',label:'选择·服务对比',text:'如果前端只需要叠加一张已渲染地图，通常优先使用哪个服务？',answer:'B',
+    options:[['A','WFS'],['B','WMS'],['C','Pydantic'],['D','NDVI']],explain:'WMS 返回地图图像，适合叠加显示；WFS 返回要素数据，适合查询和编辑。'},
+  {type:'show',cat:'hw-analysis',label:'综合·前后端联动',text:'Ex12 进阶中，FastAPI + GeoPandas + Cesium 的数据流怎么描述？',
+    explain:'后端 FastAPI 暴露 /getdata；路由中用 GeoPandas 读取/筛选/计算并输出 GeoJSON；配置 CORS；前端 Cesium fetch 接口，使用 GeoJsonDataSource.load 或等价方式把 GeoJSON 加入 dataSources 显示。'}
+];
+const EXAM_QUIZ=[
+  {type:'choice',cat:'exam-choice',label:'选择·第1章',text:'关于 B/S 与 C/S 架构，错误的是？',answer:'C',
+    options:[['A','B/S 客户端统一为浏览器'],['B','B/S 升级维护主要在服务器端完成'],['C','C/S 通常比 B/S 更跨平台且无需安装客户端'],['D','B/S 适合多用户通过网络访问']],explain:'无需安装客户端、跨平台性强是 B/S 的优势。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第2章',text:'关于 HTML 标签，正确的是？',answer:'A',
+    options:[['A','tr 表示表格行，ol 是有序列表，ul 是无序列表'],['B','tr 表示列，ul 是有序列表'],['C','option 必须写在 button 里'],['D','li 只能写在 table 中']],explain:'tr 是 table row；ol ordered list；ul unordered list。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第2章',text:'CSS 子代选择器 <code>A &gt; B</code> 的含义是？',answer:'B',
+    options:[['A','选择 A 的所有后代 B'],['B','只选择 A 的直接子元素 B'],['C','选择 A 前面的 B'],['D','选择所有兄弟元素 B']],explain:'> 只匹配直接子代，不会继续匹配孙代。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第3章',text:'JS 中对象赋值给变量时，变量里保存的主要是？',answer:'D',
+    options:[['A','对象的截图'],['B','HTML 字符串'],['C','CSS 样式表'],['D','对象引用地址']],explain:'对象、数组、函数都是引用类型，赋值复制的是引用。'},
+  {type:'choice',cat:'exam-choice',label:'判断·第7章',text:'Cesium 可以像加载 GeoJSON 一样直接加载 Shapefile。',answer:'B',
+    options:[['A','对'],['B','错']],explain:'Cesium 前端通常不能直接加载 Shapefile，需转换为 GeoJSON/3D Tiles 或经服务发布。'},
+  {type:'choice',cat:'exam-choice',label:'判断·第9章',text:'React state 可以直接修改，例如 count = count + 1。',answer:'B',
+    options:[['A','对'],['B','错']],explain:'state 要通过 setCount(count+1) 这类 setter 修改。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第13章',text:'要输出每个方形内的点，同时保留没有点的方形，sjoin 的 how 应选择？',answer:'A',
+    options:[['A','left'],['B','inner'],['C','right'],['D','intersection']],explain:'left join 保留左表所有方形，没匹配到点时右表字段为 NaN。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第4章',text:'WMS 与 WFS 的核心区别是？',answer:'C',
+    options:[['A','WMS 返回神经网络模型，WFS 返回 CSS'],['B','WMS 只能本地用，WFS 只能云端用'],['C','WMS 返回渲染地图图像，WFS 返回矢量要素数据'],['D','二者没有区别']],explain:'WMS 面向地图显示，WFS 面向要素数据访问。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第7章',text:'Entity 与 Primitive 的关系，正确的是？',answer:'D',
+    options:[['A','Entity 比 Primitive 更底层'],['B','Primitive 只能画 HTML'],['C','Entity 与 Primitive 完全无关'],['D','Entity 更高级易用，Primitive 更底层、性能控制更强']],explain:'Entity 数据驱动、上手简单；Primitive 接近渲染层，适合高性能海量静态数据。'},
+  {type:'choice',cat:'exam-choice',label:'选择·第14章',text:'写出 GeoTIFF 时，如果漏掉 crs/transform，主要问题是？',answer:'B',
+    options:[['A','颜色一定变红'],['B','输出栅格失去正确地理参照'],['C','Python 无法运行 print'],['D','HTML 表格无法显示']],explain:'crs 和 transform 决定栅格在哪里、像元如何对应坐标。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第2章',text:'补全 HTML 基础标签。',
+    body:`下拉框选项用 &lt;${blank('option')}&gt;；列表项用 &lt;${blank('li')}&gt;。`,explain:'select/option 组成下拉框；ul/ol/li 组成列表。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第2章',text:'补全 CSS 盒模型属性。',
+    body:`内边距：${blank('padding')}；2px 红色实线边框：border: 2px ${blank('solid')} red;`,explain:'padding 是内容与边框之间的距离；solid 是实线。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第6章',text:'相机视角常见三个方法。',
+    body:`动画飞行 ${blank('flyTo')}；直接设视角 ${blank('setView')}；看向目标 ${blank('lookAt')}。`,explain:'这三个都属于 Cesium camera 常见视角控制方法。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第10/12章',text:'按条件筛选行并选择列，Pandas/GeoPandas 常用哪个索引器？',
+    body:`df.${blank('loc')}[df["age"] > 20, ["name","age"]]`,explain:'loc 使用标签索引，常配合布尔条件筛选。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第14章',text:'GDAL 常见浮点栅格类型。',
+    body:`32 位浮点：GDT_${blank('Float32')}；64 位浮点：GDT_${blank('Float64')}。`,explain:'Float32/Float64 常用于连续值栅格，如 NDVI。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第6章',text:'空间坐标系统常分为哪两类？',
+    body:`${blank('地理坐标系|geographic coordinate system')} 和 ${blank('笛卡尔坐标系|cartesian coordinate system')}`,explain:'课程中常把经纬度球面坐标和三维笛卡尔坐标放在一起比较。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第12章',text:'GeoDataFrame 更改索引和重置索引用什么方法？',
+    body:`更改索引：${blank('set_index')}；重置索引：${blank('reset_index')}。`,explain:'set_index 把某列设为索引，reset_index 恢复普通整数索引。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第12章',text:'输出 GPKG 时常见 driver 参数是什么？',
+    body:`gdf.to_file("out.gpkg", driver="${blank('GPKG')}", layer="layer_name")`,explain:'GeoPackage 常用 driver="GPKG"，多图层时还要注意 layer 名。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第6章',text:'经纬度转 Cartesian3、角度转弧度分别用什么方法？',
+    body:`Cesium.Cartesian3.${blank('fromDegrees')}(120,30,1000); Cesium.Math.${blank('toRadians')}(90);`,explain:'Cesium 位置常用 fromDegrees，orientation 的角度通常要转弧度。'},
+  {type:'fill',cat:'exam-fill',label:'填空·第7章',text:'加载 GeoJSON 后添加到 viewer 的哪个集合？',
+    body:`Cesium.GeoJsonDataSource.load("data.geojson").then(ds => viewer.${blank('dataSources')}.add(ds));`,explain:'GeoJSON 数据源加入 viewer.dataSources，不是 imageryLayers。'},
+  {type:'show',cat:'exam-code',label:'读代码·第3章',text:'下面代码会输出几次 tick？',
+    body:`<pre><code>var token = setInterval(function(){ console.log("tick"); }, 1000);
+setTimeout(function(){ clearInterval(token); }, 3500);</code></pre>`,explain:'输出 3 次。第 1、2、3 秒各一次；3.5 秒清除定时器，第 4 秒不会再执行。'},
+  {type:'show',cat:'exam-code',label:'读代码·第3章',text:'写出下面两个 console.log 的结果。',
+    body:`<pre><code>function ave(a,b,c){ return (a+b+c)/3; }
+console.log(ave(3,3,3,9));
+console.log(ave(3,3));</code></pre>`,explain:'第一行输出 3，多余参数 9 不参与；第二行输出 NaN，因为 c 是 undefined，参与加法后不是有效数字。'},
+  {type:'show',cat:'exam-code',label:'改错·第9章',text:'下面 React 计数器有什么错误？',
+    body:`<pre><code>const [count, setCount] = useState(0);
+return &lt;button onClick={() =&gt; count = count + 1}&gt;{count}&lt;/button&gt;;</code></pre>`,explain:'错误是直接修改 state。应改为 onClick={() => setCount(count + 1)}，React 才会重新渲染。'},
+  {type:'cloze',cat:'exam-code',label:'完型·第6章',text:'补全相机飞到 (120,30,1000)，朝向正东。',
+    body:`<pre><code>viewer.camera.flyTo({
+  destination: Cesium.Cartesian3.${sel('A',[['A','fromDegrees'],['B','fromRadians'],['C','fromCartesian']])}(120, 30, 1000),
+  orientation: {
+    heading: Cesium.Math.${sel('B',[['A','toDegrees'],['B','toRadians'],['C','round']])}(90),
+    pitch: Cesium.Math.toRadians(-90),
+    roll: 0
+  }
+});</code></pre>`,explain:'经纬度位置用 fromDegrees；heading/pitch/roll 要用弧度。'},
+  {type:'cloze',cat:'exam-code',label:'完型·第7章',text:'补全 GeoJSON 加载代码。',
+    body:`<pre><code>Cesium.GeoJsonDataSource.${sel('C',[['A','open'],['B','read'],['C','load']])}("data.geojson").then(function(ds){
+  viewer.${sel('A',[['A','dataSources'],['B','imageryLayers'],['C','terrainProvider']])}.add(ds);
+});</code></pre>`,explain:'GeoJSON 用 GeoJsonDataSource.load，返回的数据源加入 dataSources。'},
+  {type:'cloze',cat:'exam-code',label:'完型·第4/6章',text:'补全 GeoServer WMS 影像加载代码。',
+    body:`<pre><code>viewer.imageryLayers.${sel('A',[['A','addImageryProvider'],['B','addDataSource'],['C','setTerrain']])}(
+  new Cesium.${sel('B',[['A','GeoJsonDataSource'],['B','WebMapServiceImageryProvider'],['C','ScreenSpaceEventHandler']])}({ url, layers })
+);</code></pre>`,explain:'WMS 是影像服务，使用 WebMapServiceImageryProvider 并加入 imageryLayers。'},
+  {type:'fill',cat:'exam-code',label:'代码填空·第13章',text:'求 a、b 两图层交集，补全 how 参数。',
+    body:`res = gpd.overlay(a, b, how="${blank('intersection')}")`,explain:'overlay 的交集参数是 intersection，不是 intersect。'},
+  {type:'fill',cat:'exam-code',label:'代码填空·第13章',text:'空间连接保留左侧所有方形，补全 how。',
+    body:`result = gpd.sjoin(squares, points, how="${blank('left')}", predicate="contains")`,explain:'left 保留左表全部记录，包括没有匹配点的方形。'},
+  {type:'fill',cat:'exam-code',label:'代码填空·第14章',text:'写出单波段 GeoTIFF，补全模式、transform 和写入函数。',
+    body:`rasterio.open("out.tif", "${blank('w')}", driver="GTiff", crs=ds.crs, ${blank('transform')}=ds.transform).${blank('write')}(band1, 1)`,explain:'写文件模式是 w；transform 保留地理变换；write 写入数组到指定波段。'},
+  {type:'show',cat:'exam-short',label:'简答·第3章',text:'异步调用举三个例子，并说明意义。',
+    explain:'例子：setTimeout/setInterval、addEventListener 事件回调、Ajax/Axios 网络请求。意义：JS 单线程，异步可避免耗时任务阻塞页面，让页面继续响应用户操作。'},
+  {type:'show',cat:'exam-short',label:'简答·第7章',text:'简述 Entity 和 Primitive 的异同。',
+    explain:'同：都能绘制几何对象，Entity 底层会转为更底层的渲染对象。异：Entity 高级、数据驱动、易用，适合普通动态对象；Primitive 更底层、可合并几何、性能更强，适合海量静态数据和 3D Tiles 等。'},
+  {type:'show',cat:'exam-short',label:'简答·第1章',text:'B/S 架构相比 C/S 有哪些优点？',
+    explain:'客户端统一为浏览器、无需逐台安装；升级维护集中在服务器端；跨平台性好；支持多人同时访问；降低客户端维护成本。'},
+  {type:'show',cat:'exam-short',label:'简答·第1章',text:'空间数据存储与管理技术的四个发展阶段。',
+    explain:'文件 + 关系数据库；全关系型空间数据库；对象-关系数据库（如 PostGIS，主流）；NoSQL 数据库。答题时要说明几何与属性如何存、扩展空间类型和 API。'},
+  {type:'show',cat:'exam-short',label:'简答·第4章',text:'瓦片地图的作用和原理。',
+    explain:'作用是快速加载海量地图、减轻网络传输和客户端渲染压力。原理是服务端预先按比例尺分级渲染切片，客户端按 z/x/y 请求所需瓦片，常见大小 256×256。'},
+  {type:'show',cat:'exam-short',label:'论述·第1章',text:'人工智能和 VR 在未来 WebGIS 中的作用。',
+    explain:'AI 可做时空大数据挖掘、智能空间分析、遥感影像识别、自然语言 GIS 交互和 GIS 智能体；VR/三维可支持数字孪生、沉浸式城市/灾害场景和真实感三维可视化。二者结合推动 WebGIS 从二维看图转向智能分析和沉浸表达。'},
+  {type:'show',cat:'exam-comp',label:'综合设计·项目题',text:'设计一个充电桩显示软件，至少写三个功能要求。',
+    explain:'可按“架构 + 功能 + 数据流”答：前端 React/Cesium 展示充电桩 Entity/Billboard；后端 FastAPI 提供查询接口；GeoServer/PostGIS 管理空间数据。功能示例：按状态/功率筛选，点击查看详情，最近充电桩/缓冲区分析，路线或服务范围展示，后台更新充电桩状态。'},
+  {type:'show',cat:'exam-comp',label:'综合设计·代码思路',text:'写出 Cesium 鼠标左键点击获取经纬度的核心思路。',
+    explain:'用 ScreenSpaceEventHandler(viewer.canvas) 绑定 LEFT_CLICK；从 e.position 生成 pick ray；用 globe.pick 得到 Cartesian3；再用 Cartographic.fromCartesian 转弧度经纬度，最后 Cesium.Math.toDegrees 输出 lon/lat。'},
+  {type:'show',cat:'exam-comp',label:'综合设计·空间分析',text:'为什么面积、长度、缓冲区计算前要转投影坐标系？',
+    explain:'经纬度坐标单位是度，不是米，直接 area/length/buffer 会得到不可靠结果。投影坐标系把地球表面投到平面，单位通常为米，适合计算长度、面积和距离。计算完给 Cesium 展示时再转回 EPSG:4326。'}
+];
+function renderQuestion(q,i){
+  const answer=q.answer?` data-answer="${attr(q.answer)}"`:'';
+  const opts=q.options?`<div class="opts">${q.options.map(o=>`<div class="opt" data-k="${attr(o[0])}"><span class="k">${o[0]}</span><span>${o[1]}</span></div>`).join('')}</div>`:'';
+  const btns=q.type==='show'
+    ? '<button class="btn ghost js-show" type="button">查看参考答案</button>'
+    : '<button class="btn js-check" type="button">提交</button><button class="btn ghost js-show" type="button">查看解析</button>';
+  return `<div class="q" data-type="${attr(q.type)}" data-cat="${attr(q.cat)}"${answer}>
+    <div class="qhead"><span class="qno">${i}</span><span class="qtype">${q.label}</span><span class="qtext">${q.text}</span></div>
+    ${q.body||''}${opts}
+    <div class="qbtns">${btns}</div>
+    <div class="ans"><div class="at"></div>${q.explain}</div>
+  </div>`;
+}
+function renderGeneratedQuizzes(){
+  const targets=[['homeworkQuestions',HOMEWORK_QUIZ],['examQuestions',EXAM_QUIZ]];
+  targets.forEach(([id,items])=>{
+    const box=document.getElementById(id);
+    if(box) box.innerHTML=items.map((q,i)=>renderQuestion(q,i+1)).join('');
+  });
+}
 /* ---------- 练习题引擎 ---------- */
 function quizScoreText(){
   const done=document.querySelectorAll('#view-quiz .q.answered').length;
   const total=document.querySelectorAll('#view-quiz .q').length;
   return total?`已作答 ${done}/${total}`:'';
+}
+function zoneScoreText(selector){
+  const zone=document.querySelector(selector);
+  if(!zone)return '';
+  const done=zone.querySelectorAll('.q.answered').length;
+  const total=zone.querySelectorAll('.q').length;
+  return total?`已作答 ${done}/${total}`:'';
+}
+function refreshQuizProgress(){
+  const pairs=[
+    ['#view-homework','homeworkQuizStats'],
+    ['#view-exam','examQuizStats']
+  ];
+  pairs.forEach(([selector,id])=>{
+    const el=document.getElementById(id);
+    if(el)el.textContent=zoneScoreText(selector);
+  });
+  const active=document.querySelector('.view.active');
+  const p=document.getElementById('quizProg');
+  if(p)p.textContent=active?zoneScoreText('#'+active.id):'';
 }
 function bindQuiz(root){
   // 选择/判断题
@@ -4459,11 +4736,18 @@ function bindQuiz(root){
           at.textContent=ok?'✔ 回答正确':'✘ 回答错误，正确答案：'+q.dataset.answer;}
       }else if(q.dataset.type==='fill'){
         q.classList.add('answered');
+        let correct=0,total=0;
         q.querySelectorAll('.fill-in').forEach(inp=>{
+          total++;
           const accept=(inp.dataset.accept||'').split('|').map(s=>s.trim().toLowerCase());
           const val=(inp.value||'').trim().toLowerCase();
-          inp.style.borderColor = (val&&accept.includes(val))?'var(--ok)':'var(--danger)';
+          const ok=val&&accept.includes(val);
+          if(ok)correct++;
+          inp.style.borderColor = ok?'var(--ok)':'var(--danger)';
         });
+        const at=ans.querySelector('.at');
+        if(at){at.classList.toggle('bad',correct<total);
+          at.textContent=(correct===total?'✔ 全部正确！':'✘ ')+'得分 '+correct+' / '+total+'（错的空已标红，对照解析）';}
       }else if(q.dataset.type==='cloze'){
         q.classList.add('answered');
         let correct=0,total=0;
@@ -4477,25 +4761,45 @@ function bindQuiz(root){
           at.textContent=(correct===total?'✔ 全部正确！':'✘ ')+'得分 '+correct+' / '+total+'（错的空已标红，对照解析）';}
       }else{q.classList.add('answered');}
       ans.classList.add('show');
-      document.getElementById('quizProg').textContent=quizScoreText();
+      refreshQuizProgress();
     };
     if(showBtn) showBtn.onclick=()=>{
       q.querySelector('.ans').classList.add('show');q.classList.add('answered');
-      document.getElementById('quizProg').textContent=quizScoreText();
+      refreshQuizProgress();
     };
   });
+  root.querySelectorAll('.js-reset').forEach(btn=>btn.onclick=()=>resetQuizZone(btn.dataset.resetZone||'#view-quiz'));
 }
 function flash(btn){btn.style.background='var(--danger)';setTimeout(()=>btn.style.background='',300);}
+function resetQuizZone(selector){
+  const zone=document.querySelector(selector);
+  if(!zone)return;
+  zone.querySelectorAll('.q').forEach(q=>{
+    q.classList.remove('locked','answered');
+    delete q.dataset.pick;
+    q.querySelectorAll('.opt').forEach(o=>o.classList.remove('sel','correct','wrong'));
+    q.querySelectorAll('.fill-in').forEach(inp=>{inp.value='';inp.style.borderColor='';});
+    q.querySelectorAll('.cloze-sel').forEach(sel=>{sel.value='';sel.style.borderColor='';sel.style.color='';});
+    q.querySelectorAll('.ans').forEach(a=>a.classList.remove('show'));
+    q.querySelectorAll('.ans .at').forEach(a=>{a.textContent='';a.classList.remove('bad');});
+  });
+  refreshQuizProgress();
+}
 /* 题型筛选 */
-function setupFilter(){
-  const chips=document.querySelectorAll('#quizFilter .chip');
+function setupScopedFilter(filterSelector,viewSelector){
+  const chips=document.querySelectorAll(filterSelector+' .chip');
   chips.forEach(c=>c.onclick=()=>{
     chips.forEach(x=>x.classList.remove('on'));c.classList.add('on');
     const t=c.dataset.f;
-    document.querySelectorAll('#view-quiz .q').forEach(q=>{
+    document.querySelectorAll(viewSelector+' .q').forEach(q=>{
       q.style.display=(t==='all'||q.dataset.cat===t)?'':'none';
     });
   });
+}
+function setupFilter(){
+  setupScopedFilter('#quizFilter','#view-quiz');
+  setupScopedFilter('#homeworkQuizFilter','#view-homework');
+  setupScopedFilter('#examQuizFilter','#view-exam');
 }
 /* ====================== 互动演示实验室 ====================== */
 function $(id){return document.getElementById(id);}
@@ -5513,8 +5817,10 @@ const TERMS=[
 })();
 
 /* 初始化 */
+renderGeneratedQuizzes();
 bindQuiz(document);
 setupFilter();
+refreshQuizProgress();
 </script>
 </body>
 </html>
