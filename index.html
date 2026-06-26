@@ -1201,6 +1201,28 @@ DELETE /features/2       <span class="tok-c"># 删除id=2</span></code></pre>
       <strong>padding</strong>（内边距）不能为负；<strong>margin</strong>（外边距）可为负，块级盒子设宽度且左右 margin 为 <code class="inline">auto</code> 时<strong>水平居中</strong>。<code class="inline">width/height</code> 只对块元素有效。1 个值=四周，2 个值=上下/左右，3 个值=上/左右/下，4 个值=上右下左。</div>
     <div class="card exam"><span class="lbl">【填空考点】边框写法</span>内边距是 <code class="inline">padding</code>。设置 2px 粗、红色边框：<code class="inline">border: 2px solid red;</code>（或分写 <code class="inline">border-width:2px; border-style:solid; border-color:red;</code>）。圆角用 <code class="inline">border-radius</code>。</div>
 
+    <div class="idemo" id="demoBs">
+      <div class="it">🧪 box-sizing：content-box vs border-box（width 到底算谁）</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>同样写 <code class="inline">width:120px</code>，盒子实际占多宽？关键看 <code class="inline">box-sizing</code>。这是布局对不齐的常见原因。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-bs="content-box">content-box（默认）</button><button class="chip" data-bs="border-box">border-box</button></div>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">width</span><input type="range" id="bsW" min="80" max="180" value="120" style="flex:1;min-width:80px;accent-color:var(--brand)"><span style="font-size:12px;color:var(--muted)">padding</span><input type="range" id="bsP" min="0" max="30" value="16" style="flex:1;min-width:80px;accent-color:var(--brand)"></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage">
+          <div style="background:#0f1722;padding:6px;border-radius:6px"><div id="bsBox" style="background:#36c2a8;color:#04231c;border:6px solid #ffb454;font-size:11px;text-align:center;box-sizing:content-box">content</div></div>
+          <p style="font-size:13px;margin-top:8px" id="bsOut"></p>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>.box { <span class="tok-n">box-sizing</span>: <span id="bsCode">content-box</span>;
+       width: 120px; padding: 16px; border: 6px solid; }</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>content-box（默认）</b>：width 只算 content，<b>实际占位 = width + padding×2 + border×2</b>（容易超出预期）。② <b>border-box</b>：width <b>包含</b> content+padding+border，所见即所得，更好排版（很多项目全局设 <code class="inline">*{box-sizing:border-box}</code>）。</div>
+      </div>
+    </div>
+
     <h4>显示模式</h4>
     <table><tr><th>类型</th><th>display</th><th>特点</th><th>常见</th></tr>
       <tr><td>块元素</td><td>block</td><td>独占一行，可设宽高、默认宽100%</td><td>div,p,h1~h6,ul,li</td></tr>
@@ -1622,6 +1644,31 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
       <tr><td><strong>WMTS</strong></td><td>Web Map Tile Service</td><td>预渲染<strong>切片</strong>地图</td><td>—</td></tr></table>
     <div class="card note"><span class="lbl">WMS 要点</span><code class="inline">GetCapabilities</code> 返回 XML 服务元数据；<code class="inline">GetMap</code> 返回地图图像。<strong>SLD</strong>（Styled Layer Descriptor）是描述渲染样式的 XML，由若干 <code class="inline">&lt;Rule&gt;</code>（含 Filter + 符号化器）组成。</p></div>
     <p><strong>WFS</strong> 把数据集当数据库查询，<code class="inline">GetFeature</code> 类似 SQL <code class="inline">SELECT</code>（可基于属性或空间 Filter 如 Intersects/BoundingBox 筛选）；<code class="inline">Transaction</code> 对应 Update/Insert/Delete。</p>
+
+    <div class="idemo" id="demoWfs">
+      <div class="it">🧪 WFS 事务演示（WFS-T 增删改要素）</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>WMS 只能“看图”，WFS 能拿到<strong>矢量要素数据</strong>、还能用 <code class="inline">Transaction</code> 增删改（这叫 WFS-T）。点操作看要素表怎么变。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-wf="insert">Insert 新增</button><button class="chip" data-wf="update">Update 改</button><button class="chip" data-wf="delete">Delete 删</button></div>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">id</span><input type="text" id="wfId" value="2" style="width:46px;background:#fff;color:#1e2a38;border:1px solid #b9c6d6;border-radius:6px;padding:4px 7px;font-family:monospace">
+          <span style="font-size:12px;color:var(--muted)">name</span><input type="text" id="wfName" value="新路" style="width:80px;background:#fff;color:#1e2a38;border:1px solid #b9c6d6;border-radius:6px;padding:4px 7px">
+          <button class="btn" id="wfRun">执行 Transaction</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-start">
+          <div><div style="font-size:12px;color:var(--muted);margin-bottom:3px">要素表(矢量数据)</div><table class="htbl" id="wfTbl"></table></div>
+          <div style="flex:1;min-width:160px"><div style="font-size:12px;color:var(--muted);margin-bottom:3px">发出的 WFS 请求</div><div class="out console" id="wfOut" style="min-height:50px"></div></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>&lt;wfs:Transaction&gt;
+  &lt;wfs:Insert&gt;...&lt;/wfs:Insert&gt;   <span class="tok-c">// 或 Update / Delete</span>
+&lt;/wfs:Transaction&gt;</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① WMS 返回<b>地图图片</b>、只能看；WFS 返回<b>矢量要素</b>、能查能改。② 增删改要素用 <b>Transaction</b>（Insert/Update/Delete），这能力叫 <b>WFS-T</b>。</div>
+      </div>
+    </div>
 
     <div class="card exam"><span class="lbl">【高频简答】瓦片地图（TMS）的作用与原理</span>
       <strong>作用：</strong>高效快速加载和渲染海量地图数据，减轻网络传输与客户端 CPU/GPU 渲染压力。<br>
@@ -2865,6 +2912,28 @@ gs.<span class="tok-f">simplify</span>(tolerance)            <span class="tok-c"
     <div class="card note"><span class="lbl">overlap vs within 区别</span>
       <strong>within</strong>：A 完全落在 B 内部（包含关系）；<strong>overlaps</strong>：A、B <strong>同维度</strong>且<strong>部分</strong>重叠（既非包含也非相离，交集与各自都不相等）。<br>
       <strong>九交模型（DE-9IM）</strong>：用 3×3 矩阵描述两几何对象在内部(I)/边界(B)/外部(E)上的相交关系（T=真,F=假,*=任意）。</div>
+
+    <div class="idemo" id="demoDe9">
+      <div class="it">🧪 DE-9IM 九交矩阵演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>每种拓扑关系都能用一个 3×3 矩阵刻画：行是 <b>A</b> 的内部/边界/外部，列是 <b>B</b> 的内部/边界/外部，格子记它们相不相交。选关系看矩阵和示意图。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-de="disjoint">disjoint 相离</button><button class="chip" data-de="touches">touches 邻接</button><button class="chip" data-de="overlaps">overlaps 重叠</button><button class="chip" data-de="within">within 内含</button><button class="chip" data-de="contains">contains 包含</button><button class="chip" data-de="equals">equals 相等</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:18px;flex-wrap:wrap;align-items:center">
+          <table style="border-collapse:collapse;font-size:12px"><tr><td style="padding:3px 7px"></td><td style="padding:3px 7px;color:#90a4bd">B内</td><td style="padding:3px 7px;color:#90a4bd">B界</td><td style="padding:3px 7px;color:#90a4bd">B外</td></tr><tbody id="de9Mat"></tbody></table>
+          <svg id="de9Svg" viewBox="0 0 120 80" width="120" height="80" style="flex-shrink:0"></svg>
+          <div style="flex:1;min-width:150px;font-size:13px" id="de9Mean"></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>A.<span class="tok-f">relate</span>(B)   <span class="tok-c"># 返回 9 位 DE-9IM 字符串</span>
+A.<span class="tok-f">within</span>(B) / A.<span class="tok-f">contains</span>(B) / A.<span class="tok-f">touches</span>(B) ...</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>contains 与 within 方向相反</b>：A.contains(B) ⟺ B.within(A)。② <b>touches</b>：边界相接、<b>内部不相交</b>（I∩I=F）。③ <b>overlaps</b>：同维度、部分重叠，谁也没包含谁。</div>
+      </div>
+    </div>
 
     <h3>5. 空间叠加分析（高频）</h3>
     <div class="card exam"><span class="lbl">【高频读代码】overlay() 的 how 参数 与 clip()</span>以 <code class="inline">a.overlay(b, how=?)</code> 为例：</div>
@@ -4548,6 +4617,51 @@ const TERMS=[
   render();
 })();
 
+/* ch2 box-sizing */
+(function(){
+  if(!$('bsBox'))return;const box=$('bsBox'),W=$('bsW'),P=$('bsP');let bs='content-box';const bd=6;
+  function upd(){
+    const w=+W.value,p=+P.value;box.style.boxSizing=bs;box.style.width=w+'px';box.style.padding=p+'px';$('bsCode').textContent=bs;
+    const total=bs==='content-box'?w+2*p+2*bd:w;const content=bs==='content-box'?w:w-2*p-2*bd;
+    $('bsOut').innerHTML='box-sizing: <b>'+bs+'</b>　width='+w+'，padding='+p+'，border='+bd+'<br>'+
+      (bs==='content-box'
+        ?'→ content 内容区 = <b>'+w+'</b>px；<b style="color:#dc2626">实际占位总宽 = '+w+'+'+p+'×2+'+bd+'×2 = '+total+'px</b>（超出 width！）'
+        :'→ <b style="color:#15803d">实际占位总宽 = width = '+w+'px</b>（所见即所得）；内容区被挤到 '+Math.max(0,content)+'px');
+  }
+  document.querySelectorAll('#demoBs [data-bs]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoBs [data-bs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');bs=b.dataset.bs;upd();});
+  W.oninput=upd;P.oninput=upd;upd();
+})();
+/* ch4 WFS Transaction */
+(function(){
+  if(!$('wfRun'))return;let feats=[{id:1,name:'主路'},{id:2,name:'支路'},{id:3,name:'小巷'}];let op='insert';
+  function tbl(){let h='<tr><th>id</th><th>name</th></tr>';feats.forEach(f=>h+='<tr><td>'+f.id+'</td><td>'+f.name+'</td></tr>');$('wfTbl').innerHTML=h;}
+  document.querySelectorAll('#demoWfs [data-wf]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoWfs [data-wf]').forEach(x=>x.classList.remove('on'));b.classList.add('on');op=b.dataset.wf;});
+  $('wfRun').onclick=()=>{const rawId=parseInt($('wfId').value,10),id=Number.isFinite(rawId)?rawId:null,name=$('wfName').value||'未命名';let msg='';
+    if(op==='insert'){const auto=(feats.length?Math.max.apply(null,feats.map(f=>f.id)):0)+1;const nid=(id!==null&&!feats.some(f=>f.id===id))?id:auto;feats.push({id:nid,name:name});msg='<wfs:Insert> id='+nid+' name="'+name+'"'+(nid!==id?'\n→ 输入 id 无效或已存在，自动分配 id='+nid:'\n→ 已新增 id='+nid);}
+    else if(op==='update'){const f=feats.find(x=>x.id===id);if(f){f.name=name;msg='<wfs:Update> id='+id+'\n→ name 改为 "'+name+'"';}else msg='<wfs:Update> 没有 id='+id;}
+    else{const n0=feats.length;feats=feats.filter(x=>x.id!==id);msg='<wfs:Delete> id='+id+(feats.length<n0?'\n→ 已删除':'\n→ 无此 id');}
+    tbl();$('wfOut').textContent=msg;};
+  tbl();
+})();
+/* ch13 DE-9IM 九交矩阵 */
+(function(){
+  if(!$('de9Mat'))return;
+  const M={
+    disjoint:{m:[['F','F','T'],['F','F','T'],['T','T','T']],mean:'A、B 完全分开：内部、边界都不相交；两者都落在对方外部的一部分。',svg:'<rect x="8" y="28" width="36" height="28" fill="#4ea3ff44" stroke="#2563eb"/><rect x="76" y="28" width="36" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
+    touches:{m:[['F','F','T'],['F','T','T'],['T','T','T']],mean:'边界相接、内部不重叠：I∩I=F，B∩B=T。',svg:'<rect x="22" y="28" width="38" height="28" fill="#4ea3ff44" stroke="#2563eb"/><rect x="60" y="28" width="38" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
+    overlaps:{m:[['T','T','T'],['T','T','T'],['T','T','T']],mean:'部分重叠（同维度），内部有交集，但谁也没有完全包含谁。',svg:'<rect x="18" y="24" width="46" height="34" fill="#4ea3ff55" stroke="#2563eb"/><rect x="52" y="24" width="46" height="34" fill="#ffb45455" stroke="#c2740a"/>'},
+    within:{m:[['T','F','F'],['T','F','F'],['T','T','T']],mean:'A 完全在 B 内部且不贴边：A 的内部和边界都不与 B 的外部相交。',svg:'<rect x="12" y="16" width="92" height="48" fill="#ffb45433" stroke="#c2740a"/><rect x="46" y="32" width="28" height="20" fill="#4ea3ff66" stroke="#2563eb"/>'},
+    contains:{m:[['T','T','T'],['F','F','T'],['F','F','T']],mean:'A 完全包含 B 且 B 不贴 A 边界：B 的内部和边界都不进入 A 的外部。',svg:'<rect x="12" y="16" width="92" height="48" fill="#4ea3ff33" stroke="#2563eb"/><rect x="46" y="32" width="28" height="20" fill="#ffb45466" stroke="#c2740a"/>'},
+    equals:{m:[['T','F','F'],['F','T','F'],['F','F','T']],mean:'A、B 几何完全相同：内部对内部、边界对边界、外部对外部相交，其它交叉项为 F。',svg:'<rect x="34" y="22" width="52" height="36" fill="#9b8cff55" stroke="#7c3aed"/>'}
+  };
+  const rl=['A内','A界','A外'];
+  function show(k){const d=M[k];let h='';
+    d.m.forEach((row,i)=>{h+='<tr><td style="padding:3px 7px;color:#90a4bd">'+rl[i]+'</td>';row.forEach(v=>{const c=v==='T'?'#15803d':v==='F'?'#dc2626':'#90a4bd';const bg=v==='T'?'#e6f5ec':v==='F'?'#fdecec':'#f0f2f5';h+='<td style="border:1px solid #d6e0ec;padding:4px 9px;text-align:center;font-weight:700;color:'+c+';background:'+bg+'">'+v+'</td>';});h+='</tr>';});
+    $('de9Mat').innerHTML=h;$('de9Svg').innerHTML=d.svg;$('de9Mean').innerHTML='<b>'+k+'</b>：'+d.mean;
+  }
+  document.querySelectorAll('#demoDe9 [data-de]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoDe9 [data-de]').forEach(x=>x.classList.remove('on'));b.classList.add('on');show(b.dataset.de);});
+  show('disjoint');
+})();
 /* ch9 Hook 生命周期 */
 (function(){
   if(!$('hkMount'))return;const out=$('hkOut');let mounted=false,n=0;
