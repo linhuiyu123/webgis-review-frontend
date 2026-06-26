@@ -2452,10 +2452,59 @@ app = <span class="tok-f">FastAPI</span>(title=<span class="tok-s">"WebGIS"</spa
 <span class="tok-k">def</span> <span class="tok-f">create_reader</span>(reader: Reader):  <span class="tok-c"># 请求体加入路径操作</span>
     <span class="tok-k">return</span> reader</code></pre>
     <p><strong>数据校验</strong>：<code class="inline">Query</code>(查询参数)、<code class="inline">Path</code>(路径参数)、<code class="inline">Field</code>(模型字段)，校验项：min_length/max_length/pattern（字符串）、ge/gt/le/lt（数值）、title/description/example（元数据）。</p>
+
+    <div class="idemo" id="demoPyd">
+      <div class="it">🧪 Pydantic 请求体校验演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>FastAPI 用 Pydantic 模型<strong>自动校验</strong>客户端发来的 JSON：缺字段、类型不对都会被拦下。下面这个模型要求 name(字符串)、price(浮点)、count(整数,默认1)。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">选一个请求体试校验：</span>
+          <button class="chip on" data-py="ok">合法</button><button class="chip" data-py="miss">缺 name</button><button class="chip" data-py="type">price 类型错</button><button class="chip" data-py="def">省略 count</button></div>
+        <pre style="margin-top:6px"><code id="pydIn"></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="out console" id="pydOut" style="min-height:50px"></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码（模型）</span>
+        <pre><code><span class="tok-k">from</span> pydantic <span class="tok-k">import</span> BaseModel
+<span class="tok-k">class</span> <span class="tok-t">Item</span>(BaseModel):
+    name: <span class="tok-t">str</span>
+    price: <span class="tok-t">float</span>
+    count: <span class="tok-t">int</span> = <span class="tok-n">1</span>   <span class="tok-c"># 有默认值 → 可选</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① FastAPI 借 Pydantic <b>按类型提示自动校验</b>，不合法直接返回 422 错误，不用你手写一堆 if。② <b>有默认值的字段可选</b>，没默认值的必填。③ 它还能据此<b>自动生成接口文档</b>(Swagger)。</div>
+      </div>
+    </div>
+
     <h4>依赖注入</h4>
     <p>声明代码运行所需依赖，由 FastAPI 执行并提供。用 <code class="inline">Depends()</code> 注入。优点：组件解耦（数据库连接/认证从路由剥离）、动态配置、层级依赖链、测试友好。</p>
     <h3>4. RESTful 与 API 文档</h3>
     <p><strong>RESTful</strong>：面向资源设计，URL 只用名词（复数）不用动词，用 HTTP 方法表示操作：<code class="inline">GET</code>(获取)、<code class="inline">POST</code>(新建)、<code class="inline">PUT</code>(更新)、<code class="inline">DELETE</code>(删除)。URL 格式：<code class="inline">scheme://host[:port]/path[?query][#anchor]</code>（<code class="inline">scheme</code> 是“协议方案”，如 https；不要写成 schema）。</p>
+    <div class="idemo" id="demoRest">
+      <div class="it">🧪 RESTful API 设计演示：需求 → 方法 + URL</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>RESTful 的核心：URL 用<strong>名词</strong>表示资源、用 <strong>HTTP 方法</strong>表示动作。点一个需求，看推荐的写法。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar">
+          <button class="chip on" data-rt="list">获取用户列表</button><button class="chip" data-rt="one">获取某个用户</button>
+          <button class="chip" data-rt="create">新建订单</button><button class="chip" data-rt="update">更新某图层</button><button class="chip" data-rt="del">删除某要素</button>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage"><div style="font-size:15px;font-family:monospace"><b id="rtM" style="color:#0d9488"></b> <span id="rtU" style="color:#2563eb"></span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:5px" id="rtWhy"></p></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">规则速记</span>
+        <pre><code>GET    /users       <span class="tok-c"># 取列表(名词复数)</span>
+GET    /users/5     <span class="tok-c"># 取单个</span>
+POST   /orders      <span class="tok-c"># 新建</span>
+PUT    /layers/3    <span class="tok-c"># 更新</span>
+DELETE /features/9  <span class="tok-c"># 删除</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① URL 里<b>只放名词、不放动词</b>（错误示范：<code class="inline">/getUser</code>、<code class="inline">/deleteOrder</code>）。② 动作由 <b>HTTP 方法</b>(GET/POST/PUT/DELETE)表达。③ 资源名一般用<b>复数</b>。</div>
+      </div>
+    </div>
+
     <p>FastAPI 基于 OpenAPI，默认支持 <strong>Swagger</strong>（<code class="inline">/docs</code>）和 <strong>Redoc</strong>（<code class="inline">/redoc</code>）。辅助工具：Postman(调试)、Swagger(文档)、ApiFox(一站式)。</p>
   </section>
 
@@ -2739,6 +2788,29 @@ high = (A &gt; 1000)              <span class="tok-c"># 地图代数：逐像元
     <pre><code>Xgeo = GT(0) + Xpixel*GT(1) + Yline*GT(2)
 Ygeo = GT(3) + Xpixel*GT(4) + Yline*GT(5)
 <span class="tok-c"># 上北影像 GT(2)=GT(4)=0; GT(1)=像素宽; GT(5)=像素高; (GT(0),GT(3))=左上角</span></code></pre>
+
+    <div class="idemo" id="demoAff">
+      <div class="it">🧪 仿射变换演示：行列号 → 地理坐标</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>栅格里只有“第几行第几列”，没有经纬度。看仿射变换怎么把<strong>行列号</strong>换算成<strong>真实地理坐标</strong>。点网格里的格子试试。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">点下面的像元，或拖滑块：</span></div>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">列 col</span><input type="range" id="affC" min="0" max="4" value="2" style="flex:1;min-width:90px;accent-color:var(--brand)"><span style="font-size:12px;color:var(--muted)">行 row</span><input type="range" id="affR" min="0" max="4" value="1" style="flex:1;min-width:90px;accent-color:var(--brand)"></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <div id="affGrid" style="line-height:0;flex-shrink:0"></div>
+          <div style="flex:1;min-width:180px;font-size:13px" id="affOut"></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码（本例 transform）</span>
+        <pre><code><span class="tok-c"># 左上角(120.00, 30.00)，像元宽 0.01°、高 -0.01°</span>
+Xgeo = 120.00 + col * 0.01
+Ygeo = 30.00  + row * (-0.01)</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>row/col 是图像坐标</b>（从 0 开始、左上角原点），<b>X/Y 是地图坐标</b>。② 像元高 GT(5) 通常<b>是负数</b>（因为图像向下=地理向南）。③ 写栅格若丢了 transform，就不知道每格对应哪、多大，没法定位。</div>
+      </div>
+    </div>
 
     <h3>3. 读写栅格数据</h3>
     <pre><code><span class="tok-k">import</span> rasterio
@@ -4278,6 +4350,46 @@ const TERMS=[
   render();
 })();
 
+/* ch11 Pydantic 校验 */
+(function(){
+  if(!$('pydOut'))return;
+  const cases={
+    ok:{j:'{ "name": "苹果", "price": 3.5, "count": 2 }',ok:true,m:'✓ 校验通过！name=苹果, price=3.5, count=2，自动转成 Item 对象。'},
+    miss:{j:'{ "price": 3.5 }',ok:false,m:'✘ 422 校验失败：字段 name 缺失（field required）。'},
+    type:{j:'{ "name": "苹果", "price": "贵" }',ok:false,m:'✘ 422 校验失败：price 不是合法的 float（"贵"无法转成数字）。'},
+    def:{j:'{ "name": "苹果", "price": 3.5 }',ok:true,m:'✓ 校验通过！没给 count，自动用默认值 count=1。'}
+  };
+  function show(k){const c=cases[k];$('pydIn').textContent=c.j;$('pydOut').textContent=c.m;$('pydOut').style.color=c.ok?'#86e0a0':'#ff8a8a';}
+  document.querySelectorAll('#demoPyd [data-py]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoPyd [data-py]').forEach(x=>x.classList.remove('on'));b.classList.add('on');show(b.dataset.py);});
+  show('ok');
+})();
+/* ch11 RESTful 设计 */
+(function(){
+  if(!$('rtM'))return;
+  const map={
+    list:{m:'GET',u:'/users',w:'取“用户”这个资源的列表 → 名词复数 + GET。'},
+    one:{m:'GET',u:'/users/5',w:'取单个用户 → 在资源后跟 id。'},
+    create:{m:'POST',u:'/orders',w:'新建订单 → POST 到资源集合，数据放请求体。'},
+    update:{m:'PUT',u:'/layers/3',w:'更新某个图层 → PUT 到具体资源。'},
+    del:{m:'DELETE',u:'/features/9',w:'删除某要素 → DELETE 到具体资源。'}
+  };
+  function show(k){const d=map[k];$('rtM').textContent=d.m;$('rtU').textContent=d.u;$('rtWhy').textContent=d.w;}
+  document.querySelectorAll('#demoRest [data-rt]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoRest [data-rt]').forEach(x=>x.classList.remove('on'));b.classList.add('on');show(b.dataset.rt);});
+  show('list');
+})();
+/* ch14 仿射变换 */
+(function(){
+  if(!$('affGrid'))return;const C=$('affC'),R=$('affR');const x0=120.00,y0=30.00,pw=0.01,ph=-0.01;
+  function render(){
+    const col=+C.value,row=+R.value;let h='';
+    for(let r=0;r<5;r++){for(let c=0;c<5;c++){const on=(r===row&&c===col);h+='<span data-c="'+c+'" data-r="'+r+'" style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;font-size:10px;border:1px solid #d6e0ec;background:'+(on?'#0d9488':'#eef6fb')+';color:'+(on?'#fff':'#5d6b7e')+';cursor:pointer">'+r+','+c+'</span>';}h+='<br>';}
+    $('affGrid').innerHTML=h;
+    const X=(x0+col*pw).toFixed(2),Y=(y0+row*ph).toFixed(2);
+    $('affOut').innerHTML='选中像元：<b>行 row='+row+'，列 col='+col+'</b><br>→ Xgeo = 120.00 + '+col+'×0.01 = <b style="color:#0d9488">'+X+'</b>（经度）<br>→ Ygeo = 30.00 + '+row+'×(-0.01) = <b style="color:#0d9488">'+Y+'</b>（纬度）';
+    $('affGrid').querySelectorAll('span').forEach(s=>s.onclick=()=>{C.value=s.dataset.c;R.value=s.dataset.r;render();});
+  }
+  C.oninput=render;R.oninput=render;render();
+})();
 /* ch8 影像图层栈 */
 (function(){
   if(!$('imgMap'))return;
