@@ -7,8 +7,8 @@
 <style>
 :root{
   --bg:#eef2f7; --panel:#ffffff; --panel2:#eef3f9; --line:#d6e0ec;
-  --text:#1e2a38; --muted:#5d6b7e; --brand:#0d9488; --brand2:#2563eb;
-  --warn:#b8690a; --danger:#dc2626; --ok:#15803d; --code:#0f1722;
+  --text:#1e2a38; --muted:#5d6b7e; --brand:#04766d; --brand2:#1d4ed8;
+  --warn:#92400e; --danger:#b91c1c; --ok:#0f6b3a; --code:#0f1722;
   --tagbg:#e2edf8; --shadow:0 6px 22px rgba(30,55,90,.10);
 }
 *{box-sizing:border-box}
@@ -66,7 +66,7 @@ code.inline{background:var(--code);color:#7fe0c8;padding:2px 6px;border-radius:4
 pre{background:var(--code);border:1px solid var(--line);border-radius:10px;padding:14px 16px;
   overflow-x:auto;margin:12px 0;font-size:13px;line-height:1.6}
 pre code{font-family:"Cascadia Code",Consolas,"Courier New",monospace;color:#cfe3ff}
-.tok-k{color:#ff8fb0} .tok-s{color:#9be58b} .tok-c{color:#6b8299;font-style:italic}
+.tok-k{color:#ff8fb0} .tok-s{color:#9be58b} .tok-c{color:#8aa2ba;font-style:italic}
 .tok-f{color:#7fd0ff} .tok-n{color:#ffcf86} .tok-t{color:#c9a3ff}
 .codecmt{color:var(--muted);font-size:12.5px;margin:-6px 0 12px;padding-left:6px}
 /* table */
@@ -84,7 +84,7 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 /* quiz */
 .q{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:14px 0}
 .q .qhead{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
-.q .qno{background:var(--brand);color:#04231c;font-weight:700;border-radius:6px;padding:1px 9px;font-size:13px;flex-shrink:0;margin-top:2px}
+.q .qno{background:var(--brand);color:#fff;font-weight:700;border-radius:6px;padding:1px 9px;font-size:13px;flex-shrink:0;margin-top:2px}
 .q .qtype{font-size:11px;color:var(--muted);border:1px solid var(--line);border-radius:5px;padding:1px 7px;flex-shrink:0;margin-top:2px}
 .q .qtext{font-weight:500}
 .q .qtext code{background:var(--code);color:#7fe0c8;padding:1px 5px;border-radius:4px;font-size:13px}
@@ -113,7 +113,7 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 .term .row{display:flex;gap:9px;margin:4px 0;font-size:13.5px;line-height:1.6}
 .term .row .k{flex-shrink:0;width:62px;color:var(--muted);font-weight:600}
 .term .row .v{flex:1}
-.term .row.w .v{color:#b8690a}
+.term .row.w .v{color:var(--warn)}
 .term .row.e .v{font-family:Consolas,monospace;background:#0f1722;color:#dce8fb;padding:2px 7px;border-radius:5px}
 .term .jump{color:var(--brand2);cursor:pointer;font-weight:600}
 .gloss-count{font-size:12.5px;color:var(--muted);margin:6px 0}
@@ -132,10 +132,10 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 .deep .seg{margin:12px 0}
 .deep .seg .lab{display:inline-block;font-size:12px;font-weight:700;padding:2px 11px;border-radius:6px;margin-bottom:6px}
 .deep .seg p{margin:5px 0}
-.lab-what{background:#e3edfb;color:#2563eb}
-.lab-why{background:#fdeede;color:#b8690a}
-.lab-how{background:#e6f5ec;color:#15803d}
-.lab-pic{background:#efe7fb;color:#7c3aed}
+.lab-what{background:#e3edfb;color:var(--brand2)}
+.lab-why{background:#fdeede;color:var(--warn)}
+.lab-how{background:#e6f5ec;color:var(--ok)}
+.lab-pic{background:#efe7fb;color:#6d28d9}
 .deep .ana{background:#eef6f3;border-left:3px solid var(--brand);border-radius:6px;padding:8px 12px;margin:8px 0;font-size:13.5px}
 .deep .ana b{color:#0b6b5e}
 /* ===== 嵌入式交互演示（5段式：目标/操作/观察/代码/考点） ===== */
@@ -143,8 +143,8 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 .idemo .it{font-weight:700;color:var(--text);font-size:15px;margin:6px 0 4px}
 .idemo .sec{margin:10px 0}
 .idemo .sl{font-size:11.5px;font-weight:700;letter-spacing:.3px;margin-bottom:5px;display:inline-block;padding:1px 8px;border-radius:5px}
-.sl-goal{background:#e3edfb;color:#2563eb}.sl-op{background:#e6f5ec;color:#0d9488}
-.sl-res{background:#efe7fb;color:#7c3aed}.sl-code{background:#fdeede;color:#b8690a}.sl-exam{background:#fdecec;color:#dc2626}
+.sl-goal{background:#e3edfb;color:var(--brand2)}.sl-op{background:#e6f5ec;color:var(--brand)}
+.sl-res{background:#efe7fb;color:#6d28d9}.sl-code{background:#fdeede;color:var(--warn)}.sl-exam{background:#fdecec;color:var(--danger)}
 .idemo .sec p{margin:4px 0;font-size:13.5px}
 .idemo .opbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
 .idemo .stage{background:#fff;border:1px solid var(--line);border-radius:8px;padding:12px;overflow:auto;font-size:13.5px;color:#1e2a38}
@@ -154,12 +154,12 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 .flwrap p{font-size:12.5px;color:#3a4656;margin:0;line-height:1.65}
 .flbox{width:90px;height:58px;background:#36c2a8;color:#04231c;display:flex;align-items:center;justify-content:center;font-weight:700;border-radius:6px;font-size:12px}
 .posstage{position:relative;height:140px;border:1px dashed #b9c6d6;border-radius:6px;background:repeating-linear-gradient(45deg,#fafcff,#fafcff 8px,#eef4fb 8px,#eef4fb 16px);overflow:hidden}
-.posbox{width:84px;height:50px;background:#4ea3ff;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;border-radius:6px;font-size:12px;position:static}
+.posbox{width:84px;height:50px;background:var(--brand2);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;border-radius:6px;font-size:12px;position:static}
 .posghost{position:absolute;left:12px;top:12px;width:84px;height:50px;border:1px dashed #c2740a;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:10px;color:#c2740a}
 .urltok{display:inline-block;padding:2px 1px;border-radius:3px;font-family:Consolas,monospace;font-size:15px}
-.dispbox{display:block;background:#36c2a8;color:#04231c;padding:4px 10px;border-radius:5px;margin:3px;font-size:12px;font-weight:600;border:1px solid #0d9488}
+.dispbox{display:block;background:#36c2a8;color:#04231c;padding:4px 10px;border-radius:5px;margin:3px;font-size:12px;font-weight:600;border:1px solid #04766d}
 .qbtns{display:flex;gap:9px;margin-top:10px;flex-wrap:wrap}
-.btn{background:var(--brand);color:#04231c;border:none;border-radius:7px;padding:6px 15px;
+.btn{background:var(--brand);color:#fff;border:none;border-radius:7px;padding:6px 15px;
   font-size:13px;font-weight:600;cursor:pointer}
 .btn.ghost{background:transparent;color:var(--brand);border:1px solid var(--brand)}
 .btn:hover{filter:brightness(1.08)}
@@ -172,7 +172,7 @@ tr:nth-child(even) td{background:rgba(15,40,80,.03)}
 .filterbar{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 4px;position:sticky;top:52px;background:var(--bg);padding:10px 0;z-index:10}
 .chip{font-size:12.5px;padding:5px 13px;border-radius:20px;border:1px solid var(--line);
   background:var(--panel);color:var(--muted);cursor:pointer}
-.chip.on{background:var(--brand);color:#04231c;border-color:var(--brand);font-weight:600}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand);font-weight:600}
 .scorebox{margin-left:auto;font-size:13px;color:var(--muted)}
 /* overview cards */
 .ovgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:14px;margin:18px 0}
@@ -190,7 +190,7 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:26px 0}
 .demo{background:var(--panel);border:1px solid var(--line);border-radius:12px;margin:16px 0;overflow:hidden}
 .demo .dh{background:var(--panel2);padding:10px 16px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:10px}
 .demo .dh .dt{font-weight:600;color:var(--text);font-size:15px}
-.demo .dh .dtag{font-size:11px;color:#04231c;background:var(--brand);padding:1px 8px;border-radius:20px;font-weight:700}
+.demo .dh .dtag{font-size:11px;color:#fff;background:var(--brand);padding:1px 8px;border-radius:20px;font-weight:700}
 .demo .db{padding:16px}
 .demo .dgoal{font-size:13px;color:var(--muted);margin:0 0 12px}
 .demo .dgoal b{color:var(--brand)}
@@ -207,7 +207,7 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:26px 0}
 .ctrl label{min-width:104px;color:var(--text)}
 .ctrl input[type=range]{flex:1;min-width:120px;accent-color:var(--brand)}
 .ctrl .val{min-width:54px;color:var(--brand);font-family:monospace;text-align:right}
-.ctrl select,.ctrl input[type=text]{background:var(--code);color:var(--text);border:1px solid var(--line);border-radius:6px;padding:5px 9px;font-family:inherit;font-size:13px}
+.ctrl select,.ctrl input[type=text]{background:var(--code);color:#dce8fb;border:1px solid #345877;border-radius:6px;padding:5px 9px;font-family:inherit;font-size:13px}
 .boxdemo{background:#ff6b6b22;border:2px dashed #ff6b6b;display:inline-block}
 .boxdemo .bd-border{background:#162231}
 .boxdemo .bd-pad{background:#4ea3ff33}
@@ -217,9 +217,9 @@ hr.sep{border:none;border-top:1px dashed var(--line);margin:26px 0}
 .htbl{border-collapse:collapse;font-size:13px;margin:4px 0}
 .htbl td,.htbl th{border:1px solid var(--line);padding:6px 11px;text-align:center;transition:.15s}
 .htbl th{background:var(--panel2);color:var(--text)}
-.htbl td.hl{background:var(--brand);color:#04231c;font-weight:700}
+.htbl td.hl{background:var(--brand);color:#fff;font-weight:700}
 .htbl td.hl2{background:#4ea3ff;color:#04231c}
-.backtop{position:fixed;right:22px;bottom:22px;background:var(--brand);color:#04231c;width:42px;height:42px;
+.backtop{position:fixed;right:22px;bottom:22px;background:var(--brand);color:#fff;width:42px;height:42px;
   border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:20px;box-shadow:var(--shadow);z-index:40}
 @media(max-width:880px){
   #sidebar{transform:translateX(-100%);transition:.25s}
@@ -536,7 +536,7 @@ console.log("数组长度:", arr.length);</textarea>
               <text x="65" y="124" fill="#9fb4cc" font-size="11" text-anchor="middle">南 S</text>
               <text x="120" y="69" fill="#9fb4cc" font-size="11" text-anchor="middle">东</text>
               <text x="10" y="69" fill="#9fb4cc" font-size="11" text-anchor="middle">西</text>
-              <g id="camH_g"><path d="M65,22 L72,55 L65,48 L58,55 Z" fill="#0d9488"/><line x1="65" y1="48" x2="65" y2="92" stroke="#0d9488" stroke-width="2"/></g>
+              <g id="camH_g"><path d="M65,22 L72,55 L65,48 L58,55 Z" fill="#04766d"/><line x1="65" y1="48" x2="65" y2="92" stroke="#04766d" stroke-width="2"/></g>
             </svg>
             <div style="font-size:11px;color:#9fb4cc;margin-top:2px">heading（俯视罗盘）</div>
           </div>
@@ -545,7 +545,7 @@ console.log("数组长度:", arr.length);</textarea>
               <rect x="15" y="65" width="100" height="48" fill="#1a2e22"/><text x="98" y="108" fill="#5e7a66" font-size="10">地面</text>
               <rect x="15" y="17" width="100" height="48" fill="#16263a"/><text x="98" y="30" fill="#5d7795" font-size="10">天空</text>
               <line x1="15" y1="65" x2="115" y2="65" stroke="#3a5470"/>
-              <circle cx="40" cy="65" r="7" fill="#0d9488"/>
+              <circle cx="40" cy="65" r="7" fill="#04766d"/>
               <g id="camP_g"><line x1="40" y1="65" x2="112" y2="65" stroke="#36c2a8" stroke-width="3"/><path d="M112,65 L104,61 L104,69 Z" fill="#36c2a8"/></g>
             </svg>
             <div style="font-size:11px;color:#9fb4cc;margin-top:2px">pitch（侧视·视线）</div>
@@ -692,12 +692,12 @@ console.log("数组长度:", arr.length);</textarea>
     <div class="demo" id="demoTop">
       <div class="dh"><span class="dt">⑯ 拓扑关系判断器（within / overlaps / touches…）</span><span class="dtag">拖动</span></div>
       <div class="db">
-        <p class="dgoal">高频考点！拖滑块让<b style="color:#0d9488">小方块 A</b> 从左往右穿过<b style="color:#b8690a">大方块 B</b>，看哪些拓扑判断变成 True（<code class="inline">A.within(B)</code>、<code class="inline">A.overlaps(B)</code> 等）。重点体会 within（完全在内）和 overlaps（部分重叠）的区别。</p>
+        <p class="dgoal">高频考点！拖滑块让<b style="color:#04766d">小方块 A</b> 从左往右穿过<b style="color:#92400e">大方块 B</b>，看哪些拓扑判断变成 True（<code class="inline">A.within(B)</code>、<code class="inline">A.overlaps(B)</code> 等）。重点体会 within（完全在内）和 overlaps（部分重叠）的区别。</p>
         <div class="ctrl"><label>A 的位置 x</label><input type="range" id="topX" min="0" max="300" value="20"><span class="val" id="topXv">20</span></div>
         <div style="background:#0a0f16;border-radius:8px;padding:10px;text-align:center">
           <svg viewBox="0 0 300 130" width="100%" style="max-width:420px">
-            <rect x="100" y="30" width="120" height="70" fill="#b8690a" fill-opacity="0.25" stroke="#b8690a" stroke-width="2"/><text x="160" y="22" fill="#c2740a" font-size="12" text-anchor="middle">B</text>
-            <rect id="topA" x="20" y="48" width="34" height="34" fill="#0d9488" fill-opacity="0.45" stroke="#0d9488" stroke-width="2"/>
+            <rect x="100" y="30" width="120" height="70" fill="#92400e" fill-opacity="0.25" stroke="#92400e" stroke-width="2"/><text x="160" y="22" fill="#c2740a" font-size="12" text-anchor="middle">B</text>
+            <rect id="topA" x="20" y="48" width="34" height="34" fill="#04766d" fill-opacity="0.45" stroke="#04766d" stroke-width="2"/>
           </svg>
         </div>
         <span class="lbl2">对应代码（→ 当前真假值）</span><pre style="margin:4px 0 8px"><code id="topCode"></code></pre>
@@ -712,7 +712,7 @@ console.log("数组长度:", arr.length);</textarea>
         <div class="ctrl"><label>distance 距离</label><input type="range" id="bufD" min="0" max="58" value="20"><span class="val" id="bufDv">20</span></div>
         <div style="background:#0a0f16;border-radius:8px;padding:10px;text-align:center">
           <svg viewBox="0 0 240 130" width="100%" style="max-width:360px">
-            <circle id="bufC" cx="120" cy="65" r="20" fill="#0d9488" fill-opacity="0.28" stroke="#0d9488" stroke-dasharray="4"/>
+            <circle id="bufC" cx="120" cy="65" r="20" fill="#04766d" fill-opacity="0.28" stroke="#04766d" stroke-dasharray="4"/>
             <circle cx="120" cy="65" r="4" fill="#36c2a8"/><text x="120" y="48" fill="#9fb4cc" font-size="11" text-anchor="middle">point</text>
           </svg>
         </div>
@@ -729,8 +729,8 @@ console.log("数组长度:", arr.length);</textarea>
         <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
           <div style="background:#0a0f16;border-radius:8px;padding:8px">
             <svg viewBox="0 0 280 105" width="260">
-              <rect x="20" y="20" width="100" height="70" fill="#0d9488" fill-opacity="0.18" stroke="#0d9488"/><text x="70" y="16" fill="#36c2a8" font-size="11" text-anchor="middle">区A</text>
-              <rect x="160" y="20" width="100" height="70" fill="#b8690a" fill-opacity="0.18" stroke="#b8690a"/><text x="210" y="16" fill="#c2740a" font-size="11" text-anchor="middle">区B</text>
+              <rect x="20" y="20" width="100" height="70" fill="#04766d" fill-opacity="0.18" stroke="#04766d"/><text x="70" y="16" fill="#36c2a8" font-size="11" text-anchor="middle">区A</text>
+              <rect x="160" y="20" width="100" height="70" fill="#92400e" fill-opacity="0.18" stroke="#92400e"/><text x="210" y="16" fill="#c2740a" font-size="11" text-anchor="middle">区B</text>
               <circle cx="60" cy="55" r="5" fill="#fff"/><text x="60" y="48" fill="#9fb4cc" font-size="10" text-anchor="middle">P1</text>
               <circle cx="95" cy="40" r="5" fill="#fff"/><text x="95" y="33" fill="#9fb4cc" font-size="10" text-anchor="middle">P2</text>
               <circle cx="205" cy="60" r="5" fill="#fff"/><text x="205" y="53" fill="#9fb4cc" font-size="10" text-anchor="middle">P3</text>
@@ -760,7 +760,7 @@ console.log("数组长度:", arr.length);</textarea>
     <div class="demo" id="demoMask">
       <div class="dh"><span class="dt">⑳ rasterio.mask 栅格裁剪</span><span class="dtag">点击切换</span></div>
       <div class="db">
-        <p class="dgoal">用矢量范围裁剪栅格。<b style="color:#0d9488">绿色</b>是裁剪多边形覆盖的像元；<code class="inline">crop=True</code> 把结果裁到框的范围，<code class="inline">crop=False</code> 保持原大小、框外填 nodata。</p>
+        <p class="dgoal">用矢量范围裁剪栅格。<b style="color:#04766d">绿色</b>是裁剪多边形覆盖的像元；<code class="inline">crop=True</code> 把结果裁到框的范围，<code class="inline">crop=False</code> 保持原大小、框外填 nodata。</p>
         <div class="chiprow" id="mkChips"><button class="chip on" data-c="true">crop=True</button><button class="chip" data-c="false">crop=False</button></div>
         <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
           <div><span class="lbl2">原栅格 + 裁剪框</span><div id="mkSrc"></div></div>
@@ -1465,8 +1465,8 @@ student.school = <span class="tok-s">'ZJU'</span>;   <span class="tok-c">// 添�
       </div>
       <div class="sec"><span class="sl sl-res">观察结果</span>
         <div class="stage">
-          <div style="font-size:13px"><b>原数组 arr：</b><span id="amArr" style="font-family:monospace;color:#0d9488">[1, 2, 3]</span></div>
-          <div style="font-size:13px;margin-top:4px"><b>返回值：</b><span id="amRet" style="font-family:monospace;color:#7c3aed">—</span></div>
+          <div style="font-size:13px"><b>原数组 arr：</b><span id="amArr" style="font-family:monospace;color:#04766d">[1, 2, 3]</span></div>
+          <div style="font-size:13px;margin-top:4px"><b>返回值：</b><span id="amRet" style="font-family:monospace;color:#6d28d9">—</span></div>
           <div id="amVerdict" style="font-size:12.5px;margin-top:6px"></div>
         </div>
       </div>
@@ -1686,7 +1686,7 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
         <div class="stage">
           <div id="tmsGrid" style="line-height:0"></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:8px" id="tmsInfo"></p>
-          <div id="tmsUrl" style="font-family:monospace;font-size:13px;color:#0d9488;margin-top:4px">点上面任意一块瓦片…</div>
+          <div id="tmsUrl" style="font-family:monospace;font-size:13px;color:#04766d;margin-top:4px">点上面任意一块瓦片…</div>
         </div>
       </div>
       <div class="sec"><span class="sl sl-code">对应代码</span>
@@ -1810,7 +1810,7 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
         <div class="opbar"><span style="font-size:12.5px;width:100%;color:var(--text)">3) 需要<b>空间分析 + 自建空间数据</b>吗？</span><button class="chip" data-q="d3" data-v="1">需要</button><button class="chip on" data-q="d3" data-v="0">不需要</button></div>
       </div>
       <div class="sec"><span class="sl sl-res">观察结果</span>
-        <div class="stage"><div style="font-size:15px"><b>推荐：</b><span id="fwRec" style="color:#0d9488;font-weight:700"></span></div>
+        <div class="stage"><div style="font-size:15px"><b>推荐：</b><span id="fwRec" style="color:#04766d;font-weight:700"></span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:5px" id="fwWhy"></p></div>
       </div>
       <div class="sec"><span class="sl sl-code">决策逻辑（伪代码）</span>
@@ -1952,7 +1952,7 @@ Cesium.Cartographic.<span class="tok-f">fromCartesian</span>(cartesian);</code><
             <circle cx="80" cy="80" r="60" fill="#16263a" stroke="#345877"/>
             <ellipse cx="80" cy="80" rx="60" ry="20" fill="none" stroke="#3a5470"/>
             <line x1="80" y1="20" x2="80" y2="140" stroke="#4ea3ff" stroke-dasharray="3"/><text x="86" y="26" fill="#7fd0ff" font-size="10">Z(北极)</text>
-            <circle id="axPt" cx="120" cy="65" r="6" fill="#dc2626"/>
+            <circle id="axPt" cx="120" cy="65" r="6" fill="#b91c1c"/>
           </svg>
           <div style="flex:1;min-width:160px;font-size:13px" id="axOut"></div>
         </div>
@@ -2115,7 +2115,7 @@ viewer.entities.<span class="tok-f">add</span>({ position:..., point:{ pixelSize
       <div class="sec"><span class="sl sl-res">观察结果</span>
         <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
           <div id="entSvg" style="width:120px;height:90px;flex-shrink:0"></div>
-          <div style="flex:1;min-width:160px"><div style="font-size:13px"><b>关键属性：</b><span id="entProp" style="color:#0d9488"></span></div></div>
+          <div style="flex:1;min-width:160px"><div style="font-size:13px"><b>关键属性：</b><span id="entProp" style="color:#04766d"></span></div></div>
         </div>
       </div>
       <div class="sec"><span class="sl sl-code">对应代码</span>
@@ -2375,14 +2375,14 @@ layer.alpha = 0.6;                <span class="tok-c">// 设这层透明度</spa
       <div class="sec"><span class="sl sl-op">操作区</span>
         <div class="opbar"><span style="font-size:12px;color:var(--muted)">父组件设置 props.name：</span>
           <input type="text" id="rcProps" value="小明" style="width:90px;background:#fff;color:#1e2a38;border:1px solid #b9c6d6;border-radius:6px;padding:4px 7px"></div>
-        <div class="opbar"><button class="btn" id="rcInc">子组件：setCount(+1)</button><button class="btn" id="rcBad" style="background:#dc2626">子组件：直接改 props.name</button></div>
+        <div class="opbar"><button class="btn" id="rcInc">子组件：setCount(+1)</button><button class="btn" id="rcBad" style="background:#b91c1c">子组件：直接改 props.name</button></div>
       </div>
       <div class="sec"><span class="sl sl-res">观察结果（子组件渲染）</span>
         <div class="stage">
           <div style="border:1px dashed #b9c6d6;border-radius:6px;padding:10px;font-size:14px">
-            👶 子组件 &lt;Child name=<span id="rcShowProps" style="color:#2563eb">"小明"</span> /&gt;<br>
-            收到的 props.name：<b id="rcP" style="color:#2563eb">小明</b>（只读）<br>
-            自己的 state count：<b id="rcS" style="color:#0d9488">0</b>（可变）
+            👶 子组件 &lt;Child name=<span id="rcShowProps" style="color:#1d4ed8">"小明"</span> /&gt;<br>
+            收到的 props.name：<b id="rcP" style="color:#1d4ed8">小明</b>（只读）<br>
+            自己的 state count：<b id="rcS" style="color:#04766d">0</b>（可变）
           </div>
           <p style="font-size:12.5px;margin-top:6px" id="rcNote"></p>
         </div>
@@ -2498,7 +2498,7 @@ dict  {k:v} 无序·可变·用"键"访问</code></pre>
           <button class="chip on" data-np="add">+1</button><button class="chip" data-np="mul">×2</button><button class="chip" data-np="gt">&gt;4 ?</button></div>
       </div>
       <div class="sec"><span class="sl sl-res">观察结果</span>
-        <div class="stage"><div style="font-size:13px"><b>结果：</b><span id="npRes" style="font-family:monospace;color:#0d9488"></span></div></div>
+        <div class="stage"><div style="font-size:13px"><b>结果：</b><span id="npRes" style="font-family:monospace;color:#04766d"></span></div></div>
       </div>
       <div class="sec"><span class="sl sl-code">对应代码</span>
         <div class="grid2">
@@ -2690,7 +2690,7 @@ app = <span class="tok-f">FastAPI</span>(title=<span class="tok-s">"WebGIS"</spa
         </div>
       </div>
       <div class="sec"><span class="sl sl-res">观察结果</span>
-        <div class="stage"><div style="font-size:15px;font-family:monospace"><b id="rtM" style="color:#0d9488"></b> <span id="rtU" style="color:#2563eb"></span></div>
+        <div class="stage"><div style="font-size:15px;font-family:monospace"><b id="rtM" style="color:#04766d"></b> <span id="rtU" style="color:#1d4ed8"></span></div>
           <p style="font-size:12.5px;color:var(--muted);margin-top:5px" id="rtWhy"></p></div>
       </div>
       <div class="sec"><span class="sl sl-code">规则速记</span>
@@ -2802,7 +2802,7 @@ gdf = gdf.<span class="tok-f">to_crs</span>(crs=<span class="tok-s">'EPSG:3857'<
         <div class="stage">
           <table class="htbl" id="crsTbl"><tr><th>属性</th><th>当前值</th></tr>
             <tr><td>坐标 (x, y)</td><td id="crsXY">120.15, 30.28</td></tr>
-            <tr><td>.crs 坐标系</td><td id="crsCrs"><i style="color:#dc2626">None（未声明）</i></td></tr>
+            <tr><td>.crs 坐标系</td><td id="crsCrs"><i style="color:#b91c1c">None（未声明）</i></td></tr>
             <tr><td>单位</td><td id="crsUnit">度</td></tr>
           </table>
           <p style="font-size:12.5px;color:var(--muted);margin-top:8px" id="crsNote">初始：有一对经纬度数值，但还没声明它是什么坐标系。</p>
@@ -4384,7 +4384,7 @@ function $(id){return document.getElementById(id);}
   function build(how){
     const rows=how==='inner'?pts.filter(p=>p[1]!==null):pts;
     let html='<tr><th>点</th><th>所在区</th></tr>';
-    rows.forEach(p=>{html+='<tr><td>'+p[0]+'</td><td>'+(p[1]||'<i style="color:#dc2626">NaN</i>')+'</td></tr>';});
+    rows.forEach(p=>{html+='<tr><td>'+p[0]+'</td><td>'+(p[1]||'<i style="color:#b91c1c">NaN</i>')+'</td></tr>';});
     $('sjRes').innerHTML=html;
     $('sjCode').textContent="gpd.sjoin(points, regions, how='"+how+"', predicate='within')";
     $('sjExplain').innerHTML=how==='left'?"how='left'：保留所有点；P4 不在任何区 → 所在区为 <b>NaN</b>。":"how='inner'：只保留落在某区内的点，<b>P4 被丢弃</b>。";
@@ -4412,7 +4412,7 @@ function $(id){return document.getElementById(id);}
   const G=[[1,2,3,4,5],[6,7,8,9,10],[11,12,13,14,15],[16,17,18,19,20],[21,22,23,24,25]];
   function inMask(i,j){return i>=1&&i<=3&&j>=1&&j<=3;}
   function grid(cells){let h='<table class="htbl">';cells.forEach(row=>{h+='<tr>';row.forEach(c=>{
-    const st=c.s==='nodata'?'background:#222b36;color:#5b6b7e':c.s==='in'?'background:#0d9488;color:#06231c;font-weight:700':'';
+    const st=c.s==='nodata'?'background:#222b36;color:#5b6b7e':c.s==='in'?'background:#04766d;color:#06231c;font-weight:700':'';
     h+='<td style="'+st+'">'+(c.s==='nodata'?'·':c.v)+'</td>';});h+='</tr>';});return h+'</table>';}
   function render(crop){
     const src=G.map((row,i)=>row.map((v,j)=>({v:v,s:inMask(i,j)?'in':'plain'})));
@@ -4625,8 +4625,8 @@ const TERMS=[
     const total=bs==='content-box'?w+2*p+2*bd:w;const content=bs==='content-box'?w:w-2*p-2*bd;
     $('bsOut').innerHTML='box-sizing: <b>'+bs+'</b>　width='+w+'，padding='+p+'，border='+bd+'<br>'+
       (bs==='content-box'
-        ?'→ content 内容区 = <b>'+w+'</b>px；<b style="color:#dc2626">实际占位总宽 = '+w+'+'+p+'×2+'+bd+'×2 = '+total+'px</b>（超出 width！）'
-        :'→ <b style="color:#15803d">实际占位总宽 = width = '+w+'px</b>（所见即所得）；内容区被挤到 '+Math.max(0,content)+'px');
+        ?'→ content 内容区 = <b>'+w+'</b>px；<b style="color:#b91c1c">实际占位总宽 = '+w+'+'+p+'×2+'+bd+'×2 = '+total+'px</b>（超出 width！）'
+        :'→ <b style="color:#0f6b3a">实际占位总宽 = width = '+w+'px</b>（所见即所得）；内容区被挤到 '+Math.max(0,content)+'px');
   }
   document.querySelectorAll('#demoBs [data-bs]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoBs [data-bs]').forEach(x=>x.classList.remove('on'));b.classList.add('on');bs=b.dataset.bs;upd();});
   W.oninput=upd;P.oninput=upd;upd();
@@ -4647,16 +4647,16 @@ const TERMS=[
 (function(){
   if(!$('de9Mat'))return;
   const M={
-    disjoint:{m:[['F','F','T'],['F','F','T'],['T','T','T']],mean:'A、B 完全分开：内部、边界都不相交；两者都落在对方外部的一部分。',svg:'<rect x="8" y="28" width="36" height="28" fill="#4ea3ff44" stroke="#2563eb"/><rect x="76" y="28" width="36" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
-    touches:{m:[['F','F','T'],['F','T','T'],['T','T','T']],mean:'边界相接、内部不重叠：I∩I=F，B∩B=T。',svg:'<rect x="22" y="28" width="38" height="28" fill="#4ea3ff44" stroke="#2563eb"/><rect x="60" y="28" width="38" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
-    overlaps:{m:[['T','T','T'],['T','T','T'],['T','T','T']],mean:'部分重叠（同维度），内部有交集，但谁也没有完全包含谁。',svg:'<rect x="18" y="24" width="46" height="34" fill="#4ea3ff55" stroke="#2563eb"/><rect x="52" y="24" width="46" height="34" fill="#ffb45455" stroke="#c2740a"/>'},
-    within:{m:[['T','F','F'],['T','F','F'],['T','T','T']],mean:'A 完全在 B 内部且不贴边：A 的内部和边界都不与 B 的外部相交。',svg:'<rect x="12" y="16" width="92" height="48" fill="#ffb45433" stroke="#c2740a"/><rect x="46" y="32" width="28" height="20" fill="#4ea3ff66" stroke="#2563eb"/>'},
-    contains:{m:[['T','T','T'],['F','F','T'],['F','F','T']],mean:'A 完全包含 B 且 B 不贴 A 边界：B 的内部和边界都不进入 A 的外部。',svg:'<rect x="12" y="16" width="92" height="48" fill="#4ea3ff33" stroke="#2563eb"/><rect x="46" y="32" width="28" height="20" fill="#ffb45466" stroke="#c2740a"/>'},
-    equals:{m:[['T','F','F'],['F','T','F'],['F','F','T']],mean:'A、B 几何完全相同：内部对内部、边界对边界、外部对外部相交，其它交叉项为 F。',svg:'<rect x="34" y="22" width="52" height="36" fill="#9b8cff55" stroke="#7c3aed"/>'}
+    disjoint:{m:[['F','F','T'],['F','F','T'],['T','T','T']],mean:'A、B 完全分开：内部、边界都不相交；两者都落在对方外部的一部分。',svg:'<rect x="8" y="28" width="36" height="28" fill="#4ea3ff44" stroke="#1d4ed8"/><rect x="76" y="28" width="36" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
+    touches:{m:[['F','F','T'],['F','T','T'],['T','T','T']],mean:'边界相接、内部不重叠：I∩I=F，B∩B=T。',svg:'<rect x="22" y="28" width="38" height="28" fill="#4ea3ff44" stroke="#1d4ed8"/><rect x="60" y="28" width="38" height="28" fill="#ffb45444" stroke="#c2740a"/>'},
+    overlaps:{m:[['T','T','T'],['T','T','T'],['T','T','T']],mean:'部分重叠（同维度），内部有交集，但谁也没有完全包含谁。',svg:'<rect x="18" y="24" width="46" height="34" fill="#4ea3ff55" stroke="#1d4ed8"/><rect x="52" y="24" width="46" height="34" fill="#ffb45455" stroke="#c2740a"/>'},
+    within:{m:[['T','F','F'],['T','F','F'],['T','T','T']],mean:'A 完全在 B 内部且不贴边：A 的内部和边界都不与 B 的外部相交。',svg:'<rect x="12" y="16" width="92" height="48" fill="#ffb45433" stroke="#c2740a"/><rect x="46" y="32" width="28" height="20" fill="#4ea3ff66" stroke="#1d4ed8"/>'},
+    contains:{m:[['T','T','T'],['F','F','T'],['F','F','T']],mean:'A 完全包含 B 且 B 不贴 A 边界：B 的内部和边界都不进入 A 的外部。',svg:'<rect x="12" y="16" width="92" height="48" fill="#4ea3ff33" stroke="#1d4ed8"/><rect x="46" y="32" width="28" height="20" fill="#ffb45466" stroke="#c2740a"/>'},
+    equals:{m:[['T','F','F'],['F','T','F'],['F','F','T']],mean:'A、B 几何完全相同：内部对内部、边界对边界、外部对外部相交，其它交叉项为 F。',svg:'<rect x="34" y="22" width="52" height="36" fill="#9b8cff55" stroke="#6d28d9"/>'}
   };
   const rl=['A内','A界','A外'];
   function show(k){const d=M[k];let h='';
-    d.m.forEach((row,i)=>{h+='<tr><td style="padding:3px 7px;color:#90a4bd">'+rl[i]+'</td>';row.forEach(v=>{const c=v==='T'?'#15803d':v==='F'?'#dc2626':'#90a4bd';const bg=v==='T'?'#e6f5ec':v==='F'?'#fdecec':'#f0f2f5';h+='<td style="border:1px solid #d6e0ec;padding:4px 9px;text-align:center;font-weight:700;color:'+c+';background:'+bg+'">'+v+'</td>';});h+='</tr>';});
+    d.m.forEach((row,i)=>{h+='<tr><td style="padding:3px 7px;color:#90a4bd">'+rl[i]+'</td>';row.forEach(v=>{const c=v==='T'?'#0f6b3a':v==='F'?'#b91c1c':'#90a4bd';const bg=v==='T'?'#e6f5ec':v==='F'?'#fdecec':'#f0f2f5';h+='<td style="border:1px solid #d6e0ec;padding:4px 9px;text-align:center;font-weight:700;color:'+c+';background:'+bg+'">'+v+'</td>';});h+='</tr>';});
     $('de9Mat').innerHTML=h;$('de9Svg').innerHTML=d.svg;$('de9Mean').innerHTML='<b>'+k+'</b>：'+d.mean;
   }
   document.querySelectorAll('#demoDe9 [data-de]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoDe9 [data-de]').forEach(x=>x.classList.remove('on'));b.classList.add('on');show(b.dataset.de);});
@@ -4711,8 +4711,8 @@ const TERMS=[
     const col=m==='cs'?'#ffb454':'#36c2a8';const srv=m==='cs'?'服务器':'服务器(App+逻辑)';
     $('csbsStage').innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px">'+
       '<div style="display:flex;flex-direction:column;gap:4px">'+cli.map(c=>'<span class="dispbox" style="background:'+col+'">'+c+'</span>').join('')+'</div>'+
-      '<span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#4ea3ff">'+srv+'</span><span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#7c3aed;color:#fff">数据库</span></div>';
-    $('csbsNote').innerHTML=m==='cs'?'<b style="color:#c2740a">C/S：</b>每个客户端都要装专门的 App；升级要给<b>每一台</b>逐个更新，跨平台差。':'<b style="color:#0d9488">B/S：</b>客户端只是浏览器（无需安装）；升级只改<b>服务器一处</b>，天然跨平台。';
+      '<span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#4ea3ff">'+srv+'</span><span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#6d28d9;color:#fff">数据库</span></div>';
+    $('csbsNote').innerHTML=m==='cs'?'<b style="color:#c2740a">C/S：</b>每个客户端都要装专门的 App；升级要给<b>每一台</b>逐个更新，跨平台差。':'<b style="color:#04766d">B/S：</b>客户端只是浏览器（无需安装）；升级只改<b>服务器一处</b>，天然跨平台。';
   }
   document.querySelectorAll('#demoCSBS [data-arch]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoCSBS [data-arch]').forEach(x=>x.classList.remove('on'));b.classList.add('on');render(b.dataset.arch);});
   render('cs');
@@ -4756,7 +4756,7 @@ const TERMS=[
     const X=R*Math.cos(la)*Math.cos(lo),Y=R*Math.cos(la)*Math.sin(lo),Z=R*Math.sin(la);
     const sx=80+60*Math.cos(la)*Math.sin(lo),sy=80-60*Math.sin(la),front=Math.cos(la)*Math.cos(lo)>=0;
     pt.setAttribute('cx',sx.toFixed(1));pt.setAttribute('cy',sy.toFixed(1));pt.setAttribute('opacity',front?'1':'0.3');
-    $('axOut').innerHTML='经纬度 ('+lon+'°, '+lat+'°) → 地心三维坐标(单位:百万米)：<br>X = <b style="color:#0d9488">'+(X/1e6).toFixed(2)+'</b><br>Y = <b style="color:#0d9488">'+(Y/1e6).toFixed(2)+'</b><br>Z = <b style="color:#0d9488">'+(Z/1e6).toFixed(2)+'</b>'+(front?'':'<br><span style="color:#90a4bd">(点在地球背面)</span>');
+    $('axOut').innerHTML='经纬度 ('+lon+'°, '+lat+'°) → 地心三维坐标(单位:百万米)：<br>X = <b style="color:#04766d">'+(X/1e6).toFixed(2)+'</b><br>Y = <b style="color:#04766d">'+(Y/1e6).toFixed(2)+'</b><br>Z = <b style="color:#04766d">'+(Z/1e6).toFixed(2)+'</b>'+(front?'':'<br><span style="color:#90a4bd">(点在地球背面)</span>');
   }
   Lon.oninput=upd;Lat.oninput=upd;upd();
 })();
@@ -4766,9 +4766,9 @@ const TERMS=[
   function toLL(x,y){return [Math.round((116.00+x/220*0.30)*1000)/1000, Math.round((40.00-y/130*0.20)*1000)/1000];}
   function render(){
     let g='';
-    if(type==='LineString'&&pts.length>1)g+='<polyline points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="none" stroke="#0d9488" stroke-width="2"/>';
-    if(type==='Polygon'&&pts.length>2)g+='<polygon points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="#4ea3ff44" stroke="#2563eb" stroke-width="2"/>';
-    pts.forEach(p=>g+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="#dc2626"/>');
+    if(type==='LineString'&&pts.length>1)g+='<polyline points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="none" stroke="#04766d" stroke-width="2"/>';
+    if(type==='Polygon'&&pts.length>2)g+='<polygon points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="#4ea3ff44" stroke="#1d4ed8" stroke-width="2"/>';
+    pts.forEach(p=>g+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="#b91c1c"/>');
     svg.innerHTML=g;
     let coords;
     if(type==='Point')coords=pts.length?JSON.stringify(toLL(pts[pts.length-1].x,pts[pts.length-1].y)):'[]';
@@ -4792,8 +4792,8 @@ const TERMS=[
     const eps=+T.value;$('simTv').textContent=eps;
     const idxs=eps===0?pts.map((_,i)=>i):dp(0,pts.length-1,eps);const simp=idxs.map(i=>pts[i]);
     let g='<polyline points="'+pts.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="#cdd8e6" stroke-width="1"/>';
-    g+='<polyline points="'+simp.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="#0d9488" stroke-width="2.5"/>';
-    g+=simp.map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="#dc2626"/>').join('');
+    g+='<polyline points="'+simp.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="#04766d" stroke-width="2.5"/>';
+    g+=simp.map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="#b91c1c"/>').join('');
     $('simSvg').innerHTML=g;
     $('simInfo').textContent='容差='+eps+'：原 '+pts.length+' 个点 → 简化后 '+simp.length+' 个点'+(eps>0?'（灰线=原始，绿线=简化）':'');
   }
@@ -4831,10 +4831,10 @@ const TERMS=[
   if(!$('affGrid'))return;const C=$('affC'),R=$('affR');const x0=120.00,y0=30.00,pw=0.01,ph=-0.01;
   function render(){
     const col=+C.value,row=+R.value;let h='';
-    for(let r=0;r<5;r++){for(let c=0;c<5;c++){const on=(r===row&&c===col);h+='<span data-c="'+c+'" data-r="'+r+'" style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;font-size:10px;border:1px solid #d6e0ec;background:'+(on?'#0d9488':'#eef6fb')+';color:'+(on?'#fff':'#5d6b7e')+';cursor:pointer">'+r+','+c+'</span>';}h+='<br>';}
+    for(let r=0;r<5;r++){for(let c=0;c<5;c++){const on=(r===row&&c===col);h+='<span data-c="'+c+'" data-r="'+r+'" style="display:inline-block;width:24px;height:24px;line-height:24px;text-align:center;font-size:10px;border:1px solid #d6e0ec;background:'+(on?'#04766d':'#eef6fb')+';color:'+(on?'#fff':'#5d6b7e')+';cursor:pointer">'+r+','+c+'</span>';}h+='<br>';}
     $('affGrid').innerHTML=h;
     const X=(x0+col*pw).toFixed(2),Y=(y0+row*ph).toFixed(2);
-    $('affOut').innerHTML='选中像元：<b>行 row='+row+'，列 col='+col+'</b><br>→ Xgeo = 120.00 + '+col+'×0.01 = <b style="color:#0d9488">'+X+'</b>（经度）<br>→ Ygeo = 30.00 + '+row+'×(-0.01) = <b style="color:#0d9488">'+Y+'</b>（纬度）';
+    $('affOut').innerHTML='选中像元：<b>行 row='+row+'，列 col='+col+'</b><br>→ Xgeo = 120.00 + '+col+'×0.01 = <b style="color:#04766d">'+X+'</b>（经度）<br>→ Ygeo = 30.00 + '+row+'×(-0.01) = <b style="color:#04766d">'+Y+'</b>（纬度）';
     $('affGrid').querySelectorAll('span').forEach(s=>s.onclick=()=>{C.value=s.dataset.c;R.value=s.dataset.r;render();});
   }
   C.oninput=render;R.oninput=render;render();
@@ -4842,7 +4842,7 @@ const TERMS=[
 /* ch8 影像图层栈 */
 (function(){
   if(!$('imgMap'))return;
-  const L=[{n:'卫星影像',c:'#2e7d4f'},{n:'路网',c:'#c2740a'},{n:'边界',c:'#7c3aed'}];
+  const L=[{n:'卫星影像',c:'#2e7d4f'},{n:'路网',c:'#c2740a'},{n:'边界',c:'#6d28d9'}];
   L.forEach(x=>x.a=1);let order=[0,1,2];let sel=0;
   function render(){
     let h='';order.forEach((idx,k)=>{const z=k+1;h+='<div style="position:absolute;inset:0;background:'+L[idx].c+';opacity:'+L[idx].a+';z-index:'+z+';display:flex;align-items:center;justify-content:center;color:#fff;font-size:12px;text-shadow:0 1px 2px #0008">'+L[idx].n+'</div>';});
@@ -4862,9 +4862,9 @@ const TERMS=[
   if(!$('rcInc'))return;let count=0;
   function name(){return $('rcProps').value||'(空)';}
   function render(){$('rcShowProps').textContent='"'+name()+'"';$('rcP').textContent=name();$('rcS').textContent=count;}
-  $('rcProps').addEventListener('input',()=>{$('rcNote').innerHTML='<span style="color:#15803d">父组件改了 props → 自动传给子组件并重渲染。</span>';render();});
-  $('rcInc').onclick=()=>{count++;$('rcNote').innerHTML='<span style="color:#15803d">setCount 改了 state → 子组件自动重渲染，count 变成 '+count+'。</span>';render();};
-  $('rcBad').onclick=()=>{$('rcNote').innerHTML='<span style="color:#dc2626">⚠ 子组件想直接改 props.name 会报错！props 是只读的，要让父组件去改。</span>';};
+  $('rcProps').addEventListener('input',()=>{$('rcNote').innerHTML='<span style="color:#0f6b3a">父组件改了 props → 自动传给子组件并重渲染。</span>';render();});
+  $('rcInc').onclick=()=>{count++;$('rcNote').innerHTML='<span style="color:#0f6b3a">setCount 改了 state → 子组件自动重渲染，count 变成 '+count+'。</span>';render();};
+  $('rcBad').onclick=()=>{$('rcNote').innerHTML='<span style="color:#b91c1c">⚠ 子组件想直接改 props.name 会报错！props 是只读的，要让父组件去改。</span>';};
   render();
 })();
 /* ch10 NumPy 向量化 */
@@ -4921,11 +4921,11 @@ const TERMS=[
 (function(){
   if(!$('entSvg'))return;
   const data={
-    point:{svg:'<circle cx="60" cy="45" r="9" fill="#dc2626"/>',prop:'pixelSize 大小、color 颜色',code:'  point: { pixelSize: 10, color: Cesium.Color.RED }'},
+    point:{svg:'<circle cx="60" cy="45" r="9" fill="#b91c1c"/>',prop:'pixelSize 大小、color 颜色',code:'  point: { pixelSize: 10, color: Cesium.Color.RED }'},
     billboard:{svg:'<text x="60" y="58" font-size="34" text-anchor="middle">📍</text>',prop:'image 图片、scale 缩放',code:"  billboard: { image: 'pin.png', scale: 1 }"},
-    polyline:{svg:'<polyline points="15,70 50,25 80,55 105,20" fill="none" stroke="#0d9488" stroke-width="3"/>',prop:'positions 坐标串、width 宽度、material 材质',code:'  polyline: { positions: [...], width: 3, material: Cesium.Color.TEAL }'},
-    polygon:{svg:'<polygon points="20,25 100,30 90,75 30,70" fill="#4ea3ff66" stroke="#2563eb"/>',prop:'hierarchy 顶点、material 填充',code:'  polygon: { hierarchy: [...], material: Cesium.Color.BLUE.withAlpha(0.5) }'},
-    box:{svg:'<g stroke="#b8690a" fill="#ffb45488"><rect x="40" y="35" width="40" height="35"/><polygon points="40,35 58,22 98,22 80,35"/><polygon points="80,35 98,22 98,57 80,70"/></g>',prop:'dimensions 长宽高',code:'  box: { dimensions: new Cesium.Cartesian3(40,40,40), material: Cesium.Color.ORANGE }'},
+    polyline:{svg:'<polyline points="15,70 50,25 80,55 105,20" fill="none" stroke="#04766d" stroke-width="3"/>',prop:'positions 坐标串、width 宽度、material 材质',code:'  polyline: { positions: [...], width: 3, material: Cesium.Color.TEAL }'},
+    polygon:{svg:'<polygon points="20,25 100,30 90,75 30,70" fill="#4ea3ff66" stroke="#1d4ed8"/>',prop:'hierarchy 顶点、material 填充',code:'  polygon: { hierarchy: [...], material: Cesium.Color.BLUE.withAlpha(0.5) }'},
+    box:{svg:'<g stroke="#92400e" fill="#ffb45488"><rect x="40" y="35" width="40" height="35"/><polygon points="40,35 58,22 98,22 80,35"/><polygon points="80,35 98,22 98,57 80,70"/></g>',prop:'dimensions 长宽高',code:'  box: { dimensions: new Cesium.Cartesian3(40,40,40), material: Cesium.Color.ORANGE }'},
     label:{svg:'<text x="60" y="52" font-size="16" text-anchor="middle" fill="#1e2a38">你好GIS</text>',prop:'text 文字、font 字体',code:"  label: { text: '你好GIS', font: '16px sans-serif' }"}
   };
   function show(t){const d=data[t];$('entSvg').innerHTML='<svg viewBox="0 0 120 90" width="120" height="90">'+d.svg+'</svg>';$('entProp').textContent=d.prop;$('entCode').textContent=d.code;}
@@ -4938,7 +4938,7 @@ const TERMS=[
   let arr;const reset=()=>{arr=[1,2,3];$('amArr').textContent='['+arr.join(', ')+']';$('amRet').textContent='—';$('amVerdict').textContent='';};
   const mut={push:1,pop:1,reverse:1},show=(ret,mutated,desc)=>{
     $('amArr').textContent='['+arr.join(', ')+']';$('amRet').textContent=ret;
-    $('amVerdict').innerHTML=mutated?'<b style="color:#dc2626">改变了原数组</b>　'+desc:'<b style="color:#15803d">没改原数组</b>，只返回新结果　'+desc;};
+    $('amVerdict').innerHTML=mutated?'<b style="color:#b91c1c">改变了原数组</b>　'+desc:'<b style="color:#0f6b3a">没改原数组</b>，只返回新结果　'+desc;};
   document.querySelectorAll('#demoArr [data-am]').forEach(b=>b.onclick=()=>{
     const m=b.dataset.am;
     if(m==='push'){const r=arr.push(9);show('新长度 '+r,true,'push 末尾加 9');}
@@ -4976,7 +4976,7 @@ const TERMS=[
   function paint(){
     [0,1,2,3,4].forEach(k=>{const n=$('gs'+k);n.setAttribute('fill','#eef3f9');n.setAttribute('stroke','#90a4bd');});
     if(i<0){$('gsStage').textContent='点“下一步 ▶”开始';$('gsMsg').textContent='';return;}
-    for(let k=0;k<=i;k++){const n=$('gs'+k);n.setAttribute('fill','#c7efe6');n.setAttribute('stroke','#0d9488');n.setAttribute('stroke-width','2');}
+    for(let k=0;k<=i;k++){const n=$('gs'+k);n.setAttribute('fill','#c7efe6');n.setAttribute('stroke','#04766d');n.setAttribute('stroke-width','2');}
     $('gsStage').textContent=steps[i].t+'（'+(i+1)+'/5）';$('gsMsg').textContent=steps[i].m;
   }
   $('gsNext').onclick=()=>{i=Math.min(i+1,4);paint();};
@@ -4997,7 +4997,7 @@ const TERMS=[
   function paint(){
     [0,1,2,3].forEach(k=>{const n=$('hN'+k);n.setAttribute('fill','#eef3f9');n.setAttribute('stroke','#90a4bd');});
     if(i<0){$('httpStage').textContent='点“下一步 ▶”开始';$('httpMsg').textContent='';return;}
-    stages[i].hl.forEach(k=>{const n=$('hN'+k);n.setAttribute('fill','#c7efe6');n.setAttribute('stroke','#0d9488');n.setAttribute('stroke-width','2');});
+    stages[i].hl.forEach(k=>{const n=$('hN'+k);n.setAttribute('fill','#c7efe6');n.setAttribute('stroke','#04766d');n.setAttribute('stroke-width','2');});
     $('httpStage').textContent=stages[i].t+'（'+(i+1)+'/5）';$('httpMsg').textContent=stages[i].m;
   }
   $('httpNext').onclick=()=>{i=Math.min(i+1,4);paint();};
@@ -5025,8 +5025,8 @@ const TERMS=[
   if(!$('urlGo'))return;
   function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
   function go(){
-    const v=$('urlIn').value.trim();let u;try{u=new URL(v);}catch(e){$('urlOut').innerHTML='<span style="color:#dc2626">网址格式不对，需带 http(s)://</span>';$('urlLegend').innerHTML='';return;}
-    const C={s:'#2563eb',h:'#0d9488',po:'#7c3aed',pa:'#b8690a',q:'#dc2626',f:'#0b6b5e'};const P=[];
+    const v=$('urlIn').value.trim();let u;try{u=new URL(v);}catch(e){$('urlOut').innerHTML='<span style="color:#b91c1c">网址格式不对，需带 http(s)://</span>';$('urlLegend').innerHTML='';return;}
+    const C={s:'#1d4ed8',h:'#04766d',po:'#6d28d9',pa:'#92400e',q:'#b91c1c',f:'#0b6b5e'};const P=[];
     P.push('<span class="urltok" style="background:#e3edfb;color:'+C.s+'">'+esc(u.protocol.replace(':',''))+'</span><span>://</span>');
     P.push('<span class="urltok" style="background:#e6f5ec;color:'+C.h+'">'+esc(u.hostname)+'</span>');
     if(u.port)P.push('<span>:</span><span class="urltok" style="background:#efe7fb;color:'+C.po+'">'+esc(u.port)+'</span>');
@@ -5048,7 +5048,7 @@ const TERMS=[
     $('tmsGrid').innerHTML=h;
     $('tmsInfo').textContent='第 z='+z+' 级：每方向 2^'+z+' = '+n+' 块，整层共 '+(n*n)+' 块瓦片。';
     $('tmsGrid').querySelectorAll('span').forEach(s=>s.onclick=()=>{
-      $('tmsGrid').querySelectorAll('span').forEach(o=>o.style.background='#cfeee6');s.style.background='#0d9488';
+      $('tmsGrid').querySelectorAll('span').forEach(o=>o.style.background='#cfeee6');s.style.background='#04766d';
       $('tmsUrl').textContent='/'+z+'/'+s.dataset.x+'/'+s.dataset.y+'.png';});
   }
   Z.oninput=render;render();
@@ -5058,11 +5058,11 @@ const TERMS=[
   if(!$('crsSet'))return;let crs=null,proj=false;
   function upd(){
     $('crsXY').textContent=proj?'13373000, 3534000':'120.15, 30.28';
-    $('crsCrs').innerHTML=crs?crs:'<i style="color:#dc2626">None（未声明）</i>';
+    $('crsCrs').innerHTML=crs?crs:'<i style="color:#b91c1c">None（未声明）</i>';
     $('crsUnit').textContent=proj?'米':'度';
   }
   $('crsSet').onclick=()=>{crs='EPSG:4326';$('crsNote').textContent='set_crs：只是“贴标签”声明这是 WGS84(经纬度)，坐标值 120.15,30.28 没变——告诉系统“这串数字是经纬度”。';upd();};
-  $('crsTo').onclick=()=>{if(!crs){$('crsNote').innerHTML='<span style="color:#dc2626">⚠ 还没 set_crs 声明坐标系，直接 to_crs 会报错！请先点①。</span>';return;}crs='EPSG:3857';proj=true;$('crsNote').textContent='to_crs：真换算！坐标从经纬度(度)变成了 Web 墨卡托(米)，数值整个变了——现在才能正确算面积/长度。';upd();};
+  $('crsTo').onclick=()=>{if(!crs){$('crsNote').innerHTML='<span style="color:#b91c1c">⚠ 还没 set_crs 声明坐标系，直接 to_crs 会报错！请先点①。</span>';return;}crs='EPSG:3857';proj=true;$('crsNote').textContent='to_crs：真换算！坐标从经纬度(度)变成了 Web 墨卡托(米)，数值整个变了——现在才能正确算面积/长度。';upd();};
   $('crsReset').onclick=()=>{crs=null;proj=false;$('crsNote').textContent='初始：有一对经纬度数值，但还没声明它是什么坐标系。';upd();};
   upd();
 })();
