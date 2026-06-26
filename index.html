@@ -1853,6 +1853,34 @@ Cesium.Cartographic.<span class="tok-f">fromCartesian</span>(cartesian);</code><
       <tr><td>屏幕坐标</td><td><code class="inline">Cartesian2</code></td><td>原点屏幕左上角的二维平面坐标</td></tr></table>
     <div class="card note"><span class="lbl">⚠ 别混淆：笛卡尔三维坐标 ≠ 投影坐标系</span>
       <code class="inline">Cartesian3</code> 是<strong>地心三维直角坐标</strong>（地球质心为原点的 X/Y/Z，即测绘里的 ECEF），用来在三维球上定位，<strong>不是地图学里那种把球面压平成米的“投影坐标系”</strong>（如 UTM、Web 墨卡托）。本课三种坐标系要分清：①地理坐标系=经纬度；②投影坐标系=压平成平面、单位米（GeoPandas 里算面积用它）；③笛卡尔三维=Cesium 在三维空间里定位用。</div>
+
+    <div class="idemo" id="demoAxis">
+      <div class="it">🧪 地球三维坐标轴：经纬度 → 地心 X/Y/Z</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>同一个点，用经纬度描述很直观；但 Cesium 内部用<strong>地心三维坐标 (X,Y,Z)</strong> 定位。拖滑块看一个点在球面上移动、它的 X/Y/Z 怎么变。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">经度</span><input type="range" id="axLon" min="-180" max="180" value="120" style="flex:1;min-width:90px;accent-color:var(--brand)"><span id="axLonv" style="font-family:monospace;color:var(--brand)">120°</span></div>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">纬度</span><input type="range" id="axLat" min="-90" max="90" value="30" style="flex:1;min-width:90px;accent-color:var(--brand)"><span id="axLatv" style="font-family:monospace;color:var(--brand)">30°</span></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <svg id="axSvg" viewBox="0 0 160 160" width="150" height="150" style="flex-shrink:0">
+            <circle cx="80" cy="80" r="60" fill="#16263a" stroke="#345877"/>
+            <ellipse cx="80" cy="80" rx="60" ry="20" fill="none" stroke="#3a5470"/>
+            <line x1="80" y1="20" x2="80" y2="140" stroke="#4ea3ff" stroke-dasharray="3"/><text x="86" y="26" fill="#7fd0ff" font-size="10">Z(北极)</text>
+            <circle id="axPt" cx="120" cy="65" r="6" fill="#dc2626"/>
+          </svg>
+          <div style="flex:1;min-width:160px;font-size:13px" id="axOut"></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code><span class="tok-c">// 经纬度 → 地心三维笛卡尔坐标</span>
+const c = Cesium.Cartesian3.<span class="tok-f">fromDegrees</span>(lon, lat, 0);
+<span class="tok-c">// 公式：X=R·cosφ·cosλ, Y=R·cosφ·sinλ, Z=R·sinφ</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <code class="inline">Cartesian3</code> 是<b>地心三维坐标</b>（X/Y/Z，单位米），<b>不是经纬度、也不是投影坐标系</b>。② X 轴指向 0°经线与赤道交点、Z 轴指向北极。③ 角度经纬度要用 <code class="inline">fromDegrees</code> 转过去。</div>
+      </div>
+    </div>
     <div class="card note"><span class="lbl">坐标转换函数（必背）</span>
       角度→弧度：<code class="inline">Cesium.Math.toRadians(deg)</code>；弧度→角度：<code class="inline">Cesium.Math.toDegrees(rad)</code>。<br>
       角度地理→笛卡尔：<code class="inline">Cesium.Cartesian3.fromDegrees(lon,lat,height)</code>。<br>
@@ -1949,6 +1977,31 @@ viewer.entities.<span class="tok-f">add</span>({ position:..., point:{ pixelSize
       <strong>Cesium 直接支持的矢量格式：GeoJSON、TopoJSON、KML、CZML</strong>（注意：不含 shp！这是经典“选错误项”陷阱）。
     </div>
     <p><strong>GeoJSON</strong>：符合 JSON 语法、专表示地理信息，最外层 type 可为 Geometry / Feature / FeatureCollection；几何 type：Point/MultiPoint/LineString/Polygon/MultiPolygon 等。<strong>TopoJSON</strong> 是 GeoJSON 拓扑编码扩展，用弧(arcs)消除冗余，文件缩小约 80%。<strong>KML</strong> 基于 XML（Google Earth），<strong>CZML</strong> 是 JSON 格式、描述与<strong>时间相关</strong>的动画场景。</p>
+
+    <div class="idemo" id="demoGeojson">
+      <div class="it">🧪 GeoJSON 构造器（点地图加坐标，实时出 GeoJSON）</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>看 GeoJSON 怎么表示点/线/面。选几何类型，在下面地图上<strong>点击添加坐标点</strong>，右边实时生成对应的 GeoJSON。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar">
+          <button class="chip on" data-gj="Point">Point 点</button><button class="chip" data-gj="LineString">LineString 线</button><button class="chip" data-gj="Polygon">Polygon 面</button>
+          <button class="btn ghost" id="gjClear">清空</button>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start">
+          <svg id="gjSvg" viewBox="0 0 220 130" width="220" height="130" style="background:#eef4fb;border:1px solid var(--line);border-radius:6px;cursor:crosshair;flex-shrink:0"></svg>
+          <div style="flex:1;min-width:170px"><div style="font-size:12px;color:var(--muted);margin-bottom:3px">生成的 GeoJSON</div><pre style="margin:0"><code id="gjOut"></code></pre></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>{ "type": "LineString",
+  "coordinates": [[116.10, 39.95], [116.18, 39.90]] }
+<span class="tok-c">// 坐标顺序是 [经度, 纬度]，不是[纬度,经度]！</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① GeoJSON 坐标是 <b>[经度 longitude, 纬度 latitude]</b>（经度在前），很多人记反。② <b>Point</b> 是一对坐标；<b>LineString</b> 是坐标数组；<b>Polygon</b> 是“环”的数组、且<b>首尾要闭合</b>。</div>
+      </div>
+    </div>
     <h4>DataSource 加载矢量</h4>
     <p><code class="inline">DataSource</code> 是数据源接口（抽象、不能直接实例化），将数据转为 EntityCollection。子类：<code class="inline">GeoJsonDataSource</code>、<code class="inline">KmlDataSource</code>、<code class="inline">CzmlDataSource</code>。通过 <code class="inline">viewer.dataSources</code>（DataSourceCollection）的 <code class="inline">add()</code> 加载。</p>
     <pre><code>Cesium.GeoJsonDataSource.<span class="tok-f">load</span>(<span class="tok-s">'data.geojson'</span>).<span class="tok-f">then</span>(<span class="tok-k">function</span>(ds){
@@ -2671,6 +2724,26 @@ A.<span class="tok-f">intersects</span>(B)  <span class="tok-c"># A 与 B 有交
     <p>几何属性：<code class="inline">area</code>、<code class="inline">length</code>、<code class="inline">bounds</code>、<code class="inline">geom_type</code>、<code class="inline">x/y/z</code>。产生新几何的属性/方法：<code class="inline">boundary</code>(边界,降维)、<code class="inline">centroid</code>(中心点)、<code class="inline">convex_hull</code>(凸包)、<code class="inline">envelope</code>(外包矩形)。</p>
     <pre><code>gs.<span class="tok-f">buffer</span>(distance, resolution=<span class="tok-n">16</span>)  <span class="tok-c"># 缓冲区，distance单位由坐标系定</span>
 gs.<span class="tok-f">simplify</span>(tolerance)            <span class="tok-c"># Douglas-Peucker 简化</span></code></pre>
+
+    <div class="idemo" id="demoSimp">
+      <div class="it">🧪 simplify 几何简化演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>看 <code class="inline">simplify(tolerance)</code> 怎么用更少的点近似原来的折线：容差越大，点越少、文件越小，但<strong>形状也越失真</strong>。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12px;color:var(--muted)">容差 tolerance</span><input type="range" id="simT" min="0" max="22" value="0" style="flex:1;min-width:120px;accent-color:var(--brand)"><span id="simTv" style="font-family:monospace;color:var(--brand)">0</span></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage">
+          <svg id="simSvg" viewBox="0 0 280 90" width="100%" style="max-width:300px"></svg>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:6px" id="simInfo"></p>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>line2 = line.<span class="tok-f">simplify</span>(tolerance=10)  <span class="tok-c"># 容差越大越简化</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① 用 <b>Douglas-Peucker</b> 算法：丢掉对形状影响小的点。② <b>容差越大 → 点越少、越失真</b>。③ 常用于减小数据量、加快渲染（如缩小比例尺时）。</div>
+      </div>
+    </div>
 
     <h3>3. 聚合与分解</h3>
     <ul>
@@ -4350,6 +4423,58 @@ const TERMS=[
   render();
 })();
 
+/* ch6 地球三维坐标轴 */
+(function(){
+  if(!$('axLon'))return;const Lon=$('axLon'),Lat=$('axLat'),pt=$('axPt');
+  function upd(){
+    const lon=+Lon.value,lat=+Lat.value;$('axLonv').textContent=lon+'°';$('axLatv').textContent=lat+'°';
+    const R=6378137,la=lat*Math.PI/180,lo=lon*Math.PI/180;
+    const X=R*Math.cos(la)*Math.cos(lo),Y=R*Math.cos(la)*Math.sin(lo),Z=R*Math.sin(la);
+    const sx=80+60*Math.cos(la)*Math.sin(lo),sy=80-60*Math.sin(la),front=Math.cos(la)*Math.cos(lo)>=0;
+    pt.setAttribute('cx',sx.toFixed(1));pt.setAttribute('cy',sy.toFixed(1));pt.setAttribute('opacity',front?'1':'0.3');
+    $('axOut').innerHTML='经纬度 ('+lon+'°, '+lat+'°) → 地心三维坐标(单位:百万米)：<br>X = <b style="color:#0d9488">'+(X/1e6).toFixed(2)+'</b><br>Y = <b style="color:#0d9488">'+(Y/1e6).toFixed(2)+'</b><br>Z = <b style="color:#0d9488">'+(Z/1e6).toFixed(2)+'</b>'+(front?'':'<br><span style="color:#90a4bd">(点在地球背面)</span>');
+  }
+  Lon.oninput=upd;Lat.oninput=upd;upd();
+})();
+/* ch7 GeoJSON 构造器 */
+(function(){
+  if(!$('gjSvg'))return;const svg=$('gjSvg');let type='Point',pts=[];
+  function toLL(x,y){return [Math.round((116.00+x/220*0.30)*1000)/1000, Math.round((40.00-y/130*0.20)*1000)/1000];}
+  function render(){
+    let g='';
+    if(type==='LineString'&&pts.length>1)g+='<polyline points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="none" stroke="#0d9488" stroke-width="2"/>';
+    if(type==='Polygon'&&pts.length>2)g+='<polygon points="'+pts.map(p=>p.x+','+p.y).join(' ')+'" fill="#4ea3ff44" stroke="#2563eb" stroke-width="2"/>';
+    pts.forEach(p=>g+='<circle cx="'+p.x+'" cy="'+p.y+'" r="4" fill="#dc2626"/>');
+    svg.innerHTML=g;
+    let coords;
+    if(type==='Point')coords=pts.length?JSON.stringify(toLL(pts[pts.length-1].x,pts[pts.length-1].y)):'[]';
+    else if(type==='LineString')coords=JSON.stringify(pts.map(p=>toLL(p.x,p.y)));
+    else{const ring=pts.map(p=>toLL(p.x,p.y));if(ring.length>2)ring.push(ring[0]);coords='['+JSON.stringify(ring)+']';}
+    $('gjOut').textContent='{\n  "type": "'+type+'",\n  "coordinates": '+coords+'\n}';
+  }
+  svg.addEventListener('click',e=>{const r=svg.getBoundingClientRect();const x=Math.round((e.clientX-r.left)/r.width*220),y=Math.round((e.clientY-r.top)/r.height*130);if(type==='Point')pts=[{x,y}];else pts.push({x,y});render();});
+  document.querySelectorAll('#demoGeojson [data-gj]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoGeojson [data-gj]').forEach(x=>x.classList.remove('on'));b.classList.add('on');type=b.dataset.gj;if(type==='Point'&&pts.length>1)pts=[pts[pts.length-1]];render();});
+  $('gjClear').onclick=()=>{pts=[];render();};
+  render();
+})();
+/* ch13 simplify 简化 */
+(function(){
+  if(!$('simSvg'))return;const T=$('simT');
+  const pts=[[10,45],[28,18],[44,62],[60,28],[78,56],[96,22],[114,52],[132,28],[150,60],[168,30],[186,54],[204,26],[222,56],[240,34],[258,50],[272,40]];
+  function perp(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1];const L=Math.hypot(dx,dy)||1;return Math.abs((p[0]-a[0])*dy-(p[1]-a[1])*dx)/L;}
+  function dp(s,e,eps){let dmax=0,idx=-1;for(let i=s+1;i<e;i++){const d=perp(pts[i],pts[s],pts[e]);if(d>dmax){dmax=d;idx=i;}}
+    if(dmax>eps&&idx>0)return dp(s,idx,eps).slice(0,-1).concat(dp(idx,e,eps));return [s,e];}
+  function render(){
+    const eps=+T.value;$('simTv').textContent=eps;
+    const idxs=eps===0?pts.map((_,i)=>i):dp(0,pts.length-1,eps);const simp=idxs.map(i=>pts[i]);
+    let g='<polyline points="'+pts.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="#cdd8e6" stroke-width="1"/>';
+    g+='<polyline points="'+simp.map(p=>p.join(',')).join(' ')+'" fill="none" stroke="#0d9488" stroke-width="2.5"/>';
+    g+=simp.map(p=>'<circle cx="'+p[0]+'" cy="'+p[1]+'" r="3" fill="#dc2626"/>').join('');
+    $('simSvg').innerHTML=g;
+    $('simInfo').textContent='容差='+eps+'：原 '+pts.length+' 个点 → 简化后 '+simp.length+' 个点'+(eps>0?'（灰线=原始，绿线=简化）':'');
+  }
+  T.oninput=render;render();
+})();
 /* ch11 Pydantic 校验 */
 (function(){
   if(!$('pydOut'))return;
