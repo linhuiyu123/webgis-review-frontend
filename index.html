@@ -901,6 +901,25 @@ Content-Length: 81
       ① 客户端统一为浏览器，<strong>无需安装部署</strong>、即点即用；② 升级维护只需在<strong>服务器端</strong>进行，客户端零部署；③ <strong>跨平台</strong>性好（浏览器天然跨平台）；④ 支持<strong>众多用户同时</strong>访问；⑤ 开发只需专注服务器端，降低成本。缺点：交互性、对本地资源访问能力弱于 C/S。
     </div>
 
+    <div class="idemo" id="demoCSBS">
+      <div class="it">🧪 C/S 与 B/S 架构对比演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>切换两种架构，看“客户端长啥样、升级怎么升、跨不跨平台”的差别。WebGIS 大多是 B/S。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-arch="cs">C/S 架构</button><button class="chip" data-arch="bs">B/S 架构</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" id="csbsStage"></div>
+        <p style="font-size:12.5px;margin-top:6px" id="csbsNote"></p>
+      </div>
+      <div class="sec"><span class="sl sl-code">关键差别</span>
+        <pre><code>C/S：客户端要装专门App，升级要每台机器逐个更新
+B/S：客户端只要浏览器，升级只改服务器一处，天然跨平台</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① B/S 是对 C/S 的<b>改进</b>：客户端统一为浏览器、<b>无需安装</b>、升级只改服务器、跨平台。② 但 WebGIS 即便是 B/S，<b>服务器端仍要承担 GIS 计算和空间数据管理</b>（GeoServer + 空间数据库）。</div>
+      </div>
+    </div>
+
     <h4>Web 开发模式演进</h4>
     <p>静态 HTML → <strong>CGI</strong>（C/C++ 处理动态数据）→ <strong>ASP/JSP/PHP</strong>（脚本语言）→ <strong>MVC</strong>（模型-视图-控制器分层）。</p>
 
@@ -1035,6 +1054,25 @@ DELETE /features/2       <span class="tok-c"># 删除id=2</span></code></pre>
       <strong>IaaS</strong> 基础设施即服务（如 AWS、华为云）；<strong>PaaS</strong> 平台即服务（如 GAE、GEE）；<strong>SaaS</strong> 软件即服务（如在线软件、ArcGIS Online）。掌控程度 IaaS &gt; PaaS &gt; SaaS。</div>
     <p><strong>云计算五特征：</strong>随需应变自助服务、广泛网络访问、资源池化、弹性使用、可度量服务。</p>
     <p><strong>容器 vs 虚拟机：</strong>容器无自己的内核、直接运行于宿主内核，无硬件虚拟 → 启动秒级、占用 MB 级、性能接近原生、单机可上千。CNCF 代表技术：容器、服务网格、微服务、不可变基础设施、声明式 API（Docker、Kubernetes）。</p>
+
+    <div class="idemo" id="demoVm">
+      <div class="it">🧪 容器 vs 虚拟机对比演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>切换看两者结构差别——关键就一句：<strong>虚拟机每个都带一整套操作系统，容器共享宿主机内核</strong>，所以容器更轻、更快。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip on" data-vm="vm">虚拟机 VM</button><button class="chip" data-vm="ct">容器 Container</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" id="vmStage"></div>
+        <div style="margin-top:8px"><table class="htbl" id="vmTbl"></table></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">关键差别</span>
+        <pre><code>虚拟机：硬件 → Hypervisor → [完整Guest OS + App] × N
+容器：  硬件 → 宿主OS → 容器引擎 → [App] × N   (没有Guest OS)</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① 容器<b>共享宿主机内核</b>、没有自己的操作系统，所以<b>启动秒级、体积 MB 级、性能接近原生、单机可上千</b>。② 虚拟机每个含完整 OS，<b>启动分钟级、体积 GB 级</b>，但隔离更彻底。</div>
+      </div>
+    </div>
     <p><strong>云 GIS</strong>：基于云计算扩展 GIS，将平台/软件/地理空间信息部署到云基础设施，弹性按需提供 Web 服务。代表：ArcGIS（Online/Pro/Enterprise）、GEE（PaaS，海量遥感数据 + 云端算力 + JS/Python 接口）、国产 SuperMap（云边端一体化）、OneSIS、DDE、伏羲。</p>
     <div class="card tip"><span class="lbl">大题方向</span>“AI 和 VR 在未来 WebGIS 中的作用”——可从：AI（时空大数据挖掘、智能分析、GIS 智能体/大模型如伏羲、自然语言交互）；VR/三维（数字孪生、沉浸式可视化、二维→三维→虚拟现实趋势）；结合云原生、实时 GIS 等发展方向作答。</div>
   </section>
@@ -2160,6 +2198,26 @@ layer.alpha = 0.6;                <span class="tok-c">// 设这层透明度</spa
     <h3>2. 地形数据</h3>
     <div class="card note"><span class="lbl">影像 vs 地形</span>影像是“外衣”（可穿多件），地形是“骨架”（只有一副）。把实例化的 terrainProvider 赋给 <code class="inline">viewer.terrainProvider</code>。</div>
     <p>5 种 TerrainProvider：<code class="inline">EllipsoidTerrainProvider</code>（默认，光滑椭球、高程 0、不请求数据）、<code class="inline">CesiumTerrainProvider</code>（<strong>最常用</strong>，高精度全球地形、支持光照水面）、ArcGISTiledElevationTerrainProvider、GoogleEarthEnterpriseTerrainProvider 等。</p>
+
+    <div class="idemo" id="demoTerr">
+      <div class="it">🧪 影像 vs 地形演示（剖面看起伏）</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>影像是贴在地表的“外衣纹理”，地形决定地表的“起伏骨架”。切换看剖面：没地形是平的，有地形才有山谷。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><button class="chip" data-tr="flat">只有影像（无地形）</button><button class="chip on" data-tr="terr">影像 + 地形</button>
+          <span style="font-size:12px;color:var(--muted)">地形夸张</span><input type="range" id="trEx" min="1" max="3" step="0.5" value="1.5" style="flex:1;min-width:80px;accent-color:var(--brand)"></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果（地表剖面）</span>
+        <div class="stage"><svg id="trSvg" viewBox="0 0 280 100" width="100%" style="max-width:300px"></svg>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:4px" id="trNote"></p></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>viewer.terrainProvider = <span class="tok-k">await</span> Cesium.createWorldTerrainAsync();
+<span class="tok-c">// 影像可叠多层；地形只能设这一套</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① <b>影像是“外衣”可叠多层；地形是“骨架”只有一副</b>。② 默认 <code class="inline">EllipsoidTerrainProvider</code> 高程为 0（光滑椭球、不请求数据）；要起伏用 <code class="inline">CesiumTerrainProvider</code>。</div>
+      </div>
+    </div>
 
     <h3>3. 三维空间分析</h3>
     <p>Cesium 侧重三维可视化，空间分析支持较弱，需借助测绘方法 + Cesium 基础功能实现。</p>
@@ -4423,6 +4481,50 @@ const TERMS=[
   render();
 })();
 
+/* ch1 C/S vs B/S */
+(function(){
+  if(!$('csbsStage'))return;
+  function render(m){
+    const cli=m==='cs'?['客户端App①','客户端App②','客户端App③']:['浏览器①','浏览器②','浏览器③'];
+    const col=m==='cs'?'#ffb454':'#36c2a8';const srv=m==='cs'?'服务器':'服务器(App+逻辑)';
+    $('csbsStage').innerHTML='<div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-size:12px">'+
+      '<div style="display:flex;flex-direction:column;gap:4px">'+cli.map(c=>'<span class="dispbox" style="background:'+col+'">'+c+'</span>').join('')+'</div>'+
+      '<span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#4ea3ff">'+srv+'</span><span style="color:#90a4bd">⇄</span><span class="dispbox" style="background:#7c3aed;color:#fff">数据库</span></div>';
+    $('csbsNote').innerHTML=m==='cs'?'<b style="color:#c2740a">C/S：</b>每个客户端都要装专门的 App；升级要给<b>每一台</b>逐个更新，跨平台差。':'<b style="color:#0d9488">B/S：</b>客户端只是浏览器（无需安装）；升级只改<b>服务器一处</b>，天然跨平台。';
+  }
+  document.querySelectorAll('#demoCSBS [data-arch]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoCSBS [data-arch]').forEach(x=>x.classList.remove('on'));b.classList.add('on');render(b.dataset.arch);});
+  render('cs');
+})();
+/* ch1 容器 vs 虚拟机 */
+(function(){
+  if(!$('vmStage'))return;
+  function layer(t,c,dark){return '<div style="background:'+c+';color:'+(dark?'#fff':'#04231c')+';text-align:center;padding:3px;border-radius:4px;margin:2px 0;font-size:11px;font-weight:600">'+t+'</div>';}
+  function render(m){
+    let h;
+    if(m==='vm')h='<div style="display:flex;gap:6px">'+['App①','App②'].map(a=>'<div style="flex:1">'+layer(a,'#36c2a8')+layer('Guest OS','#ff6b6b',1)+'</div>').join('')+'</div>'+layer('Hypervisor 虚拟化','#ffb454')+layer('物理硬件','#90a4bd',1);
+    else h='<div style="display:flex;gap:6px">'+['App①','App②','App③'].map(a=>'<div style="flex:1">'+layer(a,'#36c2a8')+'</div>').join('')+'</div>'+layer('容器引擎 (Docker)','#4ea3ff',1)+layer('宿主机OS（共享内核）','#c9a3ff')+layer('物理硬件','#90a4bd',1);
+    $('vmStage').innerHTML=h;
+    const rows=m==='vm'?[['是否含OS','每个含完整Guest OS'],['启动','分钟级'],['体积','GB 级'],['单机数量','几十个']]:[['是否含OS','无，共享宿主内核'],['启动','秒级'],['体积','MB 级'],['单机数量','上千个']];
+    $('vmTbl').innerHTML='<tr><th>对比项</th><th>'+(m==='vm'?'虚拟机':'容器')+'</th></tr>'+rows.map(r=>'<tr><td>'+r[0]+'</td><td>'+r[1]+'</td></tr>').join('');
+  }
+  document.querySelectorAll('#demoVm [data-vm]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoVm [data-vm]').forEach(x=>x.classList.remove('on'));b.classList.add('on');render(b.dataset.vm);});
+  render('vm');
+})();
+/* ch8 影像 vs 地形 */
+(function(){
+  if(!$('trSvg'))return;let mode='terr';
+  function render(){
+    const ex=+$('trEx').value,W=280,ys=[];
+    for(let x=0;x<=W;x+=10){let y=68;if(mode==='terr')y=68-Math.sin(x/24)*14*ex-Math.sin(x/9)*5*ex;ys.push([x,Math.max(8,y)]);}
+    const line=ys.map(p=>p[0]+','+p[1].toFixed(1)).join(' ');
+    let g='<polygon points="0,100 '+line+' '+W+',100" fill="#8a6d4a"/>';
+    g+='<polyline points="'+line+'" fill="none" stroke="#3a7d44" stroke-width="5"/>';
+    $('trSvg').innerHTML=g;
+    $('trNote').textContent=mode==='flat'?'只有影像、无地形：地表是平的（默认椭球高程为 0），影像贴在平面上。':'影像 + 地形：地表有了山谷起伏，影像像“外衣”贴在起伏的骨架上（拖“地形夸张”更明显）。';
+  }
+  document.querySelectorAll('#demoTerr [data-tr]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#demoTerr [data-tr]').forEach(x=>x.classList.remove('on'));b.classList.add('on');mode=b.dataset.tr;render();});
+  $('trEx').oninput=render;render();
+})();
 /* ch6 地球三维坐标轴 */
 (function(){
   if(!$('axLon'))return;const Lon=$('axLon'),Lat=$('axLat'),pt=$('axPt');
