@@ -1440,6 +1440,29 @@ btn.onclick = <span class="tok-k">function</span>(){ console.log(<span class="to
 btn.<span class="tok-f">addEventListener</span>(<span class="tok-s">"click"</span>, <span class="tok-k">function</span>(){ ... });</code></pre>
     <p>常用事件：onclick/ondblclick/onmousedown/onmousemove/onmouseenter；onkeydown/onkeyup。事件对象 <code class="inline">event</code>：<code class="inline">event.type</code>、<code class="inline">event.clientX/clientY</code>。</p>
 
+    <div class="idemo" id="demoBind">
+      <div class="it">🧪 事件绑定三方式对比：能不能绑多个？</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>同一个按钮、同一个 click 事件，绑两个处理函数，看哪种方式两个都生效、哪种只剩最后一个。这是“为什么推荐 addEventListener”的关键。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar">
+          <button class="btn" id="bindA">按钮A（用 onclick 各绑2次）</button>
+          <button class="btn" id="bindB">按钮B（用 addEventListener 绑2次）</button>
+          <button class="btn ghost" id="bindClear">清空</button>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="out console" id="bindOut" style="min-height:64px">分别点 A、B，看各触发几次…</div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>btn.onclick = fn1;  btn.onclick = fn2;   <span class="tok-c">// 后者覆盖前者 → 点击只跑 fn2</span>
+btn.addEventListener('click', fn1);
+btn.addEventListener('click', fn2);       <span class="tok-c">// 两个都保留 → 点击 fn1、fn2 都跑</span></code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① HTML <code class="inline">onclick</code> 属性、<code class="inline">element.onclick</code> 都<b>只能绑一个</b>（再绑会<b>覆盖</b>）。② <code class="inline">addEventListener</code> 能给同一事件<b>绑多个</b>，还能用 <code class="inline">removeEventListener</code> 移除，所以最推荐。</div>
+      </div>
+    </div>
+
     <h3>5. BOM 与定时器</h3>
     <p>BOM = 操作浏览器的 API。核心 <code class="inline">window</code>（全局对象）。系统对话框：<code class="inline">alert()</code>、<code class="inline">confirm()</code>(返回布尔)、<code class="inline">prompt(提示,默认值)</code>(返回输入)。其他：<code class="inline">Navigator</code>、<code class="inline">History</code>(back/forward/go)、<code class="inline">Location</code>(assign/reload/replace)。</p>
     <div class="card exam"><span class="lbl">【高频读代码】setTimeout vs setInterval</span>
@@ -1692,6 +1715,29 @@ console.log(<span class="tok-s">"2"</span>);                         <span class
       <tr><td><strong>OpenLayers</strong></td><td>2D 为主</td><td>最遵循 OGC 协议、兼容老 IE</td><td>可视化弱、内存优化欠缺</td></tr>
       <tr><td><strong>Mapbox GL</strong></td><td><strong>WebGL</strong></td><td>高效矢量瓦片、顶级可视化</td><td>空间分析/三维表达弱</td></tr>
       <tr><td><strong>Cesium</strong></td><td><strong>WebGL</strong></td><td>三维地球、倾斜摄影、BIM、时态表达</td><td>代码重、需重新学习、主视图需顶级 div</td></tr></table>
+
+    <div class="idemo" id="demoFw">
+      <div class="it">🧪 地图框架选择器：你的项目该用哪个？</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>不同框架解决不同问题。回答下面三个问题，看推荐用哪个——理解“为什么选它”比死记参数更重要。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar"><span style="font-size:12.5px;width:100%;color:var(--text)">1) 需要<b>三维地球/三维场景</b>吗？</span><button class="chip" data-q="d1" data-v="1">需要</button><button class="chip on" data-q="d1" data-v="0">不需要</button></div>
+        <div class="opbar"><span style="font-size:12.5px;width:100%;color:var(--text)">2) 地图是页面的<b>主角</b>吗（不是配角小图）？</span><button class="chip on" data-q="d2" data-v="1">是主角</button><button class="chip" data-q="d2" data-v="0">只是配角</button></div>
+        <div class="opbar"><span style="font-size:12.5px;width:100%;color:var(--text)">3) 需要<b>空间分析 + 自建空间数据</b>吗？</span><button class="chip" data-q="d3" data-v="1">需要</button><button class="chip on" data-q="d3" data-v="0">不需要</button></div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage"><div style="font-size:15px"><b>推荐：</b><span id="fwRec" style="color:#0d9488;font-weight:700"></span></div>
+          <p style="font-size:12.5px;color:var(--muted);margin-top:5px" id="fwWhy"></p></div>
+      </div>
+      <div class="sec"><span class="sl sl-code">决策逻辑（伪代码）</span>
+        <pre><code>if 需要三维:           用 Cesium
+elif 地图只是配角:      用 ECharts / LBS地图API
+elif 要空间分析+自有数据: 用 OpenLayers（守OGC、二维分析强）
+else:                  用 Leaflet（轻量二维展示）</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">Cesium 偏<b>三维地球</b>；OpenLayers 对 <b>OGC 协议</b>支持最强；Leaflet <b>轻量</b>、插件多；LBS API(高德/百度)适合 toC、用现成服务。Mapbox 偏高颜值矢量瓦片。</div>
+      </div>
+    </div>
     <div class="card note"><span class="lbl">发展脉络</span>前 H5 时代（Flex/JS/Silverlight）→ H5 时代：2011 Leaflet（Canvas）、2013 OpenLayers3（基于 H5 重写）、2014 Cesium 1.0（开源进入三维）、2016 ArcGIS JS 4.0（三维）、2019 MapboxGL。Cesium 1.102 起默认 WebGL 2.0。</div>
 
     <h3>3. Cesium 核心切入</h3>
@@ -1762,6 +1808,42 @@ Cesium.Cartographic.<span class="tok-f">fromCartesian</span>(cartesian);</code><
     <h3>2. 核心类概述</h3>
     <p>Viewer 主要分三部分：<strong>Widgets 组件</strong>（Geocoder 查找、HomeButton、SceneModePicker 2D/2.5D/3D、BaseLayerPicker、Animation、Timeline、FullscreenButton 等）、<strong>Scene</strong>、<strong>dataSources</strong>。</p>
     <p>关键属性：<code class="inline">imageryLayers</code> 影像、<code class="inline">terrainProvider</code> 地形、<code class="inline">dataSources</code> 矢量、<code class="inline">entities</code> 实体集合、<code class="inline">scene.primitives</code> 图元集合、<code class="inline">camera</code> 相机。</p>
+
+    <div class="idemo" id="demoViewer">
+      <div class="it">🧪 Viewer 控件开关演示</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>Cesium 的 Viewer 默认带一堆小控件（搜索框、首页按钮、时间轴…）。看它们分别是什么，以及怎么在初始化时关掉不要的。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar" id="vwToggles">
+          <button class="chip on" data-vw="geocoder">geocoder 搜索</button>
+          <button class="chip on" data-vw="homeButton">homeButton 首页</button>
+          <button class="chip on" data-vw="sceneModePicker">2D/3D切换</button>
+          <button class="chip on" data-vw="baseLayerPicker">底图选择</button>
+          <button class="chip on" data-vw="timeline">timeline 时间轴</button>
+          <button class="chip on" data-vw="animation">animation 动画</button>
+          <button class="chip on" data-vw="fullscreenButton">全屏</button>
+        </div>
+        <p style="font-size:12px;color:var(--muted)">点一下=开/关（绿色为开启）</p>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果（模拟 Viewer 界面）</span>
+        <div class="stage" style="background:linear-gradient(160deg,#1b3a5c,#0d2238);min-height:120px;position:relative;color:#fff">
+          <span id="vwGeocoder" style="position:absolute;top:8px;left:8px;background:#ffffff22;padding:2px 8px;border-radius:4px;font-size:11px">🔍 搜索框</span>
+          <span id="vwHomeButton" style="position:absolute;top:8px;right:96px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px">🏠</span>
+          <span id="vwSceneModePicker" style="position:absolute;top:8px;right:62px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px">2D/3D</span>
+          <span id="vwBaseLayerPicker" style="position:absolute;top:8px;right:8px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px">🗺底图</span>
+          <span id="vwFullscreenButton" style="position:absolute;bottom:8px;right:8px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px">⛶ 全屏</span>
+          <span id="vwAnimation" style="position:absolute;bottom:8px;left:8px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px">⏯ 动画</span>
+          <span id="vwTimeline" style="position:absolute;bottom:8px;left:78px;right:78px;background:#ffffff22;padding:2px 6px;border-radius:4px;font-size:11px;text-align:center">———— 时间轴 ————</span>
+          <span style="position:absolute;top:48%;left:0;right:0;text-align:center;color:#ffffff55;font-size:12px">🌐 三维地球</span>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>const viewer = new Cesium.Viewer('cesiumContainer', {
+<span id="vwCode"></span>});</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① 这些控件都通过 Viewer 的<b>构造配置对象</b>开关（如 <code class="inline">timeline:false</code>）。② Cesium 的<b>商标 logo</b> 比较特殊，要用 <code class="inline">viewer._cesiumWidget._creditContainer.style.display='none'</code> 或 CSS 才能隐藏。</div>
+      </div>
+    </div>
 
     <h3>3. 空间坐标系统（高频）</h3>
     <div class="card exam"><span class="lbl">【高频考点】空间坐标系统包括地理坐标系与笛卡尔坐标系</span></div>
@@ -1878,6 +1960,35 @@ viewer.entities.<span class="tok-f">add</span>({ position:..., point:{ pixelSize
       <strong>Entity API（高级）</strong>：数据驱动，一致、易用，<strong>推荐初学者</strong>，底层其实是对 Primitive API 的二次封装。<br>
       <strong>Primitive API（低级）</strong>：接近渲染引擎底层，性能/灵活性高，但需 WebGL 知识。</div>
     <p>Cesium 支持 <strong>17 种实体类型</strong>（以 Graphics 结尾）：box、billboard(广告牌)、corridor、ellipse、ellipsoid、label、cylinder、model、tileset、path、plane、point、polyline、polygon、polylineVolume、wall、rectangle。</p>
+
+    <div class="idemo" id="demoEnt">
+      <div class="it">🧪 Entity 类型画廊</div>
+      <div class="sec"><span class="sl sl-goal">学习目标</span><p>常见的几种 Entity 长什么样、关键属性是什么、代码怎么写。点不同类型看示意图和构造代码。</p></div>
+      <div class="sec"><span class="sl sl-op">操作区</span>
+        <div class="opbar" id="entChips">
+          <button class="chip on" data-et="point">point 点</button>
+          <button class="chip" data-et="billboard">billboard 广告牌</button>
+          <button class="chip" data-et="polyline">polyline 线</button>
+          <button class="chip" data-et="polygon">polygon 面</button>
+          <button class="chip" data-et="box">box 盒子</button>
+          <button class="chip" data-et="label">label 文字</button>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-res">观察结果</span>
+        <div class="stage" style="display:flex;gap:16px;flex-wrap:wrap;align-items:center">
+          <div id="entSvg" style="width:120px;height:90px;flex-shrink:0"></div>
+          <div style="flex:1;min-width:160px"><div style="font-size:13px"><b>关键属性：</b><span id="entProp" style="color:#0d9488"></span></div></div>
+        </div>
+      </div>
+      <div class="sec"><span class="sl sl-code">对应代码</span>
+        <pre><code>viewer.entities.add({
+  position: Cesium.Cartesian3.fromDegrees(120, 30, 0),
+<span id="entCode"></span>});</code></pre>
+      </div>
+      <div class="sec"><span class="sl sl-exam">考点提醒</span>
+        <div class="examtip">① Entity 是<b>高级声明式</b>抽象：你只描述“要什么形状+什么属性”。② 添加用 <code class="inline">viewer.entities.add()</code>，删除/查找用 <code class="inline">removeById / getById</code>。③ 一个 Entity 可同时挂多种图形属性（如 position + point + label）。</div>
+      </div>
+    </div>
     <div class="card exam"><span class="lbl">【填空考点】添加实体 / flyTo(entities)</span>
       通过 <code class="inline">viewer.entities.add(entity)</code> 添加实体（entities 是 EntityCollection 实例）。<code class="inline">viewer.flyTo(viewer.entities)</code> <strong>可以</strong>实现视角转换、定位到这些实体。
     </div>
@@ -4085,6 +4196,57 @@ const TERMS=[
   render();
 })();
 
+/* ch3 事件绑定三方式 */
+(function(){
+  if(!$('bindA'))return;const out=$('bindOut');const log=s=>{out.textContent+=s+'\n';};
+  $('bindA').onclick=()=>log('A: 处理器1');
+  $('bindA').onclick=()=>log('A: 处理器2（它把处理器1覆盖了，所以只跑这一个）');
+  $('bindB').addEventListener('click',()=>log('B: 处理器1'));
+  $('bindB').addEventListener('click',()=>log('B: 处理器2（两个都保留，都会跑）'));
+  $('bindClear').onclick=()=>{out.textContent='分别点 A、B，看各触发几次…';};
+})();
+/* ch5 框架选择器 */
+(function(){
+  if(!$('fwRec'))return;const ans={d1:0,d2:1,d3:0};
+  document.querySelectorAll('#demoFw [data-q]').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#demoFw [data-q="'+b.dataset.q+'"]').forEach(x=>x.classList.remove('on'));b.classList.add('on');ans[b.dataset.q]=+b.dataset.v;rec();});
+  function rec(){let r,w;
+    if(ans.d1){r='Cesium';w='需要三维 → 三维地球框架，Cesium 最合适。';}
+    else if(!ans.d2){r='ECharts / LBS 地图 API';w='地图只是配角小图 → 用图表库(ECharts)或现成地图 API 就够了。';}
+    else if(ans.d3){r='OpenLayers';w='地图是主角、还要空间分析+自有数据 → OpenLayers 守 OGC、二维分析强。';}
+    else{r='Leaflet';w='地图主角、二维展示为主、无重分析 → Leaflet 轻量好用。';}
+    $('fwRec').textContent=r;$('fwWhy').textContent=w;}
+  rec();
+})();
+/* ch6 Viewer 控件开关 */
+(function(){
+  if(!$('vwToggles'))return;
+  const ctrls=['geocoder','homeButton','sceneModePicker','baseLayerPicker','timeline','animation','fullscreenButton'];
+  const map={geocoder:'vwGeocoder',homeButton:'vwHomeButton',sceneModePicker:'vwSceneModePicker',baseLayerPicker:'vwBaseLayerPicker',timeline:'vwTimeline',animation:'vwAnimation',fullscreenButton:'vwFullscreenButton'};
+  const state={};ctrls.forEach(c=>state[c]=true);
+  function upd(){
+    ctrls.forEach(c=>{const el=$(map[c]);if(el)el.style.display=state[c]?'':'none';});
+    const off=ctrls.filter(c=>!state[c]);
+    $('vwCode').textContent=off.length?off.map(c=>'  '+c+': false,').join('\n'):'  // 默认全部开启';
+  }
+  document.querySelectorAll('#vwToggles [data-vw]').forEach(b=>b.onclick=()=>{const c=b.dataset.vw;state[c]=!state[c];b.classList.toggle('on',state[c]);upd();});
+  upd();
+})();
+/* ch7 Entity 类型画廊 */
+(function(){
+  if(!$('entSvg'))return;
+  const data={
+    point:{svg:'<circle cx="60" cy="45" r="9" fill="#dc2626"/>',prop:'pixelSize 大小、color 颜色',code:'  point: { pixelSize: 10, color: Cesium.Color.RED }'},
+    billboard:{svg:'<text x="60" y="58" font-size="34" text-anchor="middle">📍</text>',prop:'image 图片、scale 缩放',code:"  billboard: { image: 'pin.png', scale: 1 }"},
+    polyline:{svg:'<polyline points="15,70 50,25 80,55 105,20" fill="none" stroke="#0d9488" stroke-width="3"/>',prop:'positions 坐标串、width 宽度、material 材质',code:'  polyline: { positions: [...], width: 3, material: Cesium.Color.TEAL }'},
+    polygon:{svg:'<polygon points="20,25 100,30 90,75 30,70" fill="#4ea3ff66" stroke="#2563eb"/>',prop:'hierarchy 顶点、material 填充',code:'  polygon: { hierarchy: [...], material: Cesium.Color.BLUE.withAlpha(0.5) }'},
+    box:{svg:'<g stroke="#b8690a" fill="#ffb45488"><rect x="40" y="35" width="40" height="35"/><polygon points="40,35 58,22 98,22 80,35"/><polygon points="80,35 98,22 98,57 80,70"/></g>',prop:'dimensions 长宽高',code:'  box: { dimensions: new Cesium.Cartesian3(40,40,40), material: Cesium.Color.ORANGE }'},
+    label:{svg:'<text x="60" y="52" font-size="16" text-anchor="middle" fill="#1e2a38">你好GIS</text>',prop:'text 文字、font 字体',code:"  label: { text: '你好GIS', font: '16px sans-serif' }"}
+  };
+  function show(t){const d=data[t];$('entSvg').innerHTML='<svg viewBox="0 0 120 90" width="120" height="90">'+d.svg+'</svg>';$('entProp').textContent=d.prop;$('entCode').textContent=d.code;}
+  document.querySelectorAll('#entChips [data-et]').forEach(b=>b.onclick=()=>{document.querySelectorAll('#entChips [data-et]').forEach(x=>x.classList.remove('on'));b.classList.add('on');show(b.dataset.et);});
+  show('point');
+})();
 /* ch3 数组方法：改原数组 vs 新数组 */
 (function(){
   if(!$('amReset'))return;
